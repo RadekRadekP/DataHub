@@ -1,0 +1,54 @@
+@page "/"
+@rendermode RenderMode.InteractiveServer 
+@* Explicitly set, though App.razor now provides a default *@
+
+@* <h1>Hello from Blazor Server!</h1> *@
+
+@* <p>If you see this, Blazor Server interactivity is running for this page.</p> *@
+
+@code {
+    protected override void OnInitialized()
+    {
+        try
+        {
+            Console.WriteLine("Home.razor (Server Project): OnInitialized START");
+            base.OnInitialized();
+            Console.WriteLine("Home.razor (Server Project): OnInitialized END");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Home.razor (Server Project): EXCEPTION in OnInitialized: {ex.GetType().FullName} - {ex.Message}\n{ex.StackTrace}");
+            throw; // Re-throw to see if Blazor's default handler catches it differently
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Console.WriteLine("Home.razor (Server Project): OnInitializedAsync START");
+            await base.OnInitializedAsync();
+            Console.WriteLine("Home.razor (Server Project): OnInitializedAsync END");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Home.razor (Server Project): EXCEPTION in OnInitializedAsync: {ex.GetType().FullName} - {ex.Message}\n{ex.StackTrace}");
+            throw;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            Console.WriteLine($"Home.razor (Server Project): OnAfterRenderAsync (firstRender: {firstRender}) START");
+            await base.OnAfterRenderAsync(firstRender);
+            Console.WriteLine($"Home.razor (Server Project): OnAfterRenderAsync (firstRender: {firstRender}) END");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Home.razor (Server Project): EXCEPTION in OnAfterRenderAsync (firstRender: {firstRender}): {ex.GetType().FullName} - {ex.Message}\n{ex.StackTrace}");
+            throw;
+        }
+    }
+}

@@ -1,0 +1,47 @@
+
+@page "/dummyitems"
+@using RPK_BlazorApp.Models
+@using RPK_BlazorApp.Components.Shared
+
+<PageTitle>Dummy Items (Advanced Filter)</PageTitle>
+
+<h1>Dummy Items</h1>
+
+<p>This page demonstrates the floating query builder with an in-memory data source.</p>
+
+<div class="filter-controls">
+    <FluentButton Appearance="Appearance.Accent" @onclick="ToggleQueryBuilder">Advanced Filter</FluentButton>
+    <FluentButton Appearance="Appearance.Accent" @onclick="AddNewItem">Add New Item</FluentButton>
+
+    @if (_selectedItems.Any())
+    {
+        <FluentButton Appearance="Appearance.Accent" @onclick="ViewSelectedItems">View Selected (@_selectedItems.Count)</FluentButton>
+        <FluentButton Appearance="Appearance.Accent" @onclick="EditSelectedItems">Edit Selected (@_selectedItems.Count)</FluentButton>
+        <FluentButton Appearance="Appearance.Neutral" @onclick="CopySelectedItems">Copy Selected (@_selectedItems.Count)</FluentButton>
+        <FluentButton Appearance="Appearance.Neutral" @onclick="DeleteSelectedItems">Delete Selected (@_selectedItems.Count)</FluentButton>
+    }
+</div>
+
+<FloatingQueryBuilder TItem="DummyItem"
+                      @bind-Visible="_isQueryBuilderVisible"
+                      AvailableColumns="_queryBuilderColumns"
+                      OnApply="HandleQueryApplied"
+                      OnClear="HandleQueryClear"
+                      OnSave="HandleSaveQuery"
+                      OnDelete="HandleDeleteQuery"
+                      SavedQueries="_savedQueries" />
+
+<GenericDataView @ref="_dataView" TItem="DummyItem"
+                 DataProvider="LoadData"
+                 ColumnDefinitions="_columnDefinitions"
+                 ExportFunction="ExportDataToExcel"
+                 ExportFileName="DummyItems"
+                 ShowCheckboxes="true"
+                 @bind-SelectedItems="_selectedItems">
+    <ActionColumnTemplate>
+        <FluentButton IconStart="@(new Icons.Regular.Size20.Search())" Title="View Details" OnClick="@(() => ViewItem(context.Id))" />
+        <FluentButton IconStart="@(new Icons.Regular.Size20.Edit())" Title="Edit" OnClick="@(() => EditItem(context.Id))" />
+        <FluentButton IconStart="@(new Icons.Regular.Size20.Delete())" Title="Delete" OnClick="@(() => DeleteItem(context.Id))" />
+    </ActionColumnTemplate>
+</GenericDataView>
+

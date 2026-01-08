@@ -1,0 +1,40 @@
+
+@page "/alarms/action/{Id:int}"
+@page "/alarms/action"
+
+@using RPK_BlazorApp.Models
+@using RPK_BlazorApp.Services
+@using RPK_BlazorApp.Components.Shared
+@using Microsoft.FluentUI.AspNetCore.Components
+@using RPK_BlazorApp.Models.Interfaces
+
+@inject IAlarmService AlarmService
+
+<GenericEntityActionPage TItem="Alarm"
+                         Id="@Id"
+                         DataService="@(AlarmService as IDataService<Alarm>)"
+                         EntityName="Alarm"
+                         ListPagePath="/alarms">
+    <EditorTemplate>
+        <FluentTextField @bind-Value="context.ClientId" Label="Client ID" />
+        <FluentNumberField @bind-Value="context.ClientDbId" Label="Client DB ID" />
+        <FluentTextField @bind-Value="context.Type" Label="Type" />
+        <FluentTextField @bind-Value="context.Text" Label="Text" />
+        <FluentTextField @bind-Value="context.Operator" Label="Operator" />
+        @{ 
+            DateTime? alarmDate = context.AlarmDate; 
+        }
+        <FluentDatePicker Label="Alarm Date" @bind-Value="alarmDate" />
+        <FluentNumberField @bind-Value="context.Nr" Label="Nr" />
+    </EditorTemplate>
+</GenericEntityActionPage>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        // This is a bit of a hack, see DummyItemAction.razor for more details.
+    }
+}

@@ -1,0 +1,89 @@
+@using System.Security.Claims
+@using RPK_BlazorApp.Services
+@using Microsoft.AspNetCore.Components.Authorization
+@using RPK_BlazorApp.Shared
+
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+@*
+    Tato komponenta poskytuje jednoduché UI pro přepínání mezi
+    různými rolemi uživatelů během vývoje. Měla by být povolena
+    pouze v DEBUG sestavení. Můžete ji umístit do MainLayout.razor,
+    například takto:
+
+    <div class="dev-auth-controls">
+        <DevAuthControl />
+    </div>
+*@
+
+<div class="p-2" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: .25rem;">
+    <small class="text-muted">Dev Auth Controls</small>
+    <AuthorizeView>
+        <Authorized>
+            <div class="d-flex align-items-center gap-2 mt-1">
+                <span>Přihlášen jako: <strong>@context.User.Identity?.Name</strong></span>
+                <button class="btn btn-sm btn-warning" @onclick="Logout">Odhlásit</button>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div class="d-flex align-items-center gap-2 mt-1">
+                <span>Nepřihlášen.</span>
+                <button class="btn btn-sm btn-primary" @onclick="LoginAsAdmin">Přihlásit jako Admin</button>
+                <button class="btn btn-sm btn-secondary" @onclick="LoginAsUser">Přihlásit jako Uživatel</button>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+@code {
+    private bool _isNavigating = false;
+
+    private async Task LoginAsAdmin()
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, "admin@example.com"),
+            new Claim(ClaimTypes.Role, "Admin"),
+            new Claim("permission", AppPermissions.AlarmsOverview.Read),
+            new Claim("permission", AppPermissions.AlarmsOverview.Edit),
+            new Claim("permission", AppPermissions.AlarmsOverview.Delete)
+        };
+        await LoginAndReload(claims);
+    }
+
+    private async Task LoginAsUser()
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, "user@example.com"),
+            new Claim(ClaimTypes.Role, "User"),
+            new Claim("permission", AppPermissions.AlarmsOverview.Read)
+        };
+        await LoginAndReload(claims);
+    }
+
+    private async Task Logout()
+    {
+        if (_isNavigating) return;
+        _isNavigating = true;
+
+        await ((DevelopmentAuthenticationStateProvider)AuthStateProvider).LogoutAsync();
+        await JSRuntime.InvokeVoidAsync("window.location.reload");
+    }
+
+    private async Task LoginAndReload(IEnumerable<Claim> claims)
+    {
+        if (_isNavigating) return;
+        _isNavigating = true;
+
+        await ((DevelopmentAuthenticationStateProvider)AuthStateProvider).LoginAsync(claims);
+        await JSRuntime.InvokeVoidAsync("window.location.reload");
+    }
+
+    protected override bool ShouldRender()
+    {
+        return !_isNavigating;
+    }
+}

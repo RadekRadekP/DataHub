@@ -1,0 +1,76 @@
+@page "/login"
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components
+@using DataHub.Core.Services
+@using DataHub.Core.Components.Shared
+
+@attribute [AllowAnonymous]
+@inject DevelopmentAuthenticationStateProvider DevAuthStateProvider
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Přihlášení</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h3 class="text-center">Přihlášení</h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-center text-muted">Toto je zjednodušená přihlašovací stránka pro vývojové účely.</p>
+                    <div class="d-grid gap-2 mt-4">
+                        <button class="btn btn-primary" @onclick="LoginAsAdmin">Přihlásit se jako Admin</button>
+                        <button class="btn btn-secondary" @onclick="LoginAsUser">Přihlásit se jako Uživatel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool _isNavigating = false;
+
+    private async Task LoginAsAdmin()
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, "admin@example.com"),
+            new Claim(ClaimTypes.Role, "Admin"),
+            new Claim("permission", AppPermissions.AlarmsOverview.Read),
+            new Claim("permission", AppPermissions.AlarmsOverview.Edit),
+            new Claim("permission", AppPermissions.AlarmsOverview.Delete)
+        };
+        await LoginAndRedirect(claims);
+    }
+
+    private async Task LoginAsUser()
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, "user@example.com"),
+            new Claim(ClaimTypes.Role, "User"),
+            new Claim("permission", AppPermissions.AlarmsOverview.Read)
+        };
+        await LoginAndRedirect(claims);
+    }
+
+    private async Task LoginAndRedirect(IEnumerable<Claim> claims)
+    {
+        if (_isNavigating) return;
+        _isNavigating = true;
+
+        await DevAuthStateProvider.LoginAsync(claims);
+        await JSRuntime.InvokeVoidAsync("window.location.assign", "/");
+    }
+
+    protected override bool ShouldRender()
+    {
+        // Zabráníme překreslení komponenty, pokud se chystáme přesměrovat.
+        return !_isNavigating;
+    }
+}

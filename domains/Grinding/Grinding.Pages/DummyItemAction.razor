@@ -1,0 +1,41 @@
+
+@page "/dummyitems/action/{Id:int}"
+@page "/dummyitems/action"
+
+@using RPK_BlazorApp.Models
+@using RPK_BlazorApp.Services
+@using RPK_BlazorApp.Components.Shared
+@using Microsoft.FluentUI.AspNetCore.Components
+
+@inject IDummyItemService DummyItemService
+
+<GenericEntityActionPage TItem="DummyItem"
+                         Id="@Id"
+                         DataService="@DummyItemService"
+                         EntityName="Dummy Item"
+                         ListPagePath="/dummyitems">
+    <EditorTemplate>
+        <FluentTextField @bind-Value="context.Name" Label="Name" />
+        <FluentTextField @bind-Value="context.Category" Label="Category" />
+        <FluentDatePicker @bind-Value="CreatedDateNullable" Label="Created Date" />
+        <FluentCheckbox @bind-Value="context.IsActive" Label="Is Active" />
+    </EditorTemplate>
+</GenericEntityActionPage>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private DateTime? CreatedDateNullable { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        // This is a bit of a hack to deal with the fact that the context is not available
+        // in OnInitialized. We need to find a better way to do this.
+        // For now, we just set the nullable date to the value from the context.
+        // This will be overwritten when the item is loaded in the GenericEntityActionPage.
+        // A better solution would be to have the GenericEntityActionPage expose the item
+        // so we can bind to it directly.
+        // Or, even better, to have a view model for the edit page.
+    }
+}

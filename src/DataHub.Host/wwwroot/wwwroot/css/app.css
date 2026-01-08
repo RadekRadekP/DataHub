@@ -1,0 +1,161 @@
+:root {
+    --header-background: #343a40;
+    --sidebar-text-color: #f8f9fa;
+    --sidebar-hover-background: #5a6268;
+    --table-header-background: #e9ecef;
+    --accent-color-red: #dc3545;
+    --accent-fill-rest: #0078D4; /* Default accent color */
+
+    /* FluentUI Design Tokens */
+    --neutral-layer-1-rest: #454d55; /* Sidebar background */
+    --neutral-stroke-rest: #ccc;
+}
+
+/* Basic error styling */
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+/* New theme styles */
+.fluent-header {
+    background-color: var(--header-background);
+    color: white;
+}
+
+.fluent-nav-link,
+.fluent-nav-link .fluent-anchor-text {
+    color: var(--sidebar-text-color);
+    fill: currentColor;
+}
+
+.fluent-nav-link:hover,
+.fluent-nav-link.active {
+    background-color: var(--sidebar-hover-background);
+}
+
+.table thead {
+    background-color: var(--table-header-background);
+    color: #212529;
+}
+
+.table thead th {
+    color: #212529;
+}
+
+/* Custom style for the logout button to be red */
+form[action="Account/Logout"] fluent-button::part(control) {
+    background-color: var(--accent-color-red);
+}
+
+form[action="Account/Logout"] fluent-button:hover::part(control) {
+    background-color: #c82333;
+}
+
+.filter-sort-container {
+    display: flex;
+    gap: 20px; /* Adjust the gap as needed */
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+/* Query Builder Modal Styles */
+.query-builder-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.query-name-section, .expression-section, .fields-operators-section, .saved-queries-section {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.query-name-section .button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.fields-operators-section {
+    display: flex;
+    gap: 20px;
+}
+
+.fields-list, .operators-helpers-list {
+    flex: 1;
+}
+
+.list-container {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.saved-query-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Active Filter Display Styles */
+.active-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.active-filter-container {
+    border: 1px solid var(--neutral-stroke-rest);
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 16px;
+}
+
+.active-filter-row .filter-name {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.active-filter-row .filter-content-field {
+    flex-grow: 1;
+}
+
+.filter-header .link-style-button {
+    /* Override FluentButton styles to look like a link */
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    height: auto !important;
+    color: var(--accent-fill-rest) !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    text-align: left !important;
+    font-size: inherit !important;
+}
+
+.filter-header .link-style-button:hover {
+    text-decoration: underline !important;
+}

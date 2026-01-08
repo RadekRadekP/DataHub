@@ -1,0 +1,62 @@
+@page "/dummyitems/details/{Id:int}"
+@using RPK_BlazorApp.Models
+@using RPK_BlazorApp.Components.Shared
+@using RPK_BlazorApp.Services
+@using Microsoft.FluentUI.AspNetCore.Components
+@inject NavigationManager NavigationManager
+@inject IDummyItemService DummyItemService
+
+<h3>Dummy Item Details</h3>
+
+@if (item == null && !isLoading)
+{
+    <p class="text-danger"><em>Item with ID @Id not found.</em></p>
+    <button class="btn btn-secondary" @onclick="NavigateBackToList">Back to List</button>
+}
+else if (isLoading)
+{
+    <p><em>Loading dummy item...</em></p>
+}
+else if (item != null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <FluentTextField @bind-Value="item.Name" Label="Name" ReadOnly="true" />
+                <FluentTextField @bind-Value="item.Category" Label="Category" ReadOnly="true" />
+                <FluentDatePicker @bind-Value="CreatedDateNullable" Label="Created Date" ReadOnly="true" />
+                <FluentCheckbox @bind-Value="item.IsActive" Label="Is Active" Disabled="true" />
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <FluentButton OnClick="NavigateBackToList">Back to List</FluentButton>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private DummyItem? item;
+    private bool isLoading = true;
+    private DateTime? CreatedDateNullable { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        item = await DummyItemService.GetByIdAsync(Id);
+        if (item != null)
+        {
+            CreatedDateNullable = item.CreatedDate;
+        }
+        isLoading = false;
+    }
+
+    private void NavigateBackToList()
+    {
+        NavigationManager.NavigateTo("/dummyitems");
+    }
+}

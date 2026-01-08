@@ -1,0 +1,41 @@
+@using RPK_BlazorApp.Models.UI
+@using RPK_BlazorApp.Services
+@using RPK_BlazorApp.Components.Shared
+@using Microsoft.FluentUI.AspNetCore.Components
+@using RPK_BlazorApp.Models.DataGrid
+
+@typeparam TItem where TItem : class
+
+<div class="advanced-filter-builder">
+    <div class="query-input-zone">
+        <div class="active-filter-container">
+    <div class="active-filter-row">
+        <strong class="filter-name">Active Filter:</strong>
+        <FluentButton Appearance="Appearance.Accent" @onclick="OpenQueryBuilderModal" title="Open Advanced Filter Builder">
+            @if (!string.IsNullOrEmpty(currentQueryName))
+            {
+                <span>Advanced Filter: @currentQueryName</span>
+            }
+            else
+            {
+                <span>Advanced Filter (Click to build)</span>
+            }
+        </FluentButton>
+        <FluentTextField Value="@CurrentQuery" class="filter-content-field" readonly="true" placeholder="Filter expression will appear here..."></FluentTextField>
+        <FluentButton Appearance="Appearance.Lightweight" @onclick="ClearFilter" title="Clear Filter">Clear</FluentButton>
+    </div>
+</div>
+    </div>
+</div>
+
+@if (showQueryBuilderModal)
+{
+    <QueryBuilderModal @bind-IsVisible="showQueryBuilderModal"
+                       AvailableColumns="AvailableColumns"
+                       SavedQueries="savedQueries"
+                       OnSave="HandleQueryBuilderSave"
+                       OnDelete="HandleQueryBuilderDelete"
+                       OnApply="HandleQueryApplied"
+                       OnClear="HandleQueryClear"
+                       OnClose="CloseQueryBuilderModal" />
+}

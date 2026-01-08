@@ -1,0 +1,61 @@
+@page "/alarms"
+@inherits ComponentBase // Add this line
+@using RPK_BlazorApp.Models.UI
+@using RPK_BlazorApp.Models.DataGrid
+@using RPK_BlazorApp.Components.Shared
+@using Microsoft.FluentUI.AspNetCore.Components
+@using System.Linq.Expressions // Added for ColumnDefinition in AdvancedFilterBuilder
+
+<h3>Alarms Overview</h3>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+@if (infoMessage != null)
+{
+    <div class="alert alert-info" role="alert">
+        @infoMessage
+    </div>
+}
+
+<div class="filter-controls">
+    <FluentButton Appearance="Appearance.Accent" @onclick="ToggleQueryBuilder">Advanced Filter</FluentButton>
+    <FluentButton Appearance="Appearance.Accent" @onclick="AddNewAlarm">Add New Item</FluentButton>
+
+    @if (_selectedAlarms.Any())
+    {
+        <FluentButton Appearance="Appearance.Accent" @onclick="ViewSelectedAlarms">View Selected (@_selectedAlarms.Count)</FluentButton>
+        <FluentButton Appearance="Appearance.Accent" @onclick="EditSelectedAlarms">Edit Selected (@_selectedAlarms.Count)</FluentButton>
+        <FluentButton Appearance="Appearance.Neutral" @onclick="CopySelectedAlarms">Copy Selected (@_selectedAlarms.Count)</FluentButton>
+        <FluentButton Appearance="Appearance.Neutral" @onclick="DeleteSelectedAlarms">Delete Selected (@_selectedAlarms.Count)</FluentButton>
+    }
+</div>
+
+<FloatingQueryBuilder TItem="AlarmUIModel"
+                      @bind-Visible="_isQueryBuilderVisible"
+                      AvailableColumns="_queryBuilderColumns"
+                      OnApply="OnAdvancedQueryApplied"
+                      OnClear="OnAdvancedQueryClear"
+                      OnSave="HandleSaveQuery"
+                      OnDelete="HandleDeleteQuery"
+                      SavedQueries="_savedQueries" />
+
+<GenericDataView @ref="_dataView" TItem="AlarmUIModel"
+                 DataProvider="@((DataRequestBase request) => LoadAlarmsData(request))"
+                 ExportFunction="@((DataRequestBase request) => ExportAlarms(request))"
+                 PageSize="15"
+                 CurrentFilters="@_currentFilters"
+                 ColumnDefinitions="@_columnDefinitions"
+                 ExportFileName="Alarms"
+                 ShowCheckboxes="true"
+                 @bind-SelectedItems="_selectedAlarms">
+    <ActionColumnTemplate>
+        <FluentButton OnClick="@(() => ViewAlarm(context.Id))">View</FluentButton>
+        <FluentButton IconStart="@(new Icons.Regular.Size20.Edit())" Title="Edit" OnClick="@(() => EditAlarm(context.Id))" />
+        <FluentButton OnClick="@(() => CopyAlarm(context.Id))">Copy</FluentButton>
+        <FluentButton IconStart="@(new Icons.Regular.Size20.Delete())" Title="Delete" OnClick="@(() => DeleteAlarm(context.Id))" />
+    </ActionColumnTemplate>
+</GenericDataView>

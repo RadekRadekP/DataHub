@@ -1,0 +1,64 @@
+@using Microsoft.FluentUI.AspNetCore.Components
+@using DataHub.Core.Models.UI
+@using DataHub.Core.Services
+@using DataHub.Core.Models.DataGrid
+
+@typeparam TItem where TItem : class
+
+<FluentDialog @bind-Hidden="@IsHidden" Modal="true" TrapFocus="false" ShowTitle="true" Title="Query Builder">
+    <div class="query-builder-modal-content">
+        <div class="query-name-section">
+            <FluentTextField @bind-Value="QueryNameValue" Placeholder="Type a new or existing name" Label="Query Name" />
+            <div class="saved-queries-list">
+                <strong>Saved Queries:</strong>
+                <ul>
+                    @foreach (var query in SavedQueries)
+                    {
+                        <li @onclick="() => LoadQuery(query)">@query.Name</li>
+                    }
+                </ul>
+            </div>
+            <div class="button-group">
+                <FluentButton Appearance="@Microsoft.FluentUI.AspNetCore.Components.Appearance.Accent" @onclick="SaveQuery">Add/Save Filter</FluentButton>
+                <FluentButton Appearance="@Microsoft.FluentUI.AspNetCore.Components.Appearance.Neutral" @onclick="DeleteQuery">Delete Filter</FluentButton>
+            </div>
+        </div>
+
+        <div class="expression-section">
+            <FluentTextArea @bind-Value="@QueryExpressionValue" Placeholder="Enter your query expression here..." Label="Expression" Rows="8" Resizable="true" Id="queryExpressionTextArea"></FluentTextArea>
+        </div>
+
+        <div class="fields-operators-section">
+            <div class="fields-list">
+                <h4>Columns</h4>
+                <div class="list-container">
+                    @foreach (var column in AvailableColumns)
+                    {
+                        <FluentButton Appearance="@Microsoft.FluentUI.AspNetCore.Components.Appearance.Lightweight" @onclick="(() => InsertText(column.FieldName))">
+                            @column.FieldName
+                        </FluentButton>
+                    }
+                </div>
+            </div>
+
+            <div class="operators-helpers-list">
+                <h4>Operators & Helpers</h4>
+                <div class="list-container">
+                    @foreach (var item in OperatorsAndHelpers)
+                    {
+                        <FluentButton Appearance="@Microsoft.FluentUI.AspNetCore.Components.Appearance.Lightweight" @onclick="(() => InsertText(item))">
+                            @item
+                        </FluentButton>
+                    }
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+    <FluentDialogFooter>
+        <FluentButton Appearance="@Microsoft.FluentUI.AspNetCore.Components.Appearance.Accent" @onclick="ApplyCurrentQuery">Apply</FluentButton>
+        <FluentButton Appearance="@Microsoft.FluentUI.AspNetCore.Components.Appearance.Neutral" @onclick="ClearCurrentQuery">Clear</FluentButton>
+        <FluentButton Appearance="@Microsoft.FluentUI.AspNetCore.Components.Appearance.Neutral" @onclick="CloseModal">Close</FluentButton>
+    </FluentDialogFooter>
+</FluentDialog>

@@ -1,0 +1,42 @@
+[
+  {
+    "tableName": "Allarm",
+    "columns": [
+      "ID",
+      "Date",
+      "Type",
+      "Nr",
+      "Text",
+      "Operator"
+    ],
+    "timestampColumn": "Date"
+  },
+  {
+    "tableName": "Grinding",
+    "columns": [
+      "ID",
+      "Program name",
+      "Date start",
+      "Grinding time",
+      "Finish time",
+      "Upper GW start",
+      "Lower GW start",
+      "Operator",
+      "Lotto",
+      "GW Type"
+    ],
+    "timestampColumn": "Date start"
+  },
+  {
+    "tableName": "Operational",
+    "columns": [
+        "ID",
+        "Date",
+        "Event ID",
+        "Description",
+        "Object",
+        "Operator"
+    ],
+    "timestampColumn": "Date"
+  }
+]

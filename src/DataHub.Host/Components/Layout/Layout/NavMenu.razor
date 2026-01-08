@@ -1,0 +1,25 @@
+@using Microsoft.FluentUI.AspNetCore.Components
+
+<FluentNavMenu>
+    @foreach (var link in NavLinks)
+    {
+        <FluentNavLink Href="@link.Href" Match="@link.Match">
+            <span class="@link.IconCssClass" aria-hidden="true"></span> @link.DisplayText
+        </FluentNavLink>
+    }
+</FluentNavMenu>
+
+@code {
+    private record NavLinkInfo(string Href, string DisplayText, string IconCssClass, NavLinkMatch Match = NavLinkMatch.Prefix);
+
+    private List<NavLinkInfo> NavLinks = new()
+    {
+        new("", "Home", "bi bi-house-door-fill", NavLinkMatch.All),
+        new("alarms", "Alarms", "bi bi-exclamation-triangle-fill"),
+        new("auditlogviewer", "Audit Logs", "bi bi-card-list"),
+        new("eisodsdview", "VIEW_EISOD_SD", "bi bi-eye-fill"),
+        new("dummyitems", "Dummy Data (Test)", "bi bi-bug-fill"),
+        
+        new("testpage", "Test Page", "bi bi-vial")
+    };
+}

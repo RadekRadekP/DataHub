@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Eisod.Shared\Eisod.Shared.csproj" />
+    <ProjectReference Include="..\..\..\src\DataHub.Core\DataHub.Core.csproj" />
+  </ItemGroup>
+</Project>

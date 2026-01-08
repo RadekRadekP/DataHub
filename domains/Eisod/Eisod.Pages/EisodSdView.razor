@@ -1,0 +1,33 @@
+@page "/eisodsdview"
+@using RPK_BlazorApp.Components.Shared
+@using RPK_BlazorApp.Models
+@using RPK_BlazorApp.Models.DataGrid
+
+<PageTitle>EISOD SD View</PageTitle>
+
+<h1>EISOD SD View</h1>
+
+<div class="filter-controls">
+    <button class="btn btn-primary" @onclick="ToggleQueryBuilder">Advanced Filter</button>
+</div>
+
+<FloatingQueryBuilder TItem="ViewEisodSdUIModel"
+                      @bind-Visible="_isQueryBuilderVisible"
+                      AvailableColumns="_queryBuilderColumns"
+                      OnApply="HandleQueryApplied"
+                      OnClear="HandleQueryClear"
+                      OnSave="HandleSaveQuery"
+                      OnDelete="HandleDeleteQuery"
+                      SavedQueries="_savedQueries" />
+
+<GenericDataView @ref="_dataView" TItem="ViewEisodSdUIModel"
+                 DataProvider="@((DataRequestBase request) => LoadData(request))"
+                 ColumnDefinitions="@_columnDefinitions"
+                 ExportFunction="@ExportEisodSdsToExcel"
+                 ExportFileName="EisodSds"
+                 ShowCheckboxes="true"
+                 @bind-SelectedItems="_selectedItems">
+    <ActionColumnTemplate>
+        <FluentButton IconStart="@(new Icons.Regular.Size20.Search())" Title="View Details" OnClick="@(() => ViewItemDetails(context.Id))" />
+    </ActionColumnTemplate>
+</GenericDataView>

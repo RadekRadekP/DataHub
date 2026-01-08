@@ -1,0 +1,110 @@
+@page "/alarms/view/{AlarmId:int}"
+@inject IAlarmService AlarmService
+@using RPK_BlazorApp.Services // Přidáno pro IAlarmService
+@inject NavigationManager NavigationManager
+@inject ILogger<AlarmsView> Logger
+@inject AutoMapper.IMapper Mapper
+@using RPK_BlazorApp.Models.UI // Používáme AlarmUIModel
+@using Microsoft.FluentUI.AspNetCore.Components
+
+<h3>View Alarm Details</h3>
+
+@if (isLoading)
+{
+    <p><em>Loading alarm details...</em></p>
+    <FluentProgressRing />
+}
+else if (alarm == null)
+{
+    <p><em>Alarm not found.</em></p>
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p class="text-danger">@errorMessage</p>
+    }
+    <FluentButton Appearance="Appearance.Accent" OnClick="GoBack">Back to Overview</FluentButton>
+}
+else
+{
+    <div class="container">
+        <dl class="row">
+            <dt class="col-sm-3">ID (Server):</dt>
+            <dd class="col-sm-9">@alarm.Id</dd>
+
+            <dt class="col-sm-3">ID (Client):</dt>
+            <dd class="col-sm-9">@alarm.ClientDbId</dd>
+
+            <dt class="col-sm-3">Client Name:</dt>
+            <dd class="col-sm-9">@alarm.ClientId</dd>
+
+            <dt class="col-sm-3">Type:</dt>
+            <dd class="col-sm-9">@alarm.Type</dd>
+
+            <dt class="col-sm-3">Alarm Date:</dt>
+            <dd class="col-sm-9">@alarm.AlarmDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+
+            <dt class="col-sm-3">Nr:</dt>
+            <dd class="col-sm-9">@alarm.Nr</dd>
+
+            <dt class="col-sm-3">Text:</dt>
+            <dd class="col-sm-9">@alarm.Text</dd>
+
+            <dt class="col-sm-3">Operator:</dt>
+            <dd class="col-sm-9">@alarm.Operator</dd>
+
+            <dt class="col-sm-3">Server Timestamp:</dt>
+            <dd class="col-sm-9">@alarm.ServerTimestamp.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+
+            <dt class="col-sm-3">Change Counter:</dt>
+            <dd class="col-sm-9">@alarm.ChangeCounter</dd>
+        </dl>
+        <FluentButton Appearance="Appearance.Accent" OnClick="GoBack">Back to Overview</FluentButton>
+        <FluentButton Appearance="Appearance.Neutral" OnClick="() => EditAlarm(alarm.Id)" Class="ms-2">Edit Alarm</FluentButton>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int AlarmId { get; set; }
+
+    private AlarmUIModel? alarm; // Změna typu na AlarmUIModel
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+        try
+        {
+            var alarmEntity = await AlarmService.GetByIdAsync(AlarmId);
+            if (alarmEntity != null)
+            {
+                alarm = Mapper.Map<AlarmUIModel>(alarmEntity);
+            }
+            else
+            {
+                errorMessage = $"Alarm with ID {AlarmId} not found.";
+                Logger.LogWarning(errorMessage);
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading alarm: {ex.Message}";
+            Logger.LogError(ex, "Error loading alarm with ID {AlarmId}", AlarmId);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/alarms");
+    }
+
+    private void EditAlarm(int alarmId)
+    {
+        NavigationManager.NavigateTo($"/alarms/edit/{alarmId}");
+    }
+}

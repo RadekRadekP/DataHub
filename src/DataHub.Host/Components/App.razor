@@ -1,0 +1,62 @@
+@* Můžete přidat další using direktivy podle potřeby, např. pro FluentUI ikony, pokud je používáte zde *@
+@* @using Icons = Microsoft.FluentUI.AspNetCore.Components.Icons *@
+@* If you need a Layout component, ensure it exists in this namespace. Otherwise, remove references to it in your app. *@
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.FluentUI.AspNetCore.Components
+
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DataHub</title>
+    <base href="/" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="DataHub.Host.styles.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="_content/Microsoft.FluentUI.AspNetCore.Components/css/fluentui-blazor.css" rel="stylesheet" />
+    <script src="js/fileOperations.js" defer></script>
+    
+    <HeadOutlet @rendermode="RenderMode.InteractiveServer" />
+</head>
+
+<body>
+    <FluentDesignTheme @bind-Mode="_themeMode" StorageName="theme-mode-storage">
+        <CascadingAuthenticationState>
+            <Routes @rendermode="RenderMode.InteractiveServer" />
+        </CascadingAuthenticationState>
+    </FluentDesignTheme>
+
+    <div style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
+        <FluentSwitch Label="Dark Mode" @bind-Value="_isDarkMode" />
+    </div>
+
+    <script src="_framework/blazor.web.js"></script>
+    <script src="_content/Microsoft.FluentUI.AspNetCore.Components/js/fluentui-blazor.js"></script>
+    <script src="js/gridInterop.js"></script>
+    <script>
+        // This function is used for downloading files from a Base64 string, like the CSV export in EisodSdView.
+        function saveAsFile(filename, base64) {
+            var link = document.createElement('a');
+            link.href = "data:application/octet-stream;base64," + base64; // Use a generic MIME type
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+    <script src="js/draggable.js?v=3"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+
+@code {
+    private DesignThemeModes _themeMode = DesignThemeModes.Light;
+    private bool _isDarkMode
+    {
+        get => _themeMode == DesignThemeModes.Dark;
+        set => _themeMode = value ? DesignThemeModes.Dark : DesignThemeModes.Light;
+    }
+}

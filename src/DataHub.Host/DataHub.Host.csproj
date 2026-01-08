@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataHub.Core\DataHub.Core.csproj" />
+    <ProjectReference Include="..\DataHub.Platform\DataHub.Platform.csproj" />
+    <ProjectReference Include="..\..\domains\Grinding\Grinding.Services\Grinding.Services.csproj" />
+    <ProjectReference Include="..\..\domains\Grinding\Grinding.Pages\Grinding.Pages.csproj" />
+    <ProjectReference Include="..\..\domains\Eisod\Eisod.Services\Eisod.Services.csproj" />
+    <ProjectReference Include="..\..\domains\Eisod\Eisod.Pages\Eisod.Pages.csproj" />
+  </ItemGroup>
+</Project>

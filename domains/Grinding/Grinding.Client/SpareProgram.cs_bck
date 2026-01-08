@@ -1,0 +1,362 @@
+using System;
+using System.CommandLine;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using Microsoft.Extensions.Http;
+using RPK_TestClient.Models;
+using System.Data.OleDb;
+using System.Data;
+using System.Runtime.Versioning;
+using System.Threading;
+using System.Linq;
+
+namespace RPK_TestClient
+{
+    class Program
+    {
+        // ... (rest of your existing code: Main, ConfigureServices, PostData, GetData, RunInteractiveSession, Login, GetBasicAuthHeader, GenerateClId, TableExists) ...
+
+        // New method to send MDB table data to the server in a loop
+        [SupportedOSPlatform("windows")]
+        public static async Task MonitorMdbTable(IServiceProvider serviceProvider, string tableName)
+        {
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            var settings = configuration.GetSection("AppSettings").Get<AppSettings>()!;
+            string mdbFilePath = settings.MdbFilePath;
+            // Use a HashSet to store the primary keys of processed rows
+            HashSet<string> processedRows = new HashSet<string>();
+            // Define the primary key column name
+            string primaryKeyColumn = "Id"; // Replace with your actual primary key column name
+
+            while (true)
+            {
+                try
+                {
+                    string connectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={mdbFilePath};";
+
+                    using (OleDbConnection connection = new OleDbConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        // Check if the table exists
+                        if (!TableExists(connection, tableName))
+                        {
+                            Console.WriteLine($"Error: Table '{tableName}' not found in the MDB file.");
+                            return;
+                        }
+
+                        string query = $"SELECT * FROM [{tableName}]";
+                        using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, connection))
+                        {
+                            DataTable dataTable = new DataTable();
+                            adapter.Fill(dataTable);
+
+                            // Check if the table is empty
+                            if (dataTable.Rows.Count == 0)
+                            {
+                                Console.WriteLine($"Table '{tableName}' is empty. Waiting for new data...");
+                            }
+                            else
+                            {
+                                // Iterate through each row and send it as JSON
+                                foreach (DataRow row in dataTable.Rows)
+                                {
+                                    // Get the primary key value
+                                    string primaryKeyValue = row[primaryKeyColumn].ToString();
+
+                                    // Check if the row has already been processed
+                                    if (!processedRows.Contains(primaryKeyValue))
+                                    {
+                                        // Transform the row to JSON
+                                        string json = ConvertRowToJson(row);
+
+                                        // Send the JSON to the server
+                                        await PostJsonToServer(serviceProvider, json);
+
+                                        // Add the primary key to the processed rows set
+                                        processedRows.Add(primaryKeyValue);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (OleDbException ex)
+                {
+                    Console.WriteLine($"Error reading table data: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                }
+
+                // Wait for a specified interval before checking again
+                Thread.Sleep(settings.CheckInterval); // Wait for 5 seconds (adjust as needed)
+            }
+        }
+
+        // Helper method to convert a DataRow to JSON
+        [SupportedOSPlatform("windows")]
+        private static string ConvertRowToJson(DataRow row)
+        {
+            Dictionary<string, object> rowData = new Dictionary<string, object>();
+            foreach (DataColumn column in row.Table.Columns)
+            {
+                rowData[column.ColumnName] = row[column];
+            }
+            return JsonSerializer.Serialize(rowData);
+        }
+
+        // Helper method to send JSON to the server
+        [SupportedOSPlatform("windows")]
+        private static async Task PostJsonToServer(IServiceProvider serviceProvider, string json)
+        {
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            var settings = configuration.GetSection("AppSettings").Get<AppSettings>()!;
+
+            var clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+            var client = clientFactory.CreateClient("InsecureClient");
+
+            using (client)
+            {
+                // Set Basic Authentication header
+                var authHeader = GetBasicAuthHeader(settings.Username, settings.Password);
+                client.DefaultRequestHeaders.Authorization = authHeader;
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                try
+                {
+                    var response = await client.PostAsync($"{settings.ServerUrl}/api/data/mdb", content); // Adjust the endpoint as needed
+                    response.EnsureSuccessStatusCode();
+                    Console.WriteLine($"[POST] Data posted successfully. Status Code: {response.StatusCode}");
+                }
+                catch (HttpRequestException ex)
+                {
+                    Console.WriteLine($"[POST] Error posting data: {ex.Message}");
+                }
+            }
+        }
+
+        // New method to read and display MDB data
+        [SupportedOSPlatform("windows")]
+        public static void ReadMdbTable(string mdbFilePath, string tableName)
+        {
+            try
+            {
+                string connectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={mdbFilePath};"; // For .mdb files
+
+                using (OleDbConnection connection = new OleDbConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // Check if the table exists
+                    if (!TableExists(connection, tableName))
+                    {
+                        Console.WriteLine($"Error: Table '{tableName}' not found in the MDB file.");
+                        return;
+                    }
+
+                    string query = $"SELECT * FROM [{tableName}]"; // Enclose table name in brackets
+                    using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, connection))
+                    {
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        // Display the data
+                        if (dataTable.Rows.Count > 0)
+                        {
+                            Console.WriteLine($"Data from table '{tableName}':");
+                            foreach (DataColumn column in dataTable.Columns)
+                            {
+                                Console.Write($"{column.ColumnName}\t");
+                            }
+                            Console.WriteLine();
+
+                            foreach (DataRow row in dataTable.Rows)
+                            {
+                                foreach (DataColumn column in dataTable.Columns)
+                                {
+                                    Console.Write($"{row[column]}\t");
+                                }
+                                Console.WriteLine();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Table '{tableName}' is empty.");
+                        }
+                    }
+                }
+            }
+            catch (OleDbException ex)
+            {
+                Console.WriteLine($"Error reading table data: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+            }
+        }
+
+        // Helper method to check if a table exists
+        [SupportedOSPlatform("windows")]
+        private static bool TableExists(OleDbConnection connection, string tableName)
+        {
+            DataTable? schemaTable = connection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object?[] { null, null, tableName, "TABLE" });
+            if (schemaTable == null)
+            {
+                return false;
+            }
+            return schemaTable.Rows.Count > 0;
+        }
+
+        // ... (rest of your existing code) ...
+        static async Task RunInteractiveSession(IServiceProvider serviceProvider, string clientId)
+        {
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            var settings = configuration.GetSection("AppSettings").Get<AppSettings>()!;
+            Console.WriteLine($"Starting interactive session for client: {clientId}. Type 'post [--value <value>]', 'get', 'login', 'mdbr [--tablename <tablename>]', 'mdbs [--tablename <tablename>]' or 'exit'.");
+
+            while (true)
+            {
+                Console.Write("> ");
+                string? input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    continue;
+                }
+
+                if (input.ToLower() == "exit")
+                {
+                    Console.WriteLine("Exiting interactive session.");
+                    break;
+                }
+
+                string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                string command = parts[0].ToLower();
+
+                try
+                {
+                    switch (command)
+                    {
+                        case "post":
+                            string? postValue = null;
+                            if (parts.Length > 1)
+                            {
+                                if (parts[1] == "--value" && parts.Length > 2)
+                                {
+                                    postValue = parts[2];
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid post command format. Use 'post [--value <value>]'.");
+                                    continue;
+                                }
+                            }
+                            await PostData(serviceProvider, postValue, clientId);
+                            break;
+                        case "get":
+                            await GetData(serviceProvider, clientId); // Added clientId parameter
+                            break;
+                        case "login":
+                            await Login(serviceProvider);
+                            break;
+                        case "mdbr":
+                            string mdbFilePath = settings.MdbFilePath; // Get the path from appsettings.json
+                            string tableName = null;
+                            for (int i = 1; i < parts.Length; i++)
+                            {
+                                if (parts[i] == "--tablename" && i + 1 < parts.Length)
+                                {
+                                    tableName = parts[i + 1];
+                                    i++;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid mdbr command format. Use 'mdbr [--tablename <tablename>]'.");
+                                    tableName = null;
+                                    break;
+                                }
+                            }
+                            if (tableName != null)
+                            {
+                                // Check if the current OS is Windows before calling ReadMdbTable
+                                if (OperatingSystem.IsWindows())
+                                {
+                                    ReadMdbTable(mdbFilePath, tableName);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error: Reading MDB files is only supported on Windows.");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("tablename is required for mdbr command.");
+                            }
+                            break;
+                        case "mdbs":
+                            string tableName2 = null;
+                            for (int i = 1; i < parts.Length; i++)
+                            {
+                                if (parts[i] == "--tablename" && i + 1 < parts.Length)
+                                {
+                                    tableName2 = parts[i + 1];
+                                    i++;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid mdbs command format. Use 'mdbs [--tablename <tablename>]'.");
+                                    tableName2 = null;
+                                    break;
+                                }
+                            }
+                            if (tableName2 != null)
+                            {
+                                // Check if the current OS is Windows before calling ReadMdbTable
+                                if (OperatingSystem.IsWindows())
+                                {
+                                    await MonitorMdbTable(serviceProvider, tableName2);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error: Reading MDB files is only supported on Windows.");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("tablename is required for mdbs command.");
+                            }
+                            break;
+                        default:
+                            Console.WriteLine($"Unknown command: {command}");
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+            }
+        }
+    }
+
+    // Class to hold settings
+    public class AppSettings
+    {
+        public string ServerUrl { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string MdbFilePath { get; set; } = string.Empty; // Add this line
+        public int CheckInterval { get; set; } = 5000; // Default to 5 seconds
+    }
+}

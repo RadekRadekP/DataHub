@@ -1,0 +1,54 @@
+@using DataHub.Core.Models.UI
+@using DataHub.Core.Services
+@inject QueryParserService QueryParser
+
+<div class="advanced-criteria-input">
+    <FluentTextArea @bind-Value:get="queryText" @bind-Value:set="SetQueryText" style="width: 100%; min-height: 100px;" />
+    <FluentButton @onclick="ApplyQuery">Apply Query</FluentButton>
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @errorMessage
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Query { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<SavedCriteria> OnQueryApplied { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnRawQueryChanged { get; set; }
+
+    private string queryText = string.Empty;
+    private string errorMessage = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        queryText = Query;
+    }
+
+    private void SetQueryText(string value)
+    {
+        queryText = value;
+        OnRawQueryChanged.InvokeAsync(queryText);
+    }
+
+    private async Task ApplyQuery()
+    {
+        errorMessage = string.Empty;
+        try
+        {
+            var criteria = QueryParser.ParseQuery(queryText);
+            criteria.RawQuery = queryText; // Set the raw query
+            await OnQueryApplied.InvokeAsync(criteria);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error parsing query: {ex.Message}";
+        }
+    }
+}
