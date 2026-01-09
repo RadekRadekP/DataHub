@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\Grinding.Pages.csproj": {}
+    "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\Grinding.Pages.csproj": {}
   },
   "projects": {
     "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
@@ -74,14 +74,14 @@
         }
       }
     },
-    "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\Grinding.Pages.csproj": {
+    "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\Grinding.Pages.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\Grinding.Pages.csproj",
+        "projectUniqueName": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\Grinding.Pages.csproj",
         "projectName": "Grinding.Pages",
-        "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\Grinding.Pages.csproj",
+        "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\Grinding.Pages.csproj",
         "packagesPath": "C:\\Users\\PalenikR\\.nuget\\packages\\",
-        "outputPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\obj\\",
+        "outputPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

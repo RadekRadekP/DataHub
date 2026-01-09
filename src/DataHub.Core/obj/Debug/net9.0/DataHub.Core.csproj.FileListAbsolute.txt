@@ -58,8 +58,6 @@ c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\compressed\m3f
 c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\compressed\3emkb5z5ma-nenzw845cc.gz
 c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\compressed\0mk339jimt-uhfllo7vmv.gz
 c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\compressed\o8vbb746hb-exfvxuochq.gz
-c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\compressed\k2ruknkkk6-f4rswwb3i6.gz
-c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\compressed\g7wdddj9px-a6zhfudg0o.gz
 c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\staticwebassets.build.json
 c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\staticwebassets.build.json.cache
 c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\staticwebassets.development.json
@@ -70,3 +68,7 @@ c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\staticwebasset
 c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\staticwebassets\msbuild.buildMultiTargeting.DataHub.Core.props
 c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\staticwebassets\msbuild.buildTransitive.DataHub.Core.props
 c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\staticwebassets.pack.json
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\scopedcss\Components\Shared\GenericEntityActionPage.razor.rz.scp.css
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\scopedcss\Components\Shared\GenericDataView.razor.rz.scp.css
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\compressed\k2ruknkkk6-j2l141arnz.gz
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\obj\Debug\net9.0\compressed\g7wdddj9px-kdyf6dnfqf.gz

@@ -1,0 +1,189 @@
+/* Generic Entity Action Page Styles */
+
+/* Page Container */
+.entity-action-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Header Section */
+.page-header {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--neutral-stroke-divider);
+}
+
+.header-title-row {
+    align-items: center;
+    gap: 1rem;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--neutral-foreground-rest);
+}
+
+.mode-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+}
+
+.record-counter {
+    padding: 0.5rem 0;
+}
+
+.counter-text {
+    font-size: 0.875rem;
+    color: var(--neutral-foreground-hint);
+    font-weight: 500;
+}
+
+/* Cards */
+.form-card,
+.navigation-card,
+.error-card,
+.loading-card {
+    padding: 1.5rem;
+    box-shadow: var(--elevation-shadow-card-rest);
+}
+
+.error-card {
+    text-align: center;
+    padding: 2rem;
+}
+
+.loading-card {
+    padding: 2rem;
+}
+
+.error-message {
+    color: var(--error-foreground-rest);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Validation Section */
+.validation-section {
+    margin-bottom: 1rem;
+}
+
+/* Form Fields Section */
+.form-fields-section {
+    margin-bottom: 1.5rem;
+}
+
+.form-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* Responsive 2-column layout for larger screens */
+@media (min-width: 768px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+/* Full width fields (when needed) */
+.form-grid>.full-width {
+    grid-column: 1 / -1;
+}
+
+/* Action Buttons */
+.primary-actions,
+.batch-actions-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem 0;
+    color: var(--neutral-foreground-rest);
+}
+
+/* Navigation Card */
+.navigation-card {
+    background: var(--neutral-layer-2);
+}
+
+.nav-hint,
+.nav-position {
+    font-size: 0.875rem;
+    color: var(--neutral-foreground-hint);
+}
+
+.nav-hint {
+    font-style: italic;
+}
+
+.nav-position {
+    font-weight: 600;
+}
+
+/* Utility Classes */
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
+
+.my-3 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 576px) {
+    .entity-action-page {
+        padding: 0.5rem;
+    }
+
+    .form-card,
+    .navigation-card {
+        padding: 1rem;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    /* Stack buttons vertically on mobile */
+    .primary-actions,
+    .batch-actions-section {
+        flex-direction: column;
+    }
+
+    .primary-actions>*,
+    .batch-actions-section>* {
+        width: 100%;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+
+    .form-card,
+    .navigation-card {
+        background: var(--neutral-layer-card-container);
+    }
+}

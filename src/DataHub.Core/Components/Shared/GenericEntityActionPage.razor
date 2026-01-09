@@ -16,79 +16,149 @@
 @inject ILogger<GenericEntityActionPage<TItem>> Logger
 @inject IJSRuntime JSRuntime
 
-<div @onkeydown="HandleKeyDown">
-    <h3>@Title</h3>
-
-    @if (_isNavigating)
-    {
-        <div class="record-navigator">
-            <FluentButton OnClick="NavigateToPrevious" Disabled="!_canNavigatePrevious">&lt; Previous</FluentButton>
-            <span>Record @(_currentIndex + 1) of @_totalCount</span>
-            <FluentButton OnClick="NavigateToNext" Disabled="!_canNavigateNext">Next &gt;</FluentButton>
-        </div>
-    }
+<div class="entity-action-page" @onkeydown="HandleKeyDown">
+    
+    @* Header Section *@
+    <FluentStack Orientation="Orientation.Vertical" Class="page-header mb-4">
+        <FluentStack Orientation="Orientation.Horizontal" Class="header-title-row">
+            <h2 class="page-title">@Title</h2>
+            <FluentBadge Appearance="@GetModeBadgeAppearance()" Class="mode-badge">@GetModeText()</FluentBadge>
+        </FluentStack>
+        
+        @if (_isNavigating)
+        {
+            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center" Class="record-counter">
+                <span class="counter-text">Record @(_currentIndex + 1) of @_totalCount</span>
+            </FluentStack>
+        }
+    </FluentStack>
 
     @if (item == null && !isLoading)
     {
-        <p class="text-danger"><em>Item with ID @Id not found.</em></p>
-        <button class="btn btn-secondary" @onclick="NavigateBack">Back to List</button>
+        <FluentCard Class="error-card">
+            <FluentStack Orientation="Orientation.Vertical" VerticalGap="12">
+                <span style="color: var(--error-foreground-rest); font-size: 2rem;">⚠️</span>
+                <p class="error-message">Item with ID @Id not found.</p>
+                <FluentButton Appearance="Appearance.Neutral" OnClick="NavigateBack">Back to List</FluentButton>
+            </FluentStack>
+        </FluentCard>
     }
     else if (isLoading)
     {
-        <p><em>Loading...</em></p>
+        <FluentCard Class="loading-card">
+            <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="12" HorizontalAlignment="HorizontalAlignment.Center">
+                <FluentProgressRing />
+                <p>Loading...</p>
+            </FluentStack>
+        </FluentCard>
     }
     else if (item != null)
     {
-        <EditForm Model="@item" OnValidSubmit="HandleFormSubmit">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
+        <FluentCard Class="form-card">
+            <EditForm Model="@item" OnValidSubmit="HandleFormSubmit">
+                <DataAnnotationsValidator />
+                
+                @* Validation Summary *@
+                <div class="validation-section mb-3">
+                    <ValidationSummary />
+                </div>
 
-            <fieldset disabled="@isReadOnly">
-                @EditorTemplate(item)
-            </fieldset>
+                @* Form Fields Section *@
+                <FluentStack Orientation="Orientation.Vertical" Class="form-fields-section mb-4">
+                    <fieldset disabled="@isReadOnly" class="form-fieldset">
+                        <div class="form-grid">
+                            @EditorTemplate(item)
+                        </div>
+                    </fieldset>
+                </FluentStack>
 
-            <div class="mt-3">
-                @if (NavContext.Mode == RecordInteractionMode.Edit)
-                {
-                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">Save</FluentButton>
-                }
-                @if (NavContext.Mode == RecordInteractionMode.Copy)
-                {
-                    <FluentButton Type="ButtonType.Button" Appearance="Appearance.Accent" OnClick="HandleCopy">Copy</FluentButton>
-                }
-                @if (NavContext.Mode == RecordInteractionMode.Delete)
-                {
-                    <FluentButton Type="ButtonType.Button" Appearance="Appearance.Accent" OnClick="HandleDelete">Delete</FluentButton>
-                }
-                <FluentButton Type="ButtonType.Button" OnClick="Cancel">Cancel</FluentButton>
-            </div>
+                @* Primary Actions *@
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="8" Class="primary-actions mb-3">
+                    @if (NavContext.Mode == RecordInteractionMode.Edit)
+                    {
+                        <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">
+                            💾 Save
+                        </FluentButton>
+                    }
+                    @if (NavContext.Mode == RecordInteractionMode.Copy)
+                    {
+                        <FluentButton Type="ButtonType.Button" Appearance="Appearance.Accent" OnClick="HandleCopy">
+                            📋 Copy
+                        </FluentButton>
+                    }
+                    @if (NavContext.Mode == RecordInteractionMode.Delete)
+                    {
+                        <FluentButton Type="ButtonType.Button" Appearance="Appearance.Accent" OnClick="HandleDelete">
+                            🗑️ Delete
+                        </FluentButton>
+                    }
+                    <FluentButton Type="ButtonType.Button" Appearance="Appearance.Neutral" OnClick="Cancel">
+                        Cancel
+                    </FluentButton>
+                </FluentStack>
 
-            <div class="mt-3">
-                @if (NavContext.Mode == RecordInteractionMode.Edit)
+                @* Batch Actions Section *@
+                @if (_isNavigating)
                 {
-                    <FluentButton Appearance="Appearance.Accent" OnClick="HandleSaveAll" Disabled="!_hasPendingChanges">Save All (@_pendingChangesCount)</FluentButton>
-                    <FluentButton Appearance="Appearance.Neutral" OnClick="HandleCancelAll" Disabled="!_hasPendingChanges">Cancel All</FluentButton>
+                    <FluentDivider Class="my-3" />
+                    
+                    <FluentStack Orientation="Orientation.Vertical" VerticalGap="12" Class="batch-actions-section">
+                        <h4 class="section-title">Batch Operations</h4>
+                        
+                        <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="8">
+                            @if (NavContext.Mode == RecordInteractionMode.Edit)
+                            {
+                                <FluentButton Appearance="Appearance.Accent" OnClick="HandleSaveAll" Disabled="!_hasPendingChanges">
+                                    💾 Save All (@_pendingChangesCount)
+                                </FluentButton>
+                                <FluentButton Appearance="Appearance.Neutral" OnClick="HandleCancelAll" Disabled="!_hasPendingChanges">
+                                    Cancel All
+                                </FluentButton>
+                            }
+                            @if (NavContext.Mode == RecordInteractionMode.Copy)
+                            {
+                                <FluentButton Appearance="Appearance.Accent" OnClick="HandleCopyAll">
+                                    📋 Copy All (@NavContext.NavigableRecordIds.Count)
+                                </FluentButton>
+                            }
+                            @if (NavContext.Mode == RecordInteractionMode.Delete)
+                            {
+                                <FluentButton Appearance="Appearance.Accent" OnClick="HandleDeleteAll">
+                                    🗑️ Delete All (@NavContext.NavigableRecordIds.Count)
+                                </FluentButton>
+                            }
+                        </FluentStack>
+                    </FluentStack>
                 }
-                @if (NavContext.Mode == RecordInteractionMode.Copy)
-                {
-                    <FluentButton Appearance="Appearance.Accent" OnClick="HandleCopyAll">Copy All (@NavContext.NavigableRecordIds.Count)</FluentButton>
-                }
-                @if (NavContext.Mode == RecordInteractionMode.Delete)
-                {
-                    <FluentButton Appearance="Appearance.Accent" OnClick="HandleDeleteAll">Delete All (@NavContext.NavigableRecordIds.Count)</FluentButton>
-                }
-            </div>
-        </EditForm>
+            </EditForm>
+        </FluentCard>
 
+        @* Navigation Controls *@
         @if (_isNavigating)
         {
-            <div class="record-navigator mt-3">
-                <FluentButton OnClick="NavigateToFirst" Disabled="!_canNavigatePrevious">&lt;&lt; First</FluentButton>
-                <FluentButton OnClick="NavigateToPrevious" Disabled="!_canNavigatePrevious">&lt; Previous</FluentButton>
-                <span>Record @(_currentIndex + 1) of @_totalCount</span>
-                <FluentButton OnClick="NavigateToNext" Disabled="!_canNavigateNext">Next &gt;</FluentButton>
-                <FluentButton OnClick="NavigateToLast" Disabled="!_canNavigateNext">Last &gt;&gt;</FluentButton>
-            </div>
+            <FluentCard Class="navigation-card mt-3">
+                <FluentStack Orientation="Orientation.Vertical" VerticalGap="12">
+                    <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Start">
+                        <span class="nav-hint">Keyboard: PageUp / PageDown</span>
+                        <span class="nav-position">@(_currentIndex + 1) / @_totalCount</span>
+                    </FluentStack>
+                    
+                    <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="8" HorizontalAlignment="HorizontalAlignment.Center" Wrap="true">
+                        <FluentButton OnClick="NavigateToFirst" Disabled="!_canNavigatePrevious">
+                            ⏮️ First
+                        </FluentButton>
+                        <FluentButton OnClick="NavigateToPrevious" Disabled="!_canNavigatePrevious">
+                            ◀️ Previous
+                        </FluentButton>
+                        <FluentButton OnClick="NavigateToNext" Disabled="!_canNavigateNext">
+                            Next ▶️
+                        </FluentButton>
+                        <FluentButton OnClick="NavigateToLast" Disabled="!_canNavigateNext">
+                            Last ⏭️
+                        </FluentButton>
+                    </FluentStack>
+                </FluentStack>
+            </FluentCard>
         }
     }
 </div>
@@ -139,6 +209,23 @@
                 _ => EntityName
             };
         }
+    }
+
+    private Appearance GetModeBadgeAppearance()
+    {
+        return NavContext.Mode switch
+        {
+            RecordInteractionMode.Edit => Appearance.Accent,
+            RecordInteractionMode.Delete => Appearance.Lightweight,
+            RecordInteractionMode.Copy => Appearance.Neutral,
+            _ => Appearance.Neutral
+        };
+    }
+
+    private string GetModeText()
+    {
+        if (isNew) return "NEW";
+        return NavContext.Mode.ToString().ToUpper();
     }
 
     protected override async Task OnInitializedAsync()
