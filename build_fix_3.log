@@ -1,0 +1,21 @@
+  DataHub.Core -> C:\NON_Install_Programs\DataHub\src\DataHub.Core\bin\Debug\net9.0\DataHub.Core.dll
+  Eisod.Shared -> C:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\bin\Debug\net9.0\Eisod.Shared.dll
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Dtos\AlarmRestPostRequestDto.cs(26,16): error CS0246: Typ nebo n├ízev oboru n├ízv┼» List<> se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Grinding.Shared.csproj]
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Dtos\GrindingRestPostRequestDTO.cs(46,16): error CS0246: Typ nebo n├ízev oboru n├ízv┼» List<> se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Grinding.Shared.csproj]
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Models\Operational.cs(35,22): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Grinding.Shared.csproj]
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Dtos\OperationalRestPostRequestDTO.cs(34,22): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Grinding.Shared.csproj]
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Dtos\OperationalRestResponseDTO.cs(14,22): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Grinding.Shared.csproj]
+
+Sestaven├ş SE NEZDA┼śILO.
+
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Models\Operational.cs(35,22): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Grinding.Shared.csproj]
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Dtos\OperationalRestPostRequestDTO.cs(34,22): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Grinding.Shared.csproj]
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Dtos\OperationalRestResponseDTO.cs(14,22): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Grinding.Shared.csproj]
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Dtos\AlarmRestPostRequestDto.cs(26,16): error CS0246: Typ nebo n├ízev oboru n├ízv┼» List<> se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Grinding.Shared.csproj]
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Dtos\GrindingRestPostRequestDTO.cs(46,16): error CS0246: Typ nebo n├ízev oboru n├ízv┼» List<> se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\Grinding.Shared.csproj]
+    3 upozorn─Ťn├ş
+    Po─Źet chyb: 2
+
+Uplynul├Ż ─Źas 00:00:01.14
+
+Jsou k dispozici aktualizace ├║loh. Pokud chcete z├şskat dal┼í├ş informace, spus┼ąte `dotnet workload list`.

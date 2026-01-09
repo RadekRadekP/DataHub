@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace RPK_BlazorApp.Models;
+namespace Eisod.Shared.Models;
 
 // The [Keyless] attribute is removed. The key is now defined in EisodDbContext.cs using the Fluent API.
 public partial class ViewEisodSd

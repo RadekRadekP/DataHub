@@ -1,0 +1,51 @@
+  Zjišťují se projekty, které se mají obnovit...
+  Obnovil se projekt C:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj (v 558 ms).
+  Obnovil se projekt C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Services\Grinding.Services.csproj (v 558 ms).
+  Obnovil se projekt c:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj (v 718 ms).
+  Obnovil se projekt c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Pages\Eisod.Pages.csproj (v 718 ms).
+  Obnovil se projekt C:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Services\Eisod.Services.csproj (v 718 ms).
+  Obnovil se projekt c:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Pages\Grinding.Pages.csproj (v 718 ms).
+  Obnovil se projekt c:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Client\Grinding.Client.csproj (v 718 ms).
+  3 z 10 projektů jsou v aktuálním stavu pro obnovení.
+  DataHub.Core -> c:\NON_Install_Programs\DataHub\src\DataHub.Core\bin\Debug\net9.0\DataHub.Core.dll
+  Grinding.Shared -> C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\bin\Debug\net9.0\Grinding.Shared.dll
+c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Models\ViewEisodSd.cs(24,18): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Eisod.Shared.csproj]
+c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Models\ViewEisodSd.cs(28,18): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Eisod.Shared.csproj]
+c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Models\ViewEisodSd.cs(32,18): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Eisod.Shared.csproj]
+c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Models\ViewEisodSd.cs(42,18): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Eisod.Shared.csproj]
+  Eisod.Shared -> C:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\bin\Debug\net9.0\Eisod.Shared.dll
+  DataHub.Platform -> C:\NON_Install_Programs\DataHub\src\DataHub.Platform\bin\Debug\net9.0\DataHub.Platform.dll
+  Grinding.Services -> C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Services\bin\Debug\net9.0\Grinding.Services.dll
+  Eisod.Services -> c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Services\bin\Debug\net9.0\Eisod.Services.dll
+  Grinding.Pages -> c:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Pages\bin\Debug\net9.0\Grinding.Pages.dll
+  Grinding.Client -> c:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Client\bin\Debug\net9.0\Grinding.Client.dll
+  Eisod.Pages -> c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Pages\bin\Debug\net9.0\Eisod.Pages.dll
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\DummyItems.razor.cs(14,7): warning CS0105: Direktiva using pro DataHub.Core.Services se objevila už dřív v tomto oboru názvů. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\Error.razor(44,18): warning CS8669: Poznámka pro typy odkazů s možnou hodnotou null by se měla používat jenom v kódu v rámci kontextu poznámek #nullable. Automaticky vygenerovaný kód vyžaduje explicitní direktivu #nullable ve zdroji. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\AuditLogViewer.razor.cs(20,26): error CS0246: Typ nebo název oboru názvů IAuditLogService se nenašel. (Nechybí direktiva using nebo odkaz na sestavení?) [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\DummyItems.razor.cs(67,43): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\AuditLogViewer.razor.cs(30,23): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\DummyItems.razor.cs(69,23): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\DummyItems.razor.cs(70,23): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\AuditLogViewer.razor.cs(33,42): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+
+Sestavení SE NEZDAŘILO.
+
+c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Models\ViewEisodSd.cs(24,18): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Eisod.Shared.csproj]
+c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Models\ViewEisodSd.cs(28,18): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Eisod.Shared.csproj]
+c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Models\ViewEisodSd.cs(32,18): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Eisod.Shared.csproj]
+c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Models\ViewEisodSd.cs(42,18): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\Eisod.Shared.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\DummyItems.razor.cs(14,7): warning CS0105: Direktiva using pro DataHub.Core.Services se objevila už dřív v tomto oboru názvů. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\Error.razor(44,18): warning CS8669: Poznámka pro typy odkazů s možnou hodnotou null by se měla používat jenom v kódu v rámci kontextu poznámek #nullable. Automaticky vygenerovaný kód vyžaduje explicitní direktivu #nullable ve zdroji. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\DummyItems.razor.cs(67,43): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\AuditLogViewer.razor.cs(30,23): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\DummyItems.razor.cs(69,23): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\DummyItems.razor.cs(70,23): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\AuditLogViewer.razor.cs(33,42): warning CS8632: Poznámka u typů odkazů s možnou hodnotou null by se měla v kódu používat jenom v kontextu poznámek #nullable. [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Host\Components\Pages\AuditLogViewer.razor.cs(20,26): error CS0246: Typ nebo název oboru názvů IAuditLogService se nenašel. (Nechybí direktiva using nebo odkaz na sestavení?) [c:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj]
+    11 upozornění
+    Počet chyb: 1
+
+Uplynulý čas 00:00:04.98
+
+Jsou k dispozici aktualizace úloh. Pokud chcete získat další informace, spusťte `dotnet workload list`.

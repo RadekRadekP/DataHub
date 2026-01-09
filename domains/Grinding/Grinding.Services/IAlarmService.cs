@@ -1,7 +1,8 @@
-using RPK_BlazorApp.Models.Interfaces;
-using RPK_BlazorApp.Models;
+using DataHub.Core.Models.Interfaces; // For IDataService ? No, IDataService in Core.Services
+using DataHub.Core.Interfaces;
+using Grinding.Shared.Models;
 
-namespace RPK_BlazorApp.Services
+namespace Grinding.Services
 {
     public interface IAlarmService : IDataService<Alarm>
     {

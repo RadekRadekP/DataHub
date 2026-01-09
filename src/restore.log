@@ -1,0 +1,6 @@
+  Zji┼í┼ąuj├ş se projekty, kter├ę se maj├ş obnovit...
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj : error NU1605: Upozorn─Ťn├ş jako chyba: Zjistil se downgrade bal├ş─Źku: Microsoft.EntityFrameworkCore.SqlServer z 9.0.6 na 9.0.0. Pokud chcete vybrat jinou verzi, odkazujte na bal├ş─Źek p┼Ö├şmo z projektu.  [C:\NON_Install_Programs\DataHub\DataHub.sln]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj : error NU1605:  DataHub.Platform -> DataHub.Core -> Microsoft.EntityFrameworkCore.SqlServer (>= 9.0.6)  [C:\NON_Install_Programs\DataHub\DataHub.sln]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj : error NU1605:  DataHub.Platform -> Microsoft.EntityFrameworkCore.SqlServer (>= 9.0.0) [C:\NON_Install_Programs\DataHub\DataHub.sln]
+  Obnoven├ş projektu C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj (v 277 ms) bylo ne├║sp─Ť┼ín├ę.
+  9 z 10 projekt┼» jsou v aktu├íln├şm stavu pro obnoven├ş.

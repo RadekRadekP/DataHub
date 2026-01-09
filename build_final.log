@@ -1,0 +1,15 @@
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Data\ApplicationDbContext.cs(59,13): error CS1519: Invalid token 'base' in a member declaration [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Data\ApplicationDbContext.cs(59,46): error CS1001: O─Źek├íval se identifik├ítor. [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Data\ApplicationDbContext.cs(62,1): error CS1022: O─Źek├ívala se definice typu nebo oboru n├ízv┼», nebo konec souboru. [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+
+Sestaven├ş SE NEZDA┼śILO.
+
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Data\ApplicationDbContext.cs(59,13): error CS1519: Invalid token 'base' in a member declaration [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Data\ApplicationDbContext.cs(59,46): error CS1001: O─Źek├íval se identifik├ítor. [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Data\ApplicationDbContext.cs(62,1): error CS1022: O─Źek├ívala se definice typu nebo oboru n├ízv┼», nebo konec souboru. [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+    0 upozorn─Ťn├ş
+    Po─Źet chyb: 3
+
+Uplynul├Ż ─Źas 00:00:01.86
+
+Jsou k dispozici aktualizace ├║loh. Pokud chcete z├şskat dal┼í├ş informace, spus┼ąte `dotnet workload list`.

@@ -1,0 +1,37 @@
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj : error NU1605: Upozorn─Ťn├ş jako chyba: Zjistil se downgrade bal├ş─Źku: Microsoft.EntityFrameworkCore z 9.0.6 na 9.0.0. Pokud chcete vybrat jinou verzi, odkazujte na bal├ş─Źek p┼Ö├şmo z projektu. 
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj : error NU1605:  DataHub.Platform -> DataHub.Core -> Microsoft.EntityFrameworkCore (>= 9.0.6) 
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj : error NU1605:  DataHub.Platform -> Microsoft.EntityFrameworkCore (>= 9.0.0)
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Pages\Grinding.Pages.csproj : error NU1605: Upozorn─Ťn├ş jako chyba: Zjistil se downgrade bal├ş─Źku: Microsoft.FluentUI.AspNetCore.Components z 4.12.0 na 4.11.2. Pokud chcete vybrat jinou verzi, odkazujte na bal├ş─Źek p┼Ö├şmo z projektu. 
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Pages\Grinding.Pages.csproj : error NU1605:  Grinding.Pages -> DataHub.Core -> Microsoft.FluentUI.AspNetCore.Components (>= 4.12.0) 
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Pages\Grinding.Pages.csproj : error NU1605:  Grinding.Pages -> Microsoft.FluentUI.AspNetCore.Components (>= 4.11.2)
+C:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Pages\Eisod.Pages.csproj : error NU1605: Upozorn─Ťn├ş jako chyba: Zjistil se downgrade bal├ş─Źku: Microsoft.FluentUI.AspNetCore.Components z 4.12.0 na 4.11.2. Pokud chcete vybrat jinou verzi, odkazujte na bal├ş─Źek p┼Ö├şmo z projektu. 
+C:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Pages\Eisod.Pages.csproj : error NU1605:  Eisod.Pages -> DataHub.Core -> Microsoft.FluentUI.AspNetCore.Components (>= 4.12.0) 
+C:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Pages\Eisod.Pages.csproj : error NU1605:  Eisod.Pages -> Microsoft.FluentUI.AspNetCore.Components (>= 4.11.2)
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Models\DataGrid\DataGridModels.cs(1,7): error CS0246: Typ nebo n├ízev oboru n├ízv┼» RPK_BlazorApp se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Components\Shared\GenericSort.razor.cs(17,33): error CS0115: GenericSort<TItem>.OnInitialized(): Nena┼íla se vhodn├í metoda k p┼Öeps├ín├ş. [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Interfaces\IViewEisodSdRepository.cs(7,72): error CS0246: Typ nebo n├ízev oboru n├ízv┼» EisodDbContext se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Services\ExcelExportService.cs(13,26): error CS0246: Typ nebo n├ízev oboru n├ízv┼» ILogger<> se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Services\ExcelExportService.cs(15,35): error CS0246: Typ nebo n├ízev oboru n├ízv┼» ILogger<> se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+
+Sestaven├ş SE NEZDA┼śILO.
+
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj : error NU1605: Upozorn─Ťn├ş jako chyba: Zjistil se downgrade bal├ş─Źku: Microsoft.EntityFrameworkCore z 9.0.6 na 9.0.0. Pokud chcete vybrat jinou verzi, odkazujte na bal├ş─Źek p┼Ö├şmo z projektu. 
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj : error NU1605:  DataHub.Platform -> DataHub.Core -> Microsoft.EntityFrameworkCore (>= 9.0.6) 
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj : error NU1605:  DataHub.Platform -> Microsoft.EntityFrameworkCore (>= 9.0.0)
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Pages\Grinding.Pages.csproj : error NU1605: Upozorn─Ťn├ş jako chyba: Zjistil se downgrade bal├ş─Źku: Microsoft.FluentUI.AspNetCore.Components z 4.12.0 na 4.11.2. Pokud chcete vybrat jinou verzi, odkazujte na bal├ş─Źek p┼Ö├şmo z projektu. 
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Pages\Grinding.Pages.csproj : error NU1605:  Grinding.Pages -> DataHub.Core -> Microsoft.FluentUI.AspNetCore.Components (>= 4.12.0) 
+C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Pages\Grinding.Pages.csproj : error NU1605:  Grinding.Pages -> Microsoft.FluentUI.AspNetCore.Components (>= 4.11.2)
+C:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Pages\Eisod.Pages.csproj : error NU1605: Upozorn─Ťn├ş jako chyba: Zjistil se downgrade bal├ş─Źku: Microsoft.FluentUI.AspNetCore.Components z 4.12.0 na 4.11.2. Pokud chcete vybrat jinou verzi, odkazujte na bal├ş─Źek p┼Ö├şmo z projektu. 
+C:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Pages\Eisod.Pages.csproj : error NU1605:  Eisod.Pages -> DataHub.Core -> Microsoft.FluentUI.AspNetCore.Components (>= 4.12.0) 
+C:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Pages\Eisod.Pages.csproj : error NU1605:  Eisod.Pages -> Microsoft.FluentUI.AspNetCore.Components (>= 4.11.2)
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Models\DataGrid\DataGridModels.cs(1,7): error CS0246: Typ nebo n├ízev oboru n├ízv┼» RPK_BlazorApp se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Components\Shared\GenericSort.razor.cs(17,33): error CS0115: GenericSort<TItem>.OnInitialized(): Nena┼íla se vhodn├í metoda k p┼Öeps├ín├ş. [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Interfaces\IViewEisodSdRepository.cs(7,72): error CS0246: Typ nebo n├ízev oboru n├ízv┼» EisodDbContext se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Services\ExcelExportService.cs(13,26): error CS0246: Typ nebo n├ízev oboru n├ízv┼» ILogger<> se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Services\ExcelExportService.cs(15,35): error CS0246: Typ nebo n├ízev oboru n├ízv┼» ILogger<> se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+    0 upozorn─Ťn├ş
+    Po─Źet chyb: 8
+
+Uplynul├Ż ─Źas 00:00:01.14
+
+Jsou k dispozici aktualizace ├║loh. Pokud chcete z├şskat dal┼í├ş informace, spus┼ąte `dotnet workload list`.

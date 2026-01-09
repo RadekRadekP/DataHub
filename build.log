@@ -1,0 +1,13 @@
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Data\ApplicationDbContext.cs(27,22): error CS0246: Typ nebo n├ízev oboru n├ízv┼» ViewEisodSd se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Models\DbPproiDisContext.cs(18,26): error CS0246: Typ nebo n├ízev oboru n├ízv┼» ViewEisodSd se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+
+Sestaven├ş SE NEZDA┼śILO.
+
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Data\ApplicationDbContext.cs(27,22): error CS0246: Typ nebo n├ízev oboru n├ízv┼» ViewEisodSd se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Models\DbPproiDisContext.cs(18,26): error CS0246: Typ nebo n├ízev oboru n├ízv┼» ViewEisodSd se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+    0 upozorn─Ťn├ş
+    Po─Źet chyb: 2
+
+Uplynul├Ż ─Źas 00:00:00.84
+
+Jsou k dispozici aktualizace ├║loh. Pokud chcete z├şskat dal┼í├ş informace, spus┼ąte `dotnet workload list`.

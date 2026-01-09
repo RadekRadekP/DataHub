@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RPK_BlazorApp.Data;
+using DataHub.Platform.Data;
 
 #nullable disable
 
-namespace RPK_BlazorApp.Migrations
+namespace DataHub.Platform.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20250522120154_InitialCreateSqlServer")]

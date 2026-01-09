@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 
-namespace RPK_BlazorApp.Models
+namespace Grinding.Shared.Dtos
 {
     public class AlarmRestPostRequestDTO
     {

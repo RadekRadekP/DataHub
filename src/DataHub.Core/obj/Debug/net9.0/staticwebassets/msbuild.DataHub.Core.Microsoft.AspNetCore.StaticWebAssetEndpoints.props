@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/DataHub.Core/DataHub.Core.a6zhfudg0o.bundle.scp.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\DataHub.Core.a6zhfudg0o.bundle.scp.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"a6zhfudg0o"},{"Name":"integrity","Value":"sha256-rrzL7dbH68XtEtAYm/3GaeSEZLC\u002BAOR1dJ0S8nYXTlA="},{"Name":"label","Value":"_content/DataHub.Core/DataHub.Core.bundle.scp.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"6082"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022rrzL7dbH68XtEtAYm/3GaeSEZLC\u002BAOR1dJ0S8nYXTlA=\u0022"},{"Name":"Last-Modified","Value":"Fri, 09 Jan 2026 19:59:59 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/DataHub.Core/DataHub.Core.bundle.scp.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\DataHub.Core.a6zhfudg0o.bundle.scp.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-rrzL7dbH68XtEtAYm/3GaeSEZLC\u002BAOR1dJ0S8nYXTlA="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"6082"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022rrzL7dbH68XtEtAYm/3GaeSEZLC\u002BAOR1dJ0S8nYXTlA=\u0022"},{"Name":"Last-Modified","Value":"Fri, 09 Jan 2026 19:59:59 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>

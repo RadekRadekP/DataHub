@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace RPK_BlazorApp.Models // Or wherever your DTOs are defined
+namespace Grinding.Shared.Dtos
 {
     public class OperationalRestPostRequestDTO
     {

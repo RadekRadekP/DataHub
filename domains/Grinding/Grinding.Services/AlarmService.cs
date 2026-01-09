@@ -1,29 +1,32 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
-using RPK_BlazorApp.Models;
-using RPK_BlazorApp.Models.DataGrid;
-using RPK_BlazorApp.Models.UI;
-using RPK_BlazorApp.Repositories;
+using Grinding.Shared.Models;
+using DataHub.Core.Models.DataGrid;
+using DataHub.Core.Models.UI;
+using Grinding.Services; // For Repositories? No, Repositories are in Core interfaces?
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using RPK_BlazorApp.Services.Generic;
-using RPK_BlazorApp.Data;
+using DataHub.Core.Services;
+using Grinding.Services.Data; // GrindingDbContext
+using Grinding.Services.Interfaces; // IAlarmRepository
 
-namespace RPK_BlazorApp.Services
+using Grinding.Shared.Dtos;
+
+namespace Grinding.Services
 {
-    public class AlarmService : DataService<Alarm, AlarmUIModel, DataRequestBase, DataResult<AlarmUIModel>, ApplicationDbContext>, IAlarmService, IAlarmSpecificService
+    public class AlarmService : DataService<Alarm>, IAlarmService, IAlarmSpecificService
     {
         private readonly IAlarmRepository _alarmRepository;
-        private new readonly ILogger<AlarmService> _logger;
+        // private new readonly ILogger<AlarmService> _logger; // Use base logger
         private readonly IExcelExportService _excelExportService;
 
         public AlarmService(IAlarmRepository alarmRepository, IMapper mapper, ILogger<AlarmService> logger, QueryParserService queryParserService, IExcelExportService excelExportService) : base(alarmRepository, mapper, logger, queryParserService)
         {
             _alarmRepository = alarmRepository;
-            _logger = logger;
+            // _logger = logger; // Removed
             _excelExportService = excelExportService;
         }
 
@@ -35,7 +38,6 @@ namespace RPK_BlazorApp.Services
                 return null;
             }
 
-            // Use the base DataService's GetPagedAsync
             var dataResult = await base.GetPagedAsync(filter.Page, filter.PageSize, filter.RawQuery, false);
 
             var responseDtos = _mapper.Map<IEnumerable<AlarmRestResponseDTO>>(dataResult.Data);
@@ -52,12 +54,11 @@ namespace RPK_BlazorApp.Services
             _logger.LogInformation("Service exporting alarms to Excel.");
             try
             {
-                // Retrieve all data based on the filter, ignoring pagination
-                DataResult<AlarmUIModel> dataResult = await base.GetPagedAsync(1, 1, filterString, true); // Always use rawQuery for consistency
+                var dataResult = await base.GetPagedAsync(1, 1, filterString, true); 
+                var uiModels = _mapper.Map<IEnumerable<AlarmUIModel>>(dataResult.Data);
 
-                // Use the ExcelExportService to create the Excel stream
                 _logger.LogInformation("AlarmService: ExportAlarmsToExcelAsync - Data count before passing to ExcelExportService: {DataCount}", dataResult.Data.Count());
-                return await _excelExportService.ExportToExcelAsync(dataResult.Data, GetColumnDefinitions(), filterName, filterString);
+                return await _excelExportService.ExportToExcelAsync(uiModels, GetColumnDefinitions(), filterName, filterString);
             }
             catch (Exception ex)
             {

@@ -7,7 +7,7 @@ using DataHub.Core.Interfaces;
 
 namespace DataHub.Platform.Repositories.Generic
 {
-    public class Repository<TEntity, TContext> : IRepository<TEntity, TContext> 
+    public class Repository<TEntity, TContext> : IRepository<TEntity> 
         where TEntity : class
         where TContext : DbContext
     {

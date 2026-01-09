@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using RPK_BlazorApp.Models;
+using DataHub.Core.Models.UI; 
+using DataHub.Core.Models;
 
 namespace DataHub.Core.Services
 {

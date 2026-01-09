@@ -1,7 +1,7 @@
 
 @page "/dummyitems"
-@using RPK_BlazorApp.Models
-@using RPK_BlazorApp.Components.Shared
+@using DataHub.Core.Models
+@using DataHub.Core.Components.Shared
 
 <PageTitle>Dummy Items (Advanced Filter)</PageTitle>
 
@@ -37,11 +37,12 @@
                  ExportFunction="ExportDataToExcel"
                  ExportFileName="DummyItems"
                  ShowCheckboxes="true"
-                 @bind-SelectedItems="_selectedItems">
+                 SelectedItems="_selectedItems"
+                 SelectedItemsChanged="@((HashSet<DummyItem> items) => _selectedItems = items)">
     <ActionColumnTemplate>
-        <FluentButton IconStart="@(new Icons.Regular.Size20.Search())" Title="View Details" OnClick="@(() => ViewItem(context.Id))" />
-        <FluentButton IconStart="@(new Icons.Regular.Size20.Edit())" Title="Edit" OnClick="@(() => EditItem(context.Id))" />
-        <FluentButton IconStart="@(new Icons.Regular.Size20.Delete())" Title="Delete" OnClick="@(() => DeleteItem(context.Id))" />
+        <FluentButton IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Search())" Title="View Details" OnClick="@(() => ViewItem(context.Id))" />
+        <FluentButton IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Edit())" Title="Edit" OnClick="@(() => EditItem(context.Id))" />
+        <FluentButton IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Delete())" Title="Delete" OnClick="@(() => DeleteItem(context.Id))" />
     </ActionColumnTemplate>
 </GenericDataView>
 

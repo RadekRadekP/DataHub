@@ -1,21 +1,27 @@
-using RPK_BlazorApp.Data; // Předpokládáme, že ApplicationDbContext je zde
-using RPK_BlazorApp.Data.Interceptors; // Předpokládáme, že ApplicationDbContext je zde
-using RPK_BlazorApp.Services; // Předpokládáme, že IAllarmService a AllarmService jsou zde
-using RPK_BlazorApp.Repositories; // Přidáno pro IAlarmRepository a AlarmRepository
-using RPK_BlazorApp.Shared; // Potřebné pro AppPermissions
-using RPK_BlazorApp.Models; // Potřebné pro Alarm
-using RPK_BlazorApp; // Přidáno pro MappingProfile
-using RPK_BlazorApp.Models.Interfaces; // Added for IDataService
-using RPK_BlazorApp.Repositories.Generic; // Add this for IRepository and Repository
+using DataHub.Platform.Data; // For ApplicationDbContext
+using DataHub.Platform.Data.Interceptors; // For ComprehensiveAuditInterceptor
+using Grinding.Services;
+using Grinding.Services.Interfaces;
+using Grinding.Services.Data;
+using Grinding.Services.Repositories;
+using DataHub.Core.Models;
+using DataHub.Host.Mappings;
+using DataHub.Core.Models.Interfaces;
+using DataHub.Core.Interfaces;
+using DataHub.Core.Services;
+using DataHub.Core.Permissions;
+using Eisod.Services;
+using Eisod.Services.Data;
+using Eisod.Services.Interfaces;
+using Eisod.Services.Repositories;
+using DataHub.Host.Services;
+using Eisod.Shared.Models;
+using Grinding.Shared.Models;
+using DataHub.Platform.Repositories; // For AuditLogRepository
 
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.EntityFrameworkCore; // Potřebné pro AddDbContext
-using Microsoft.FluentUI.AspNetCore.Components; // Potřebné pro AddFluentUIComponents
-
-
-
-
-// ... existing usings
+using Microsoft.EntityFrameworkCore;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,78 +36,75 @@ builder.Services.AddControllers();
 builder.Services.AddFluentUIComponents();
 
 builder.Services.AddTransient<ComprehensiveAuditInterceptor>();
-// ...existing code...
-builder.Services.AddDbContextFactory<ApplicationDbContext>((sp, options) =>
+
+builder.Services.AddDbContextFactory<DataHub.Platform.Data.ApplicationDbContext>((sp, options) =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("RestTestConnection"))
            .AddInterceptors(sp.GetRequiredService<ComprehensiveAuditInterceptor>());
 });
 
-// Register EisodDbContext for VIEW_EISOD_SD
+// Register DataHub.Core.Data.ApplicationDbContext for UserPreferenceService
+builder.Services.AddDbContextFactory<DataHub.Core.Data.ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("RestTestConnection")));
+
+// Register EisodDbContext
 builder.Services.AddDbContextFactory<EisodDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("EisodConnection"),
         sqlOptions => sqlOptions.CommandTimeout(120)));
 
+// Register GrindingDbContext
+builder.Services.AddDbContextFactory<GrindingDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GrindingConnection") ?? builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlOptions => sqlOptions.CommandTimeout(120)));
+
 builder.Services.AddHttpContextAccessor();
 
-// Použijeme typeof(MappingProfile).Assembly pro explicitní určení sestavení, kde se profily nacházejí.
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 
-builder.Services.AddScoped<IRepository<Alarm, ApplicationDbContext>, Repository<Alarm, ApplicationDbContext>>();
+builder.Services.AddScoped<IRepository<Alarm>, Grinding.Services.Repositories.AlarmRepository>();
 
-// Register ViewEisodSd services
-// Register your repository and service
-builder.Services.AddScoped<IAlarmRepository, AlarmRepository>();
+// Register Repositories and Services
+builder.Services.AddScoped<IAlarmRepository, Grinding.Services.Repositories.AlarmRepository>();
 builder.Services.AddScoped<IAlarmService, AlarmService>();
 builder.Services.AddScoped<IDataService<Alarm>, AlarmService>();
 builder.Services.AddScoped<IAlarmSpecificService, AlarmService>();
-builder.Services.AddScoped<IViewEisodSdRepository, ViewEisodSdRepository>();
-builder.Services.AddScoped<IViewEisodSdService, ViewEisodSdService>(); 
+
+builder.Services.AddScoped<IViewEisodSdRepository, Eisod.Services.Repositories.ViewEisodSdRepository>();
+builder.Services.AddScoped<IViewEisodSdService, ViewEisodSdService>();
+builder.Services.AddScoped<IDataService<ViewEisodSd>, ViewEisodSdService>();
  
 builder.Services.AddScoped<ICsvExportService, CsvExportService>();
+
+// Register DummyItemService
+builder.Services.AddScoped<Grinding.Services.IDummyItemService, Grinding.Services.DummyItemService>();
+builder.Services.AddScoped<IDataService<DummyItem>, Grinding.Services.DummyItemService>();
 
 builder.Services.AddScoped<IExcelExportService, ExcelExportService>(sp =>
     new ExcelExportService(sp.GetRequiredService<ILogger<ExcelExportService>>()));
 
-builder.Services.AddScoped<IDummyItemService, DummyItemService>(sp =>
-    new DummyItemService(
-        sp.GetRequiredService<ILogger<DummyItemService>>(),
-        sp.GetRequiredService<QueryParserService>(),
-        sp.GetRequiredService<AutoMapper.IMapper>()));
-builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>(); // Přidáno
-// Přidání registrace pro IGrindingService a IOperationalService
-builder.Services.AddScoped<IGrindingService, GrindingService>();
-builder.Services.AddScoped<IOperationalService, OperationalService>();
+builder.Services.AddScoped<IDataService<DataHub.Core.Models.DummyItem>, DataHub.Core.Services.DummyItemService>();
+builder.Services.AddScoped<DataHub.Core.Services.DummyItemService>();
+
+builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>(); // From DataHub.Platform.Repositories
 builder.Services.AddScoped<IAuditLogService, AuditLogService>();
 
-// ...
+builder.Services.AddScoped<IGrindingService, GrindingService>();
+builder.Services.AddScoped<IOperationalService, OperationalService>();
 
 
 // Add Authentication services
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        // The LoginPath must be a page that allows anonymous access, where users can log in.
-        // Setting it to a protected page like the root ("/") will cause a redirect loop.
         options.LoginPath = "/login";
     });
 
-
 #if DEBUG
-builder.Services.AddScoped<AuthenticationStateProvider, DevelopmentAuthenticationStateProvider>();
+builder.Services.AddScoped<DevelopmentAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<DevelopmentAuthenticationStateProvider>());
 #else
-// Production AuthenticationStateProvider configuration would go here
-// For example, if using ASP.NET Core Identity:
-// builder.Services.AddAuthentication(Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme)
-// .AddIdentityCookies();
-// builder.Services.AddCascadingAuthenticationState();
-// Or for Windows Authentication, etc.
-
-// For now, to ensure the app runs in Release without a full setup, 
-// we can provide a default anonymous provider.
-// Remove this if you have a proper production setup.
-builder.Services.AddScoped<AuthenticationStateProvider, RPK_BlazorApp.Services.DefaultAnonymousAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, DefaultAnonymousAuthenticationStateProvider>();
 #endif
 
 builder.Services.AddCascadingAuthenticationState();
@@ -121,11 +124,10 @@ builder.Services.AddAuthorizationCore(options =>
               .RequireClaim("permission", AppPermissions.AlarmsOverview.Delete));
 });
 
-
 builder.Services.AddScoped<UserPreferenceService>();
 builder.Services.AddScoped<QueryParserService>();
-builder.Services.AddSingleton<ChangeSetService>();
-builder.Services.AddSingleton<NavigationContextService>();
+builder.Services.AddSingleton<DataHub.Core.Services.ChangeSetService>();
+builder.Services.AddSingleton<DataHub.Core.Services.NavigationContextService>();
 
 var app = builder.Build();
 
@@ -148,20 +150,21 @@ app.Use(async (context, next) =>
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles(); // Přidáno pro servírování statických souborů
-// Antiforgery is important for Blazor Server.
-app.UseRouting(); // Explicitní přidání UseRouting pro lepší kontrolu nad pořadím middleware
+app.UseStaticFiles(); 
+app.UseRouting(); 
 
-app.UseAuthentication(); // Přidání UseAuthentication
-app.UseAuthorization(); // Přidání UseAuthorization
+app.UseAuthentication(); 
+app.UseAuthorization(); 
 
 app.UseAntiforgery();
-// Předpokládáme, že App.razor je ve složce Components a má namespace RPK_BlazorApp.Components
-// Pokud je App.razor v kořenovém adresáři a má namespace RPK_BlazorApp, použijte MapRazorComponents<RPK_BlazorApp.App>()
-app.MapRazorComponents<RPK_BlazorApp.Components.App>()
-    .AddInteractiveServerRenderMode();
 
-// Map API controller routes
+app.MapRazorComponents<DataHub.Host.Components.App>()
+    .AddInteractiveServerRenderMode()
+    .AddAdditionalAssemblies(
+        typeof(Eisod.Pages._Imports).Assembly,
+        typeof(Grinding.Pages._Imports).Assembly
+    );
+
 app.MapControllers();
 
 try

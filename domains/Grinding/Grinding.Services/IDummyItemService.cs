@@ -1,8 +1,8 @@
+using Grinding.Shared.Models;
+using DataHub.Core.Interfaces;
+using DataHub.Core.Models;
 
-using RPK_BlazorApp.Models;
-using RPK_BlazorApp.Models.Interfaces;
-
-namespace RPK_BlazorApp.Services
+namespace Grinding.Services
 {
     public interface IDummyItemService : IDataService<DummyItem>
     {

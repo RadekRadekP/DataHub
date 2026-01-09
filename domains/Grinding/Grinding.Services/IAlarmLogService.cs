@@ -1,8 +1,9 @@
-using RPK_BlazorApp.Models; // Assuming AlarmLogEntry is in this namespace
+using Grinding.Shared.Models; // Assuming AlarmLogEntry is in this namespace
+using DataHub.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RPK_BlazorApp.Services
+namespace Grinding.Services
 {
     public interface IAlarmLogService
     {

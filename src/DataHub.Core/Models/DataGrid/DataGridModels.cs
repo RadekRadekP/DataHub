@@ -1,4 +1,4 @@
-using RPK_BlazorApp.Models.UI;
+using DataHub.Core.Models.UI;
 using System.Collections.Generic;
 using System;
 using System.Linq;

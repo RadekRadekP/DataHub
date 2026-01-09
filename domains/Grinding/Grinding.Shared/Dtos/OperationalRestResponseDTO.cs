@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RPK_BlazorApp.Models
+namespace Grinding.Shared.Dtos
 {
     public class OperationalRestResponseDTO
     {

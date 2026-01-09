@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging; // Add for ILogger
 using System.Linq;
 using System.Linq.Expressions;
-using RPK_BlazorApp.Models.UI; // For FilterCriterion, FilterOperator
-using RPK_BlazorApp.Data;
+using DataHub.Core.Models.UI; // For FilterCriterion, FilterOperator
 using System.Globalization; // For CultureInfo
 
 

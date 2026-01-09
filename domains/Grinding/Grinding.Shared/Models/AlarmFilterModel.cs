@@ -1,6 +1,6 @@
-using RPK_BlazorApp.Models.UI;
+using DataHub.Core.Models.UI;
 
-namespace RPK_BlazorApp.Models
+namespace Grinding.Shared.Models
 {
     public class AlarmFilterModel : DataFilterModel
     {

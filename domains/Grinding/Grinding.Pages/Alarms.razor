@@ -1,8 +1,8 @@
 @page "/alarms"
 @inherits ComponentBase // Add this line
-@using RPK_BlazorApp.Models.UI
-@using RPK_BlazorApp.Models.DataGrid
-@using RPK_BlazorApp.Components.Shared
+@using DataHub.Core.Models.UI
+@using DataHub.Core.Models.DataGrid
+@using DataHub.Core.Components.Shared
 @using Microsoft.FluentUI.AspNetCore.Components
 @using System.Linq.Expressions // Added for ColumnDefinition in AdvancedFilterBuilder
 
@@ -51,11 +51,12 @@
                  ColumnDefinitions="@_columnDefinitions"
                  ExportFileName="Alarms"
                  ShowCheckboxes="true"
-                 @bind-SelectedItems="_selectedAlarms">
+                 SelectedItems="_selectedAlarms"
+                 SelectedItemsChanged="@((HashSet<AlarmUIModel> items) => _selectedAlarms = items)">
     <ActionColumnTemplate>
         <FluentButton OnClick="@(() => ViewAlarm(context.Id))">View</FluentButton>
-        <FluentButton IconStart="@(new Icons.Regular.Size20.Edit())" Title="Edit" OnClick="@(() => EditAlarm(context.Id))" />
+        <FluentButton IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Edit())" Title="Edit" OnClick="@(() => EditAlarm(context.Id))" />
         <FluentButton OnClick="@(() => CopyAlarm(context.Id))">Copy</FluentButton>
-        <FluentButton IconStart="@(new Icons.Regular.Size20.Delete())" Title="Delete" OnClick="@(() => DeleteAlarm(context.Id))" />
+        <FluentButton IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Delete())" Title="Delete" OnClick="@(() => DeleteAlarm(context.Id))" />
     </ActionColumnTemplate>
 </GenericDataView>

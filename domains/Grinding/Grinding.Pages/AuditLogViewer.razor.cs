@@ -1,17 +1,19 @@
 using Microsoft.AspNetCore.Components;
-using RPK_BlazorApp.Models;
-using RPK_BlazorApp.Services;
+using DataHub.Core.Models;
+using Grinding.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using RPK_BlazorApp.Models.UI;
-using RPK_BlazorApp.Models.DataGrid;
+using DataHub.Core.Models.UI;
+using DataHub.Core.Models.DataGrid;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using System;
-using RPK_BlazorApp.Components.Shared;
+using System.IO;
+using DataHub.Core.Components.Shared;
+using DataHub.Core.Services;
 
-namespace RPK_BlazorApp.Components.Pages
+namespace Grinding.Pages
 {
     public partial class AuditLogViewer
     {
@@ -30,15 +32,15 @@ namespace RPK_BlazorApp.Components.Pages
 
         private GenericDataView<AuditLog>? _dataView;
 
-        private List<RPK_BlazorApp.Models.DataGrid.ColumnDefinition<AuditLog>> columnDefinitions = new(); // Keep as DataGrid type
-        private List<RPK_BlazorApp.Models.UI.ColumnDefinition> _queryBuilderColumns = new(); // New property for UI type
+        private List<DataHub.Core.Models.DataGrid.ColumnDefinition<AuditLog>> columnDefinitions = new(); 
+        private List<DataHub.Core.Models.UI.ColumnDefinition> _queryBuilderColumns = new(); 
 
         private bool _isQueryBuilderVisible = false;
         private List<UserSavedCriteria> _savedQueries = new();
 
         protected override async Task OnInitializedAsync()
         {
-            columnDefinitions = new List<RPK_BlazorApp.Models.DataGrid.ColumnDefinition<AuditLog>>
+            columnDefinitions = new List<DataHub.Core.Models.DataGrid.ColumnDefinition<AuditLog>>
             {
                 new() { FieldName = nameof(AuditLog.Id), DisplayName = "Id", GetValue = item => item.Id, DataType = typeof(int), IsSortable = true, IsFilterable = true, IsVisible = true },
                 new() { FieldName = nameof(AuditLog.Timestamp), DisplayName = "Timestamp", GetValue = item => item.Timestamp, DataType = typeof(DateTime), IsSortable = true, IsFilterable = true, IsVisible = true },
@@ -52,7 +54,7 @@ namespace RPK_BlazorApp.Components.Pages
             };
 
             // Populate _queryBuilderColumns by mapping from columnDefinitions
-            _queryBuilderColumns = columnDefinitions.Select(c => new RPK_BlazorApp.Models.UI.ColumnDefinition
+            _queryBuilderColumns = columnDefinitions.Select(c => new DataHub.Core.Models.UI.ColumnDefinition
             {
                 FieldName = c.FieldName,
                 DisplayName = c.DisplayName,
@@ -67,7 +69,14 @@ namespace RPK_BlazorApp.Components.Pages
         private async Task<DataResult<AuditLog>> LoadAuditLogData(DataRequestBase request)
         {
             _logger.LogInformation("AuditLogViewer: LoadAuditLogData called. Page: {Page}, PageSize: {PageSize}, RawQuery: {RawQuery}", request.Page, request.PageSize, _advancedQuery);
-            var result = await _auditLogService.GetPagedAsync(request.Page, request.PageSize, rawQuery: _advancedQuery);
+            var serverRequest = new DataHub.Core.Models.DataGrid.ServerDataRequest 
+            { 
+                Page = request.Page, 
+                PageSize = request.PageSize, 
+                RawQuery = _advancedQuery,
+                Sorts = request.Sorts
+            };
+            var result = await _auditLogService.GetPagedAsync(serverRequest);
             _logger.LogInformation("AuditLogViewer: LoadAuditLogData returning {Count} items. TotalCount: {TotalCount}", result.Data.Count(), result.TotalCount);
             foreach (var item in result.Data)
             {
@@ -89,7 +98,7 @@ namespace RPK_BlazorApp.Components.Pages
             }
         }
 
-        private async Task HandleSaveQuery(RPK_BlazorApp.Models.UI.SavedCriteria criteria)
+        private async Task HandleSaveQuery(DataHub.Core.Models.UI.SavedCriteria criteria)
         {
             var tableName = "AuditLog";
             await UserPreferenceService.SaveCriteriaAsync(tableName, criteria.Name, criteria.Filters, criteria.Sorts, criteria.RawQuery);
@@ -103,7 +112,7 @@ namespace RPK_BlazorApp.Components.Pages
             await LoadSavedQueries(); // Refresh the list after deleting
         }
 
-        private async Task HandleQueryApplied(RPK_BlazorApp.Models.UI.SavedCriteria criteria) // Changed parameter type to UI.SavedCriteria
+        private async Task HandleQueryApplied(DataHub.Core.Models.UI.SavedCriteria criteria) // Changed parameter type to UI.SavedCriteria
         {
             _advancedQuery = criteria.RawQuery; // Use RawQuery from UI.SavedCriteria
             _activeFilterName = criteria.Name; // Set active filter name
@@ -150,7 +159,14 @@ namespace RPK_BlazorApp.Components.Pages
             try
             {
                 // Retrieve all data based on the current filter
-                var allDataResult = await _auditLogService.GetPagedAsync(1, int.MaxValue, rawQuery: _advancedQuery);
+                var serverRequest = new DataHub.Core.Models.DataGrid.ServerDataRequest 
+                { 
+                    Page = 1, 
+                    PageSize = int.MaxValue, 
+                    RawQuery = _advancedQuery, 
+                    GetAll = true 
+                };
+                var allDataResult = await _auditLogService.GetPagedAsync(serverRequest);
                 return await _excelExportService.ExportToExcelAsync(allDataResult.Data, columnDefinitions);
             }
             catch (Exception ex)

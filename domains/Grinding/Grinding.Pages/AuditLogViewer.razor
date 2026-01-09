@@ -1,8 +1,8 @@
 @page "/auditlogviewer"
-@using RPK_BlazorApp.Models
-@using RPK_BlazorApp.Components.Shared
-@using RPK_BlazorApp.Models.DataGrid
-@using RPK_BlazorApp.Models.UI
+@using DataHub.Core.Models
+@using DataHub.Core.Components.Shared
+@using DataHub.Core.Models.DataGrid
+@using DataHub.Core.Models.UI
 
 <PageTitle>Audit Log Viewer</PageTitle>
 
@@ -27,8 +27,9 @@
                  ExportFunction="@ExportAuditLogsToExcel"
                  ExportFileName="AuditLogs"
                  ShowCheckboxes="true"
-                 @bind-SelectedItems="_selectedLogs">
+                 SelectedItems="_selectedLogs"
+                 SelectedItemsChanged="@((HashSet<AuditLog> items) => _selectedLogs = items)">
     <ActionColumnTemplate>
-        <FluentButton IconStart="@(new Icons.Regular.Size20.Search())" Title="View Details" OnClick="@(() => ViewLogDetails(context.Id))" />
+        <FluentButton IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Info())" Title="View Details" OnClick="@(() => ViewLogDetails(context.Id))" />
     </ActionColumnTemplate>
 </GenericDataView>

@@ -1,0 +1,53 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Grinding.Pages
+build_property.RootNamespace = Grinding.Pages
+build_property.ProjectDir = C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Pages\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Pages
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/NON_Install_Programs/DataHub/domains/Grinding/Grinding.Pages/AlarmAction.razor]
+build_metadata.AdditionalFiles.TargetPath = QWxhcm1BY3Rpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/domains/Grinding/Grinding.Pages/Alarms.razor]
+build_metadata.AdditionalFiles.TargetPath = QWxhcm1zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/domains/Grinding/Grinding.Pages/AlarmsView.razor]
+build_metadata.AdditionalFiles.TargetPath = QWxhcm1zVmlldy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/domains/Grinding/Grinding.Pages/AuditLogViewer.razor]
+build_metadata.AdditionalFiles.TargetPath = QXVkaXRMb2dWaWV3ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/domains/Grinding/Grinding.Pages/DummyItemAction.razor]
+build_metadata.AdditionalFiles.TargetPath = RHVtbXlJdGVtQWN0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/domains/Grinding/Grinding.Pages/DummyItemDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = RHVtbXlJdGVtRGV0YWlscy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/domains/Grinding/Grinding.Pages/DummyItems.razor]
+build_metadata.AdditionalFiles.TargetPath = RHVtbXlJdGVtcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/domains/Grinding/Grinding.Pages/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 

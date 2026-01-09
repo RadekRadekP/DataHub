@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using RPK_BlazorApp.Components.Shared;
-using RPK_BlazorApp.Models;
-using RPK_BlazorApp.Models.DataGrid;
-using RPK_BlazorApp.Models.UI;
-using RPK_BlazorApp.Services;
+using DataHub.Core.Models;
+using DataHub.Core.Models.DataGrid;
+using DataHub.Core.Models.UI;
+using DataHub.Core.Services;
+using DataHub.Core.Components.Shared;
+using Grinding.Services;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 
-namespace RPK_BlazorApp.Components.Pages
+namespace Grinding.Pages
 {
     public partial class DummyItems : ComponentBase
     {
@@ -65,24 +68,24 @@ namespace RPK_BlazorApp.Components.Pages
         private List<UserSavedCriteria> _savedQueries = new();
 
         // This list is for the GenericDataView
-        private List<Models.DataGrid.ColumnDefinition<DummyItem>> _columnDefinitions = new List<Models.DataGrid.ColumnDefinition<DummyItem>>
+        private List<DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem>> _columnDefinitions = new List<DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem>>
         {
-            new Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.Id), DisplayName = "ID", IsSortable = true, GetValue = item => item.Id },
-            new Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.Name), DisplayName = "Name", IsSortable = true, GetValue = item => item.Name },
-            new Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.Category), DisplayName = "Category", IsSortable = true, GetValue = item => item.Category ?? string.Empty },
-            new Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.CreatedDate), DisplayName = "Created Date", IsSortable = true, GetValue = item => item.CreatedDate },
-            new Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.IsActive), DisplayName = "Is Active", IsSortable = true, GetValue = item => item.IsActive }
+            new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.Id), DisplayName = "ID", IsSortable = true, GetValue = item => item.Id },
+            new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.Name), DisplayName = "Name", IsSortable = true, GetValue = item => item.Name },
+            new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.Category), DisplayName = "Category", IsSortable = true, GetValue = item => item.Category ?? string.Empty },
+            new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.CreatedDate), DisplayName = "Created Date", IsSortable = true, GetValue = item => item.CreatedDate },
+            new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.IsActive), DisplayName = "Is Active", IsSortable = true, GetValue = item => item.IsActive }
         };
 
         // This list is for the FloatingQueryBuilder
-        private List<Models.UI.ColumnDefinition> _queryBuilderColumns = new List<Models.UI.ColumnDefinition>();
+        private List<DataHub.Core.Models.UI.ColumnDefinition> _queryBuilderColumns = new List<DataHub.Core.Models.UI.ColumnDefinition>();
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
 
             // Populate the separate list for the query builder
-            _queryBuilderColumns = _columnDefinitions.Select(c => new Models.UI.ColumnDefinition
+            _queryBuilderColumns = _columnDefinitions.Select(c => new DataHub.Core.Models.UI.ColumnDefinition
             {
                 FieldName = c.FieldName,
                 DisplayName = c.DisplayName
@@ -111,7 +114,7 @@ namespace RPK_BlazorApp.Components.Pages
             }
         }
 
-        private async Task HandleSaveQuery(RPK_BlazorApp.Models.UI.SavedCriteria criteria)
+        private async Task HandleSaveQuery(DataHub.Core.Models.UI.SavedCriteria criteria)
         {
             var tableName = "DummyItems";
             await UserPreferenceService.SaveCriteriaAsync(tableName, criteria.Name, criteria.Filters, criteria.Sorts, criteria.RawQuery);
@@ -147,7 +150,7 @@ namespace RPK_BlazorApp.Components.Pages
             };
         }
 
-        private async Task HandleQueryApplied(RPK_BlazorApp.Models.UI.SavedCriteria criteria)
+        private async Task HandleQueryApplied(DataHub.Core.Models.UI.SavedCriteria criteria)
         {
             _rawQuery = criteria.RawQuery;
             _activeFilterName = criteria.Name; // Set active filter name

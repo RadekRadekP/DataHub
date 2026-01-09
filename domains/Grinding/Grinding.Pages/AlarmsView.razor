@@ -1,10 +1,10 @@
 @page "/alarms/view/{AlarmId:int}"
 @inject IAlarmService AlarmService
-@using RPK_BlazorApp.Services // Přidáno pro IAlarmService
+@using DataHub.Core.Services // Přidáno pro IAlarmService
 @inject NavigationManager NavigationManager
 @inject ILogger<AlarmsView> Logger
 @inject AutoMapper.IMapper Mapper
-@using RPK_BlazorApp.Models.UI // Používáme AlarmUIModel
+@using DataHub.Core.Models.UI // Používáme AlarmUIModel
 @using Microsoft.FluentUI.AspNetCore.Components
 
 <h3>View Alarm Details</h3>

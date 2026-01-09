@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using RPK_BlazorApp.Models.Interfaces; // Přidáno pro IAuditableEntity
+using DataHub.Core.Models.Interfaces;
 
-namespace RPK_BlazorApp.Models
+namespace Grinding.Shared.Models
 {
     public class Grinding : IAuditableEntity
     {

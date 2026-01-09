@@ -1,28 +1,29 @@
 using ClosedXML.Excel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using RPK_BlazorApp.Data;
-using RPK_BlazorApp.Models;
-using RPK_BlazorApp.Models.DataGrid;
-using RPK_BlazorApp.Models.UI;
-using RPK_BlazorApp.Repositories;
+using DataHub.Core.Data;
+using DataHub.Core.Models; // For AuditLog
+using DataHub.Core.Models.DataGrid;
+using DataHub.Core.Models.UI;
+using DataHub.Core.Interfaces; // Assuming repositories are here? No, IAuditLogRepository is in Core
 using System;
 using System.IO;
 using System.Linq;
 using AutoMapper;
 using System.Text.Json;
 using System.Threading.Tasks;
-using RPK_BlazorApp.Services.Generic;
+using DataHub.Core.Services;
 
-namespace RPK_BlazorApp.Services
+using DataHub.Platform.Data; // For ApplicationDbContext
+
+namespace Grinding.Services
 {
-    public class AuditLogService : DataService<AuditLog, AuditLog, DataRequestBase, DataResult<AuditLog>, ApplicationDbContext>, IAuditLogService
+    public class AuditLogService : DataService<AuditLog>, IAuditLogService
     {
-        private new readonly ILogger<AuditLogService> _logger;
+        // private new readonly ILogger<AuditLogService> _logger;
 
         public AuditLogService(IAuditLogRepository repository, IMapper mapper, ILogger<AuditLogService> logger, QueryParserService queryParserService) : base(repository, mapper, logger, queryParserService)
         {
-            _logger = logger;
         }
 
         

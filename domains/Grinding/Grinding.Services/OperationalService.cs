@@ -1,17 +1,18 @@
-using RPK_BlazorApp.Models;
-using RPK_BlazorApp.Data; // For ApplicationDbContext
+using Grinding.Shared.Models;
+using Grinding.Shared.Dtos;
+using Grinding.Services.Data; // For GrindingDbContext
 using Microsoft.EntityFrameworkCore; // For EF Core extension methods like ToListAsync, FirstOrDefaultAsync
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RPK_BlazorApp.Services
+namespace Grinding.Services
 {
     public class OperationalService : IOperationalService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly GrindingDbContext _context;
 
-        public OperationalService(ApplicationDbContext context)
+        public OperationalService(GrindingDbContext context)
         {
             _context = context;
         }

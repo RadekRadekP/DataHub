@@ -1,0 +1,23 @@
+  Zjišťují se projekty, které se mají obnovit...
+  Obnovil se projekt C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Services\Grinding.Services.csproj (v 620 ms).
+  Obnovil se projekt C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Pages\Grinding.Pages.csproj (v 465 ms).
+  Obnovil se projekt C:\NON_Install_Programs\DataHub\src\DataHub.Host\DataHub.Host.csproj (v 466 ms).
+  Obnovil se projekt c:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Client\Grinding.Client.csproj (v 620 ms).
+  6 z 10 projektů jsou v aktuálním stavu pro obnovení.
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\Components\Shared\GenericDataView.razor(94,22): error CS0246: Typ nebo název oboru názvů ILogger<> se nenašel. (Nechybí direktiva using nebo odkaz na sestavení?) [c:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\Components\Shared\GenericFilter.razor(70,22): error CS0246: Typ nebo název oboru názvů ILogger<> se nenašel. (Nechybí direktiva using nebo odkaz na sestavení?) [c:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\Components\Shared\GenericEntityActionPage.razor(100,12): error CS0246: Typ nebo název oboru názvů IDataService<> se nenašel. (Nechybí direktiva using nebo odkaz na sestavení?) [c:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\Components\Shared\GenericEntityActionPage.razor(15,9): error CS0246: Typ nebo název oboru názvů ILogger<> se nenašel. (Nechybí direktiva using nebo odkaz na sestavení?) [c:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+
+Sestavení SE NEZDAŘILO.
+
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\Components\Shared\GenericDataView.razor(94,22): error CS0246: Typ nebo název oboru názvů ILogger<> se nenašel. (Nechybí direktiva using nebo odkaz na sestavení?) [c:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\Components\Shared\GenericFilter.razor(70,22): error CS0246: Typ nebo název oboru názvů ILogger<> se nenašel. (Nechybí direktiva using nebo odkaz na sestavení?) [c:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\Components\Shared\GenericEntityActionPage.razor(100,12): error CS0246: Typ nebo název oboru názvů IDataService<> se nenašel. (Nechybí direktiva using nebo odkaz na sestavení?) [c:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+c:\NON_Install_Programs\DataHub\src\DataHub.Core\Components\Shared\GenericEntityActionPage.razor(15,9): error CS0246: Typ nebo název oboru názvů ILogger<> se nenašel. (Nechybí direktiva using nebo odkaz na sestavení?) [c:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+    0 upozornění
+    Počet chyb: 4
+
+Uplynulý čas 00:00:03.72
+
+Jsou k dispozici aktualizace úloh. Pokud chcete získat další informace, spusťte `dotnet workload list`.

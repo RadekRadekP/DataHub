@@ -1,8 +1,8 @@
-using RPK_BlazorApp.Models;
+using Grinding.Shared.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RPK_BlazorApp.Services
+namespace Grinding.Services
 {
     public interface IGrindingService
     {

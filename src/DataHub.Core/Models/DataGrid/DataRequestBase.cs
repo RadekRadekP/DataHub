@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using RPK_BlazorApp.Models.UI; // Add this line
+using DataHub.Core.Models.UI; // Add this line
 
 namespace DataHub.Core.Models.DataGrid
 {

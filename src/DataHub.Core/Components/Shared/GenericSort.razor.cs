@@ -7,7 +7,7 @@ using DataHub.Core.Models.DataGrid; // Add this line
 
 namespace DataHub.Core.Components.Shared
 {
-    public partial class GenericSort<TItem> where TItem : class
+    public partial class GenericSort<TItem> : ComponentBase where TItem : class
     {
         [Parameter] public List<ColumnDefinition<TItem>> ColumnDefinitions { get; set; } = new();
         [Parameter] public EventCallback<List<SortCriterion>> OnSortApplied { get; set; } // Change to List<SortCriterion>

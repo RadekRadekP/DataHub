@@ -1,11 +1,11 @@
-using RPK_BlazorApp.Models;
-using RPK_BlazorApp.Models.DataGrid;
+using Grinding.Shared.Models;
+using DataHub.Core.Models.DataGrid;
 using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using RPK_BlazorApp.Models.UI;
+using DataHub.Core.Models.UI;
 
-namespace RPK_BlazorApp.Services
+namespace Grinding.Services
 {
     public interface IAlarmSpecificService
     {

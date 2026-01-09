@@ -1,0 +1,57 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = DataHub.Core
+build_property.RootNamespace = DataHub.Core
+build_property.ProjectDir = c:\NON_Install_Programs\DataHub\src\DataHub.Core\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = c:\NON_Install_Programs\DataHub\src\DataHub.Core
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/NON_Install_Programs/DataHub/src/DataHub.Core/Components/Shared/AdvancedCriteriaInput.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQWR2YW5jZWRDcml0ZXJpYUlucHV0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/src/DataHub.Core/Components/Shared/AdvancedFilterBuilder.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQWR2YW5jZWRGaWx0ZXJCdWlsZGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/src/DataHub.Core/Components/Shared/GenericDataView.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcR2VuZXJpY0RhdGFWaWV3LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/src/DataHub.Core/Components/Shared/GenericEntityActionPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcR2VuZXJpY0VudGl0eUFjdGlvblBhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/src/DataHub.Core/Components/Shared/GenericFilter.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcR2VuZXJpY0ZpbHRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/src/DataHub.Core/Components/Shared/GenericSort.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcR2VuZXJpY1NvcnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/src/DataHub.Core/Components/Shared/QueryBuilderModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcUXVlcnlCdWlsZGVyTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/src/DataHub.Core/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/src/DataHub.Core/Components/Shared/FloatingQueryBuilder.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRmxvYXRpbmdRdWVyeUJ1aWxkZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-6iid1lox0q

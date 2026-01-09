@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using RPK_BlazorApp.Data;
-using RPK_BlazorApp.Models;
-using RPK_BlazorApp.Models.UI;
+using DataHub.Core.Data;
+using DataHub.Core.Models;
+using DataHub.Core.Models.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;

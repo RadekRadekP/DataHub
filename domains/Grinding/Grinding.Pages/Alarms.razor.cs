@@ -1,19 +1,22 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
-using RPK_BlazorApp.Components.Shared;
-using RPK_BlazorApp.Models;
-using RPK_BlazorApp.Models.DataGrid;
-using RPK_BlazorApp.Models.UI;
-using RPK_BlazorApp.Services;
+using DataHub.Core.Components.Shared;
+using Grinding.Shared.Models;
+using DataHub.Core.Models.DataGrid;
+using DataHub.Core.Models.UI;
+using Grinding.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using RPK_BlazorApp.Models.Interfaces;
+using DataHub.Core.Models.Interfaces;
+using DataHub.Core.Services;
+using DataHub.Core.Models; // For UserSavedCriteria
+using DataHub.Core.Interfaces; // For IDataService
 
-namespace RPK_BlazorApp.Components.Pages
+namespace Grinding.Pages
 {
     public partial class Alarms : ComponentBase
     {
@@ -54,7 +57,7 @@ namespace RPK_BlazorApp.Components.Pages
         private string _advancedQuery = string.Empty;
         private string? _activeFilterName;
         private bool _isQueryBuilderVisible = false;
-        private List<RPK_BlazorApp.Models.UI.ColumnDefinition> _queryBuilderColumns = new();
+        private List<DataHub.Core.Models.UI.ColumnDefinition> _queryBuilderColumns = new();
 
         private List<UserSavedCriteria> _savedQueries = new();
 
@@ -73,7 +76,7 @@ namespace RPK_BlazorApp.Components.Pages
                 new() { FieldName = nameof(AlarmUIModel.ServerTimestamp), DisplayName = "Server Timestamp", IsSortable = true, IsFilterable = true, DataType = typeof(DateTime), GetValue = item => item.ServerTimestamp, IsVisible = true },
                 new() { FieldName = nameof(AlarmUIModel.ChangeCounter), DisplayName = "Change Counter", IsSortable = true, IsFilterable = true, DataType = typeof(int), GetValue = item => item.ChangeCounter, IsVisible = true },
             };
-            _queryBuilderColumns = _columnDefinitions.Select(cd => new RPK_BlazorApp.Models.UI.ColumnDefinition
+            _queryBuilderColumns = _columnDefinitions.Select(cd => new DataHub.Core.Models.UI.ColumnDefinition
             {
                 FieldName = cd.FieldName,
                 DisplayName = cd.DisplayName
@@ -101,7 +104,7 @@ namespace RPK_BlazorApp.Components.Pages
             }
         }
 
-        async Task HandleSaveQuery(RPK_BlazorApp.Models.UI.SavedCriteria criteria)
+        async Task HandleSaveQuery(DataHub.Core.Models.UI.SavedCriteria criteria)
         {
             var tableName = "Alarms";
             await UserPreferenceService.SaveCriteriaAsync(tableName, criteria.Name, criteria.Filters, criteria.Sorts, criteria.RawQuery);

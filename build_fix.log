@@ -1,0 +1,11 @@
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Models\AlarmsPagedResult.cs(7,28): error CS0246: Typ nebo n├ízev oboru n├ízv┼» AlarmRestResponseDTO se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+
+Sestaven├ş SE NEZDA┼śILO.
+
+C:\NON_Install_Programs\DataHub\src\DataHub.Core\Models\AlarmsPagedResult.cs(7,28): error CS0246: Typ nebo n├ízev oboru n├ízv┼» AlarmRestResponseDTO se nena┼íel. (Nechyb├ş direktiva using nebo odkaz na sestaven├ş?) [C:\NON_Install_Programs\DataHub\src\DataHub.Core\DataHub.Core.csproj]
+    0 upozorn─Ťn├ş
+    Po─Źet chyb: 1
+
+Uplynul├Ż ─Źas 00:00:02.43
+
+Jsou k dispozici aktualizace ├║loh. Pokud chcete z├şskat dal┼í├ş informace, spus┼ąte `dotnet workload list`.

@@ -1,18 +1,20 @@
 using Microsoft.AspNetCore.Components;
-using RPK_BlazorApp.Models;
-using RPK_BlazorApp.Models.UI;
-using RPK_BlazorApp.Services;
+using Eisod.Shared.Models;
+using DataHub.Core.Models.UI;
+using Eisod.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using RPK_BlazorApp.Models.DataGrid;
+using DataHub.Core.Models.DataGrid;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using System;
-using RPK_BlazorApp.Components.Shared;
+using DataHub.Core.Components.Shared;
 using System.IO;
 using System.Linq.Expressions;
+using DataHub.Core.Services;
+using DataHub.Core.Models; // For UserSavedCriteria
 
-namespace RPK_BlazorApp.Components.Pages
+namespace Eisod.Pages
 {
     public partial class EisodSdView
     {
@@ -30,12 +32,12 @@ namespace RPK_BlazorApp.Components.Pages
 
         private List<UserSavedCriteria> _savedQueries = new();
 
-        private List<Models.DataGrid.ColumnDefinition<ViewEisodSdUIModel>> _columnDefinitions = new();
-        private List<Models.UI.ColumnDefinition> _queryBuilderColumns = new();
+        private List<DataHub.Core.Models.DataGrid.ColumnDefinition<ViewEisodSdUIModel>> _columnDefinitions = new();
+        private List<DataHub.Core.Models.UI.ColumnDefinition> _queryBuilderColumns = new();
 
         protected override async Task OnInitializedAsync()
         {
-            _columnDefinitions = new List<Models.DataGrid.ColumnDefinition<ViewEisodSdUIModel>>
+            _columnDefinitions = new List<DataHub.Core.Models.DataGrid.ColumnDefinition<ViewEisodSdUIModel>>
             {
                 new() { FieldName = nameof(ViewEisodSdUIModel.Id), DisplayName = "Id", GetValue = item => item.Id ?? string.Empty, DataType = typeof(string), IsSortable = true, IsFilterable = true, IsVisible = true },
                 new() { FieldName = nameof(ViewEisodSdUIModel.InterníKódVzorce), DisplayName = "Internal Code", GetValue = item => item.InterníKódVzorce, DataType = typeof(int), IsSortable = true, IsFilterable = true, IsVisible = true },
@@ -47,7 +49,7 @@ namespace RPK_BlazorApp.Components.Pages
                 new() { FieldName = nameof(ViewEisodSdUIModel.ČísloVzorce), DisplayName = "Číslo vzorce", GetValue = item => item.ČísloVzorce, DataType = typeof(int), IsSortable = true, IsFilterable = true, IsVisible = true },
             };
 
-            _queryBuilderColumns = _columnDefinitions.Select(c => new Models.UI.ColumnDefinition
+            _queryBuilderColumns = _columnDefinitions.Select(c => new DataHub.Core.Models.UI.ColumnDefinition
             {
                 FieldName = c.FieldName,
                 DisplayName = c.DisplayName,
@@ -96,11 +98,33 @@ namespace RPK_BlazorApp.Components.Pages
         private async Task<DataResult<ViewEisodSdUIModel>> LoadData(DataRequestBase request)
         {
             _logger.LogInformation("EisodSdView: LoadData called. Page: {Page}, PageSize: {PageSize}, RawQuery: {RawQuery}", request.Page, request.PageSize, _advancedQuery);
-            var result = await _eisodSdService.GetPagedAsync(request.Page, request.PageSize, rawQuery: _advancedQuery);
-            _logger.LogInformation("EisodSdView: LoadData returning {Count} items. TotalCount: {TotalCount}", result.Data.Count(), result.TotalCount);
+            var serverRequest = new DataHub.Core.Models.DataGrid.ServerDataRequest 
+            { 
+                Page = request.Page, 
+                PageSize = request.PageSize, 
+                RawQuery = _advancedQuery,
+                Sorts = request.Sorts
+            };
+            var result = await _eisodSdService.GetPagedAsync(serverRequest);
+            var mappedData = result.Data.Select(x => new ViewEisodSdUIModel
+            {
+                ČísloOperace = x.ČísloOperace,
+                ČísloPoložky = x.ČísloPoložky,
+                ČísloVzorce = x.ČísloVzorce,
+                DruhOperace = x.DruhOperace,
+                Hodnota = x.Hodnota,
+                InterníKódVzorce = x.InterníKódVzorce,
+                KeyOvv = x.KeyOvv,
+                SkupinaOperace = x.SkupinaOperace,
+                TypOperace = x.TypOperace,
+                Vzorec = x.Vzorec,
+                ZobrazitVSd = x.ZobrazitVSd
+            }).ToList();
+
+            _logger.LogInformation("EisodSdView: LoadData returning {Count} items. TotalCount: {TotalCount}", mappedData.Count, result.TotalCount);
             return new DataResult<ViewEisodSdUIModel>
             {
-                Data = result.Data,
+                Data = mappedData,
                 TotalCount = result.TotalCount
             };
         }
@@ -137,8 +161,29 @@ namespace RPK_BlazorApp.Components.Pages
         {
             try
             {
-                var allDataResult = await _eisodSdService.GetPagedAsync(1, int.MaxValue, rawQuery: _advancedQuery, getAll: true);
-                return await _excelExportService.ExportToExcelAsync(allDataResult.Data, _columnDefinitions, _activeFilterName, _advancedQuery);
+                var serverRequest = new DataHub.Core.Models.DataGrid.ServerDataRequest 
+                { 
+                    Page = 1, 
+                    PageSize = int.MaxValue, 
+                    RawQuery = _advancedQuery, 
+                    GetAll = true 
+                };
+                var allDataResult = await _eisodSdService.GetPagedAsync(serverRequest);
+                var mappedData = allDataResult.Data.Select(x => new ViewEisodSdUIModel
+                {
+                    ČísloOperace = x.ČísloOperace,
+                    ČísloPoložky = x.ČísloPoložky,
+                    ČísloVzorce = x.ČísloVzorce,
+                    DruhOperace = x.DruhOperace,
+                    Hodnota = x.Hodnota,
+                    InterníKódVzorce = x.InterníKódVzorce,
+                    KeyOvv = x.KeyOvv,
+                    SkupinaOperace = x.SkupinaOperace,
+                    TypOperace = x.TypOperace,
+                    Vzorec = x.Vzorec,
+                    ZobrazitVSd = x.ZobrazitVSd
+                }).ToList();
+                return await _excelExportService.ExportToExcelAsync(mappedData, _columnDefinitions, _activeFilterName, _advancedQuery);
             }
             catch (Exception ex)
             {
@@ -149,7 +194,6 @@ namespace RPK_BlazorApp.Components.Pages
 
         private void ViewItemDetails(string id)
         {
-            // The ID is a string for this model. Assuming a details page exists at this route.
             NavigationManager.NavigateTo($"/eisodsd/view/{id}");
         }
     }

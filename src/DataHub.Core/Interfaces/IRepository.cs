@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataHub.Core.Interfaces
 {
-    public interface IRepository<TEntity, TContext> where TEntity : class where TContext : DbContext
+    public interface IRepository<TEntity> where TEntity : class
     {
         IQueryable<TEntity> GetAll();
         Task<IEnumerable<TEntity>> GetAllAsync();

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace RPK_BlazorApp.Migrations
+namespace DataHub.Platform.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreateSqlServer : Migration

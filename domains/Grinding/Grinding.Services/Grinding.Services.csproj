@@ -5,5 +5,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Grinding.Shared\Grinding.Shared.csproj" />
     <ProjectReference Include="..\..\..\src\DataHub.Core\DataHub.Core.csproj" />
+    <ProjectReference Include="..\..\..\src\DataHub.Platform\DataHub.Platform.csproj" />
   </ItemGroup>
 </Project>

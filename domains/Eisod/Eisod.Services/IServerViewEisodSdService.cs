@@ -1,13 +1,11 @@
-using RPK_BlazorApp.Models;
-using RPK_BlazorApp.Models.DataGrid;
-using RPK_BlazorApp.Models.UI;
-using RPK_BlazorApp.Services.Generic;
-using System.Threading.Tasks;
-using RPK_BlazorApp.Data;
+using Eisod.Shared.Models;
+using DataHub.Core.Models.DataGrid;
+using DataHub.Core.Models.UI;
+using DataHub.Core.Interfaces;
 
-namespace RPK_BlazorApp.Services
+namespace Eisod.Services
 {
-    public interface IServerViewEisodSdService : IDataService<ViewEisodSd, ViewEisodSdUIModel, DataRequestBase, DataResult<ViewEisodSdUIModel>, EisodDbContext>
+    public interface IServerViewEisodSdService : IDataService<ViewEisodSd>
     {
     }
 }

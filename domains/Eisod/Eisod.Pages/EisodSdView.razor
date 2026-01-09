@@ -1,7 +1,9 @@
 @page "/eisodsdview"
-@using RPK_BlazorApp.Components.Shared
-@using RPK_BlazorApp.Models
-@using RPK_BlazorApp.Models.DataGrid
+@using DataHub.Core.Components.Shared
+@using DataHub.Core.Models.UI
+@using DataHub.Core.Models.DataGrid
+@using Eisod.Shared.Models
+@using Microsoft.FluentUI.AspNetCore.Components
 
 <PageTitle>EISOD SD View</PageTitle>
 
@@ -26,8 +28,9 @@
                  ExportFunction="@ExportEisodSdsToExcel"
                  ExportFileName="EisodSds"
                  ShowCheckboxes="true"
-                 @bind-SelectedItems="_selectedItems">
+                 SelectedItems="_selectedItems"
+                 SelectedItemsChanged="@((HashSet<ViewEisodSdUIModel> items) => _selectedItems = items)">
     <ActionColumnTemplate>
-        <FluentButton IconStart="@(new Icons.Regular.Size20.Search())" Title="View Details" OnClick="@(() => ViewItemDetails(context.Id))" />
+        <FluentButton IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Search())" Title="View Details" OnClick="@(() => ViewItemDetails(context.Id))" />
     </ActionColumnTemplate>
 </GenericDataView>

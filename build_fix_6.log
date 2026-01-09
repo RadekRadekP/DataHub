@@ -1,0 +1,30 @@
+  DataHub.Core -> C:\NON_Install_Programs\DataHub\src\DataHub.Core\bin\Debug\net9.0\DataHub.Core.dll
+  Eisod.Shared -> C:\NON_Install_Programs\DataHub\domains\Eisod\Eisod.Shared\bin\Debug\net9.0\Eisod.Shared.dll
+  Grinding.Shared -> C:\NON_Install_Programs\DataHub\domains\Grinding\Grinding.Shared\bin\Debug\net9.0\Grinding.Shared.dll
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\ApplicationDbContext.cs(135,23): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\ApplicationDbContext.cs(151,23): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\Interceptors\ComprehensiveAuditInterceptor.cs(36,54): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Repositories\Generic\Repository.cs(35,42): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\ApplicationDbContext.cs(17,46): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\ApplicationDbContext.cs(19,105): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\ApplicationDbContext.cs(28,41): error CS0102: Typ ApplicationDbContext u┼ż obsahuje definici pro UserSavedCriteria. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Repositories\DummyItemRepository.cs(51,30): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Repositories\DummyItemRepository.cs(71,30): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+
+Sestaven├ş SE NEZDA┼śILO.
+
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\ApplicationDbContext.cs(135,23): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\ApplicationDbContext.cs(151,23): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\Interceptors\ComprehensiveAuditInterceptor.cs(36,54): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Repositories\Generic\Repository.cs(35,42): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\ApplicationDbContext.cs(17,46): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\ApplicationDbContext.cs(19,105): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Repositories\DummyItemRepository.cs(51,30): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Repositories\DummyItemRepository.cs(71,30): warning CS8632: Pozn├ímka u typ┼» odkaz┼» s mo┼żnou hodnotou null by se m─Ťla v k├│du pou┼ż├şvat jenom v kontextu pozn├ímek #nullable. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\Data\ApplicationDbContext.cs(28,41): error CS0102: Typ ApplicationDbContext u┼ż obsahuje definici pro UserSavedCriteria. [C:\NON_Install_Programs\DataHub\src\DataHub.Platform\DataHub.Platform.csproj]
+    8 upozorn─Ťn├ş
+    Po─Źet chyb: 1
+
+Uplynul├Ż ─Źas 00:00:01.07
+
+Jsou k dispozici aktualizace ├║loh. Pokud chcete z├şskat dal┼í├ş informace, spus┼ąte `dotnet workload list`.

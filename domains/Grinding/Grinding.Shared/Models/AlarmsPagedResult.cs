@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Grinding.Shared.Dtos;
 
-namespace RPK_BlazorApp.Models
+namespace Grinding.Shared.Models
 {
     public class AlarmsPagedResult
     {

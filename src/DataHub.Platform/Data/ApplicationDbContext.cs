@@ -22,13 +22,10 @@ namespace DataHub.Platform.Data // <--- Ujistěte se, že tento namespace je spr
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public DbSet<Operational> OperationalData { get; set; }
-        public DbSet<Alarm> Alarms { get; set; }
-        public DbSet<Grinding> GrindingData { get; set; }
         public DbSet<ClientIdentifier> ClientIdentifiers { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; } // Přidáno pro auditní záznamy
-        public DbSet<ViewEisodSd> ViewEisodSds { get; set; }
         public DbSet<UserSavedCriteria> UserSavedCriteria { get; set; }
+
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
@@ -169,12 +166,6 @@ namespace DataHub.Platform.Data // <--- Ujistěte se, že tento namespace je spr
 
             // Můžete také explicitně nastavit název tabulky pro AuditLog, pokud je to potřeba
             // modelBuilder.Entity<AuditLog>().ToTable("AuditLogs"); // Výchozí název je obvykle v pořádku
-
-            // Configure the ViewEisodSd view
-            modelBuilder.Entity<ViewEisodSd>(entity => {
-                entity.HasNoKey(); // Configure as keyless entity
-                entity.ToView("VIEW_EISOD_SD", "export");
-            });
         }
     }
 }
