@@ -25,8 +25,7 @@ namespace DataHub.Platform.Repositories
             {
                 if (_dummyItems.Any()) return; // Seed only once
 
-                var categories = new[] { "Gadgets", "Tools", "Widgets", "Software", "Hardware" };
-                var random = new Random();
+                var random = new Random(42); // Fixed seed for consistency
 
                 for (int i = 1; i <= 250; i++)
                 {
@@ -34,9 +33,12 @@ namespace DataHub.Platform.Repositories
                     {
                         Id = _nextId++,
                         Name = $"Dummy Item {i}",
-                        Category = categories[random.Next(categories.Length)],
+                        Description = $"Repository test item #{i}",
+                        CategoryId = random.Next(1, 6), // Random category 1-5
+                        StatusId = random.Next(1, 7), // Random status 1-6
                         CreatedDate = DateTime.UtcNow.AddDays(-random.Next(365)),
-                        IsActive = random.Next(10) > 2 // ~80% active
+                        IsActive = random.Next(10) > 2, // ~80% active
+                        Value = (decimal)(random.NextDouble() * 10000)
                     });
                 }
                 Console.WriteLine($"Seeded {_dummyItems.Count} dummy items into repository.");
@@ -76,9 +78,12 @@ namespace DataHub.Platform.Repositories
                 if (existingItem != null)
                 {
                     existingItem.Name = item.Name;
-                    existingItem.Category = item.Category;
+                    existingItem.Description = item.Description;
+                    existingItem.CategoryId = item.CategoryId;
+                    existingItem.StatusId = item.StatusId;
                     existingItem.IsActive = item.IsActive;
-                    existingItem.CreatedDate = item.CreatedDate; // Assuming CreatedDate can be updated or is part of the item
+                    existingItem.Value = item.Value;
+                    existingItem.CreatedDate = item.CreatedDate;
                     return Task.FromResult<DummyItem?>(existingItem);
                 }
                 return Task.FromResult<DummyItem?>(null);

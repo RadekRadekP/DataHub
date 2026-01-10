@@ -1,5 +1,6 @@
 using DataHub.Platform.Data; // For ApplicationDbContext
 using DataHub.Platform.Data.Interceptors; // For ComprehensiveAuditInterceptor
+using DataHub.Platform.Services; // For SchemaDiscoveryService
 using Grinding.Services;
 using Grinding.Services.Interfaces;
 using Grinding.Services.Data;
@@ -126,6 +127,11 @@ builder.Services.AddAuthorizationCore(options =>
 
 builder.Services.AddScoped<UserPreferenceService>();
 builder.Services.AddScoped<QueryParserService>();
+builder.Services.AddScoped<SchemaDiscoveryService>();
+builder.Services.AddScoped<DataHub.Core.Services.IMetadataService, DataHub.Platform.Services.MetadataService>();
+builder.Services.AddScoped<DataHub.Host.Services.DynamicDataService>();
+builder.Services.AddSingleton<DummyCategoryService>();
+builder.Services.AddSingleton<DummyStatusService>();
 builder.Services.AddSingleton<DataHub.Core.Services.ChangeSetService>();
 builder.Services.AddSingleton<DataHub.Core.Services.NavigationContextService>();
 

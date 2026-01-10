@@ -72,7 +72,10 @@ namespace Grinding.Pages
         {
             new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.Id), DisplayName = "ID", IsSortable = true, GetValue = item => item.Id },
             new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.Name), DisplayName = "Name", IsSortable = true, GetValue = item => item.Name },
-            new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.Category), DisplayName = "Category", IsSortable = true, GetValue = item => item.Category ?? string.Empty },
+            new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.Description), DisplayName = "Description", IsSortable = true, GetValue = item => item.Description != null ? item.Description : string.Empty },
+            new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.CategoryId), DisplayName = "Category", IsSortable = true, GetValue = item => item.Category != null ? item.Category.Name : "N/A" },
+            new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.StatusId), DisplayName = "Status", IsSortable = true, GetValue = item => item.Status != null ? item.Status.Name : "N/A" },
+            new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.Value), DisplayName = "Value", IsSortable = true, GetValue = item => item.Value.HasValue ? item.Value.Value.ToString("C") : "N/A" },
             new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.CreatedDate), DisplayName = "Created Date", IsSortable = true, GetValue = item => item.CreatedDate },
             new DataHub.Core.Models.DataGrid.ColumnDefinition<DummyItem> { FieldName = nameof(DummyItem.IsActive), DisplayName = "Is Active", IsSortable = true, GetValue = item => item.IsActive }
         };

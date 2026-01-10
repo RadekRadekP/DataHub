@@ -26,6 +26,13 @@ namespace DataHub.Platform.Data // <--- Ujistěte se, že tento namespace je spr
         public DbSet<AuditLog> AuditLogs { get; set; } // Přidáno pro auditní záznamy
         public DbSet<UserSavedCriteria> UserSavedCriteria { get; set; }
 
+        // Metadata Catalog
+        public DbSet<DataHub.Core.Models.Metadata.MetaEntity> MetaEntities { get; set; }
+        public DbSet<DataHub.Core.Models.Metadata.MetaField> MetaFields { get; set; }
+        public DbSet<DataHub.Core.Models.Metadata.MetaRelation> MetaRelations { get; set; }
+        public DbSet<DataHub.Core.Models.Metadata.SysView> SysViews { get; set; }
+        public DbSet<DataHub.Core.Models.Metadata.SysViewField> SysViewFields { get; set; }
+
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
@@ -166,6 +173,41 @@ namespace DataHub.Platform.Data // <--- Ujistěte se, že tento namespace je spr
 
             // Můžete také explicitně nastavit název tabulky pro AuditLog, pokud je to potřeba
             // modelBuilder.Entity<AuditLog>().ToTable("AuditLogs"); // Výchozí název je obvykle v pořádku
+
+            // Fix for SQL Server multiple cascade paths in MetaRelation
+            modelBuilder.Entity<DataHub.Core.Models.Metadata.MetaRelation>(entity =>
+            {
+                // Disable cascading from Entity
+                entity.HasOne(r => r.FromEntity)
+                    .WithMany()
+                    .HasForeignKey(r => r.FromEntityId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(r => r.ToEntity)
+                    .WithMany()
+                    .HasForeignKey(r => r.ToEntityId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                // Disable cascading from Field to avoid overlapping paths
+                entity.HasOne(r => r.FromField)
+                    .WithMany()
+                    .HasForeignKey(r => r.FromFieldId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(r => r.ToField)
+                    .WithMany()
+                    .HasForeignKey(r => r.ToFieldId)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            // Fix for SQL Server multiple cascade paths in SysViewField
+            modelBuilder.Entity<DataHub.Core.Models.Metadata.SysViewField>(entity =>
+            {
+                entity.HasOne(f => f.MetaField)
+                    .WithMany()
+                    .HasForeignKey(f => f.MetaFieldId)
+                    .OnDelete(DeleteBehavior.NoAction); // Prevent cycle (Deleting Entity -> SysView -> Field is path A; Entity -> MetaField is path B)
+            });
         }
     }
 }

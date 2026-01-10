@@ -1,0 +1,230 @@
+@using DataHub.Core.Models.Metadata
+@using DataHub.Core.Services
+
+<FluentDialog @bind-Hidden="@_dialogHidden" Modal="true" TrapFocus="true">
+    <FluentDialogHeader>
+        <h2>@(_editMode ? "Edit Relation" : "Create New Relation")</h2>
+    </FluentDialogHeader>
+    
+    <FluentDialogBody>
+        <FluentStack Orientation="Orientation.Vertical" VerticalGap="16">
+            @* From Entity & Field *@
+            <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="12">
+                <FluentSelect Label="From Entity" 
+                             @bind-Value="_selectedFromEntityId"
+                             Items="@_entities"
+                             OptionValue="@(e => e.Id.ToString())"
+                             OptionText="@(e => $"{e.EntityName} ({e.DbContextName})")"
+                             Style="flex: 1;"
+                             @bind-Value:after="OnFromEntityChanged">
+                </FluentSelect>
+
+                <FluentSelect Label="From Field (FK)"
+                             @bind-Value="_selectedFromFieldId"
+                             Items="@_fromFields"
+                             OptionValue="@(f => f.Id.ToString())"
+                             OptionText="@(f => $"{f.FieldName} ({f.SqlType})")"
+                             Style="flex: 1;"
+                             Disabled="@(_fromFields.Count == 0)">
+                </FluentSelect>
+            </FluentStack>
+
+            @* To Entity & Field *@
+            <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="12">
+                <FluentSelect Label="To Entity (Referenced)"
+                             @bind-Value="_selectedToEntityId"
+                             Items="@_entities"
+                             OptionValue="@(e => e.Id.ToString())"
+                             OptionText="@(e => $"{e.EntityName} ({e.DbContextName})")"
+                             Style="flex: 1;"
+                             @bind-Value:after="OnToEntityChanged">
+                </FluentSelect>
+
+                <FluentSelect Label="To Field (Usually Id)"
+                             @bind-Value="_selectedToFieldId"
+                             Items="@_toFields"
+                             OptionValue="@(f => f.Id.ToString())"
+                             OptionText="@(f => $"{f.FieldName} ({f.SqlType})")"
+                             Style="flex: 1;"
+                             Disabled="@(_toFields.Count == 0)">
+                </FluentSelect>
+            </FluentStack>
+
+            @* Display Field *@
+            <FluentSelect Label="Display Field (What to show in lookup)"
+                         @bind-Value="_selectedDisplayFieldId"
+                         Items="@_toFields"
+                         OptionValue="@(f => f.Id.ToString())"
+                         OptionText="@(f => f.FieldName)"
+                         Disabled="@(_toFields.Count == 0)">
+                <FluentOption Value="">-- Use To Field --</FluentOption>
+            </FluentSelect>
+
+            @* Relation Type *@
+            <FluentSelect Label="Relation Type"
+                         TOption="string"
+                         @bind-Value="_relationType">
+                <FluentOption TOption="string" Value="ManyToOne" Selected>Many-to-One</FluentOption>
+                <FluentOption TOption="string" Value="OneToMany">One-to-Many</FluentOption>
+                <FluentOption TOption="string" Value="ManyToMany">Many-to-Many</FluentOption>
+            </FluentSelect>
+
+            @* Display Name *@
+            <FluentTextField Label="Display Name (e.g., 'Category', 'Status')"
+                            @bind-Value="_displayName"
+                            Style="width: 100%;">
+            </FluentTextField>
+
+            @* Delete Behavior *@
+            <FluentSelect Label="Delete Behavior"
+                         TOption="string"
+                         @bind-Value="_deleteBehavior">
+                <FluentOption TOption="string" Value="Cascade">Cascade - Delete related records</FluentOption>
+                <FluentOption TOption="string" Value="SetNull" Selected>Set Null - Clear foreign key</FluentOption>
+                <FluentOption TOption="string" Value="Restrict">Restrict - Prevent deletion</FluentOption>
+            </FluentSelect>
+        </FluentStack>
+    </FluentDialogBody>
+
+    <FluentDialogFooter>
+        <FluentButton Appearance="Appearance.Accent" OnClick="SaveRelation">
+            @(_editMode ? "Update" : "Create")
+        </FluentButton>
+        <FluentButton Appearance="Appearance.Neutral" OnClick="CloseDialog">
+            Cancel
+        </FluentButton>
+    </FluentDialogFooter>
+</FluentDialog>
+
+@code {
+    [Parameter] public bool Hidden { get; set; } = true;
+    [Parameter] public EventCallback<bool> HiddenChanged { get; set; }
+    [Parameter] public MetaRelation? EditRelation { get; set; }
+    [Parameter] public EventCallback OnSaved { get; set; }
+
+    [Inject] private IMetadataService MetadataService { get; set; } = default!;
+
+    private bool _dialogHidden = true;
+    private bool _editMode = false;
+
+    private List<MetaEntity> _entities = new();
+    private List<MetaField> _fromFields = new();
+    private List<MetaField> _toFields = new();
+
+    private string _selectedFromEntityId = string.Empty;
+    private string _selectedFromFieldId = string.Empty;
+    private string _selectedToEntityId = string.Empty;
+    private string _selectedToFieldId = string.Empty;
+    private string _selectedDisplayFieldId = string.Empty;
+    private string _relationType = "ManyToOne";
+    private string _displayName = string.Empty;
+    private string _deleteBehavior = "SetNull";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _dialogHidden = Hidden;
+
+        if (!Hidden)
+        {
+            await LoadEntities();
+
+            if (EditRelation != null)
+            {
+                _editMode = true;
+                _selectedFromEntityId = EditRelation.FromEntityId.ToString();
+                _selectedFromFieldId = EditRelation.FromFieldId.ToString();
+                _selectedToEntityId = EditRelation.ToEntityId.ToString();
+                _selectedToFieldId = EditRelation.ToFieldId.ToString();
+                _selectedDisplayFieldId = EditRelation.DisplayFieldId?.ToString() ?? string.Empty;
+                _relationType = EditRelation.RelationType;
+                _displayName = EditRelation.DisplayName;
+                _deleteBehavior = EditRelation.DeleteBehavior ?? "SetNull";
+
+                await OnFromEntityChanged();
+                await OnToEntityChanged();
+            }
+            else
+            {
+                _editMode = false;
+                ResetForm();
+            }
+        }
+    }
+
+    private async Task LoadEntities()
+    {
+        _entities = await MetadataService.GetAllEntitiesAsync();
+    }
+
+    private async Task OnFromEntityChanged()
+    {
+        if (int.TryParse(_selectedFromEntityId, out var entityId))
+        {
+            _fromFields = await MetadataService.GetFieldsByEntityIdAsync(entityId);
+            StateHasChanged();
+        }
+    }
+
+    private async Task OnToEntityChanged()
+    {
+        if (int.TryParse(_selectedToEntityId, out var entityId))
+        {
+            _toFields = await MetadataService.GetFieldsByEntityIdAsync(entityId);
+            StateHasChanged();
+        }
+    }
+
+    private async Task SaveRelation()
+    {
+        if (!int.TryParse(_selectedFromEntityId, out var fromEntityId) ||
+            !int.TryParse(_selectedFromFieldId, out var fromFieldId) ||
+            !int.TryParse(_selectedToEntityId, out var toEntityId) ||
+            !int.TryParse(_selectedToFieldId, out var toFieldId))
+        {
+            return;
+        }
+
+        var relation = EditRelation ?? new MetaRelation();
+        relation.FromEntityId = fromEntityId;
+        relation.FromFieldId = fromFieldId;
+        relation.ToEntityId = toEntityId;
+        relation.ToFieldId = toFieldId;
+        relation.DisplayFieldId = int.TryParse(_selectedDisplayFieldId, out var displayFieldId) ? displayFieldId : null;
+        relation.RelationType = _relationType;
+        relation.DisplayName = _displayName;
+        relation.DeleteBehavior = _deleteBehavior;
+
+        if (_editMode)
+        {
+            await MetadataService.UpdateRelationAsync(relation);
+        }
+        else
+        {
+            await MetadataService.CreateRelationAsync(relation);
+        }
+
+        await CloseDialog();
+        await OnSaved.InvokeAsync();
+    }
+
+    private async Task CloseDialog()
+    {
+        _dialogHidden = true;
+        await HiddenChanged.InvokeAsync(true);
+        ResetForm();
+    }
+
+    private void ResetForm()
+    {
+        _selectedFromEntityId = string.Empty;
+        _selectedFromFieldId = string.Empty;
+        _selectedToEntityId = string.Empty;
+        _selectedToFieldId = string.Empty;
+        _selectedDisplayFieldId = string.Empty;
+        _relationType = "ManyToOne";
+        _displayName = string.Empty;
+        _deleteBehavior = "SetNull";
+        _fromFields.Clear();
+        _toFields.Clear();
+    }
+}

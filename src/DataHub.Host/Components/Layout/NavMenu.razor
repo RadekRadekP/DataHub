@@ -1,25 +1,43 @@
 @using Microsoft.FluentUI.AspNetCore.Components
 
-<FluentNavMenu>
-    @foreach (var link in NavLinks)
-    {
-        <FluentNavLink Href="@link.Href" Match="@link.Match">
-            <span class="@link.IconCssClass" aria-hidden="true"></span> @link.DisplayText
+<FluentNavMenu Title="DataHub" @bind-Expanded="@_expanded">
+    
+    <FluentNavLink Href="" Icon="@(new Icons.Regular.Size20.Home())" Match="NavLinkMatch.All">
+        Home
+    </FluentNavLink>
+
+    <FluentNavGroup Title="📊 Data Views" Icon="@(new Icons.Regular.Size20.Table())" Expanded="true">
+        <FluentNavLink Href="alarms" Icon="@(new Icons.Regular.Size20.Warning())">
+            Alarms
         </FluentNavLink>
-    }
+        <FluentNavLink Href="eisodsdview" Icon="@(new Icons.Regular.Size20.Eye())">
+            EISOD SD View
+        </FluentNavLink>
+        <FluentNavLink Href="auditlogviewer" Icon="@(new Icons.Regular.Size20.DocumentBulletList())">
+            Audit Logs
+        </FluentNavLink>
+    </FluentNavGroup>
+
+    <FluentNavGroup Title="⚙️ Administration" Icon="@(new Icons.Regular.Size20.Settings())">
+        <FluentNavLink Href="admin/metadata" Icon="@(new Icons.Regular.Size20.DatabaseSearch())">
+            Metadata Catalog
+        </FluentNavLink>
+    </FluentNavGroup>
+
+    <FluentNavGroup Title="🧪 Testing & Debug" Icon="@(new Icons.Regular.Size20.Beaker())" Expanded="false">
+        <FluentNavLink Href="dummyitems" Icon="@(new Icons.Regular.Size20.Bug())">
+            Dummy Data
+        </FluentNavLink>
+        <FluentNavLink Href="testpage" Icon="@(new Icons.Regular.Size20.BeakerSettings())">
+            Test Page
+        </FluentNavLink>
+        <FluentNavLink Href="admin/lookup-demo" Icon="@(new Icons.Regular.Size20.Search())">
+            Lookup Picker Demo
+        </FluentNavLink>
+    </FluentNavGroup>
+
 </FluentNavMenu>
 
 @code {
-    private record NavLinkInfo(string Href, string DisplayText, string IconCssClass, NavLinkMatch Match = NavLinkMatch.Prefix);
-
-    private List<NavLinkInfo> NavLinks = new()
-    {
-        new("", "Home", "bi bi-house-door-fill", NavLinkMatch.All),
-        new("alarms", "Alarms", "bi bi-exclamation-triangle-fill"),
-        new("auditlogviewer", "Audit Logs", "bi bi-card-list"),
-        new("eisodsdview", "VIEW_EISOD_SD", "bi bi-eye-fill"),
-        new("dummyitems", "Dummy Data (Test)", "bi bi-bug-fill"),
-        
-        new("testpage", "Test Page", "bi bi-vial")
-    };
+    private bool _expanded = true;
 }

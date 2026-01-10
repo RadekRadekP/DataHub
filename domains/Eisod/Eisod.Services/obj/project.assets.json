@@ -3999,8 +3999,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
-              "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
+            "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
+              "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
             },
             "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Core\\DataHub.Core.csproj": {
               "projectPath": "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Core\\DataHub.Core.csproj"

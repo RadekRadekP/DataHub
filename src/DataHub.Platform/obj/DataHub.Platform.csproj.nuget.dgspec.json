@@ -4,14 +4,14 @@
     "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Platform\\DataHub.Platform.csproj": {}
   },
   "projects": {
-    "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
+    "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj",
+        "projectUniqueName": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj",
         "projectName": "Eisod.Shared",
-        "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj",
+        "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj",
         "packagesPath": "C:\\Users\\PalenikR\\.nuget\\packages\\",
-        "outputPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\obj\\",
+        "outputPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -272,8 +272,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
-                "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
+              "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
+                "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
               },
               "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Shared\\Grinding.Shared.csproj": {
                 "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Shared\\Grinding.Shared.csproj"
@@ -303,6 +303,12 @@
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",

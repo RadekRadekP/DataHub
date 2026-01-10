@@ -4,14 +4,14 @@
     "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Host\\DataHub.Host.csproj": {}
   },
   "projects": {
-    "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj": {
+    "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj",
+        "projectUniqueName": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj",
         "projectName": "Eisod.Pages",
-        "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj",
+        "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj",
         "packagesPath": "C:\\Users\\PalenikR\\.nuget\\packages\\",
-        "outputPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\obj\\",
+        "outputPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -36,8 +36,8 @@
               "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Services\\Eisod.Services.csproj": {
                 "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Services\\Eisod.Services.csproj"
               },
-              "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
-                "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
+              "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
+                "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
               },
               "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Core\\DataHub.Core.csproj": {
                 "projectPath": "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Core\\DataHub.Core.csproj"
@@ -122,8 +122,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
-                "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
+              "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
+                "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
               },
               "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Core\\DataHub.Core.csproj": {
                 "projectPath": "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Core\\DataHub.Core.csproj"
@@ -169,14 +169,14 @@
         }
       }
     },
-    "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
+    "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj",
+        "projectUniqueName": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj",
         "projectName": "Eisod.Shared",
-        "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj",
+        "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj",
         "packagesPath": "C:\\Users\\PalenikR\\.nuget\\packages\\",
-        "outputPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\obj\\",
+        "outputPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -268,8 +268,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj": {
-                "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj"
+              "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj": {
+                "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj"
               },
               "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Shared\\Grinding.Shared.csproj": {
                 "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Shared\\Grinding.Shared.csproj"
@@ -328,14 +328,14 @@
         }
       }
     },
-    "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj": {
+    "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj",
+        "projectUniqueName": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj",
         "projectName": "Grinding.Services",
-        "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj",
+        "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj",
         "packagesPath": "C:\\Users\\PalenikR\\.nuget\\packages\\",
-        "outputPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\obj\\",
+        "outputPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -602,8 +602,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj": {
-                "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj"
+              "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj": {
+                "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj"
               },
               "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Services\\Eisod.Services.csproj": {
                 "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Services\\Eisod.Services.csproj"
@@ -611,8 +611,8 @@
               "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\Grinding.Pages.csproj": {
                 "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Pages\\Grinding.Pages.csproj"
               },
-              "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj": {
-                "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj"
+              "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj": {
+                "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj"
               },
               "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Core\\DataHub.Core.csproj": {
                 "projectPath": "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Core\\DataHub.Core.csproj"
@@ -638,6 +638,14 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -690,8 +698,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
-                "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
+              "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
+                "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
               },
               "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Shared\\Grinding.Shared.csproj": {
                 "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Shared\\Grinding.Shared.csproj"
@@ -721,6 +729,12 @@
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",

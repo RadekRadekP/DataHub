@@ -28,16 +28,22 @@ namespace DataHub.Core.Services
             _queryParserService = queryParserService;
             _mapper = mapper;
             _dummyItems = new List<DummyItem>();
-            // Seed 1000 initial data
+            
+            // Seed 1000 initial data with lookup relationships
+            var random = new Random(42); // Fixed seed for consistent data
             for (int i = 1; i <= 1000; i++)
             {
                 _dummyItems.Add(new DummyItem
                 {
                     Id = _nextId++,
                     Name = $"Dummy Item {i}",
-                    Category = $"Category {(char)('A' + (i % 3))}", // Categories A, B, C
-                    CreatedDate = DateTime.UtcNow.AddDays(-i),
-                    IsActive = (i % 2 == 0), // Alternating active status
+                    Description = $"This is a test item #{i} for demonstrating the metadata system",
+                    CategoryId = random.Next(1, 6), // Random category 1-5
+                    StatusId = random.Next(1, 7), // Random status 1-6
+                    CreatedDate = DateTime.UtcNow.AddDays(-random.Next(1, 365)),
+                    IsActive = (i % 3 != 0), // ~66% active
+                    Value = (decimal)(random.NextDouble()  * 10000),
+                    CustomTag = $"Tag-{random.Next(1, 100)}",
                     ServerTimestamp = DateTime.UtcNow,
                     ChangeCounter = 0
                 });
@@ -66,9 +72,12 @@ namespace DataHub.Core.Services
             if (existingItem != null)
             {
                 existingItem.Name = item.Name;
-                existingItem.Category = item.Category;
+                existingItem.Description = item.Description;
+                existingItem.CategoryId = item.CategoryId;
+                existingItem.StatusId = item.StatusId;
                 existingItem.CreatedDate = item.CreatedDate;
                 existingItem.IsActive = item.IsActive;
+                existingItem.Value = item.Value;
                 existingItem.ServerTimestamp = DateTime.UtcNow;
                 existingItem.ChangeCounter++;
                 _logger.LogInformation("Updated DummyItem with ID: {Id}", item.Id);

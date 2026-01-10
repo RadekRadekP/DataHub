@@ -20,3 +20,5 @@ c:\NON_Install_Programs\DataHub\src\DataHub.Platform\obj\Debug\net9.0\DataHub.Pl
 C:\NON_Install_Programs\DataHub\src\DataHub.Platform\obj\Debug\net9.0\ref\DataHub.Platform.dll
 c:\NON_Install_Programs\DataHub\src\DataHub.Platform\bin\Debug\net9.0\DataHub.Core.staticwebassets.runtime.json
 c:\NON_Install_Programs\DataHub\src\DataHub.Platform\bin\Debug\net9.0\DataHub.Core.staticwebassets.endpoints.json
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\bin\Debug\net9.0\DataHub.Platform.runtimeconfig.json
+C:\NON_Install_Programs\DataHub\src\DataHub.Platform\obj\Debug\net9.0\DataHub.Platform.genruntimeconfig.cache

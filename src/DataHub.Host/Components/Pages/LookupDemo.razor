@@ -1,0 +1,176 @@
+@page "/admin/lookup-demo"
+@using DataHub.Core.Models.Metadata
+@using DataHub.Core.Services
+@using DataHub.Host.Services
+@using DataHub.Host.Components.Shared
+@using DataHub.Core.Models
+@using DataHub.Core.Interfaces
+@inject IMetadataService MetadataService
+@inject IDataService<DummyItem> DummyDataService
+
+<PageTitle>Lookup Component Demo</PageTitle>
+
+<FluentCard>
+    <h2>🔎 Generic Lookup Picker Demo</h2>
+    <p>This page demonstrates the dynamic lookup component. It mimics editing a <strong>DummyItem</strong> and selecting its <strong>Category</strong>.</p>
+    
+    <FluentStack Orientation="Orientation.Vertical" VerticalGap="20" Style="margin-top: 20px;">
+        
+        <!-- Simulation Form -->
+        <FluentCard Style="padding: 20px; background-color: var(--neutral-layer-2);">
+            <h3>Edit Dummy Item (Simulation)</h3>
+            
+            <FluentTextField Value="My Test Item" Label="Item Name" Style="width: 100%;" />
+            
+            <div style="margin-top: 10px;">
+                <label style="display: block; margin-bottom: 4px; font-weight: 600;">Linked Entity (Lookup)</label>
+                
+                @if (_categoryRelation != null)
+                {
+                    <GenericLookupPicker Value="@_selectedCategoryId" 
+                                         ValueChanged="@OnCategoryChanged" 
+                                         Relation="@_categoryRelation" />
+                    
+                    <div style="margin-top: 4px; font-size: 12px; color: var(--neutral-foreground-hint);">
+                        Selected ID: @(_selectedCategoryId?.ToString() ?? "None")
+                    </div>
+                }
+                else if (_isLoading)
+                {
+                    <FluentProgressRing />
+                }
+                    <FluentMessageBar Intent="MessageIntent.Warning">
+                        Could not find a valid SQL entity (MetaEntity or AuditLog) to use for the demo. <br />
+                        Please go to <strong>Metadata Catalog</strong> and click <strong>"Discover All Schemas"</strong> to populate metadata.
+                        <br/><br/>
+                        <strong>Found Entities (@(_availableEntities?.Count ?? 0)):</strong><br/>
+                        @if (_availableEntities != null)
+                        {
+                            <ul style="max-height: 100px; overflow: auto;">
+                                @foreach(var e in _availableEntities)
+                                {
+                                    <li>@e.EntityName (@e.SchemaName)</li>
+                                }
+                            </ul>
+                        }
+                    </FluentMessageBar>
+            </div>
+
+            <FluentNumberField Value="100" Label="Value" Style="width: 100%; margin-top: 10px;" />
+            
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--neutral-stroke-layer-rest);" />
+            
+            <h3>Grid Verification (SysView)</h3>
+            <p>Verifying that <code>GenericDataView</code> correctly loads columns from <code>SysView</code> metadata for <strong>DummyItem</strong>.</p>
+            
+            @if (_dummyEntityId.HasValue)
+            {
+                <GenericDataView TItem="DataHub.Core.Models.DummyItem" 
+                                MetaEntityId="@_dummyEntityId"
+                                DataProvider="@DummyDataService.GetPagedAsync" 
+                                PageSize="5"
+                                GridTitle="Dummy Items (Metadata Driven)" />
+            }
+            else
+            {
+                <FluentMessageBar Intent="MessageIntent.Warning">
+                    DummyItem entity not found in metadata. Please run discovery.
+                </FluentMessageBar>
+            }
+
+        </FluentCard>
+
+        <!-- Debug Info -->
+        <FluentAccordion>
+            <FluentAccordionItem Heading="Debug Information">
+                <pre>
+Selected Category ID: @_selectedCategoryId
+Relation Found: @(_categoryRelation != null)
+From: @_categoryRelation?.FromEntity?.EntityName . @_categoryRelation?.FromField?.FieldName
+To: @_categoryRelation?.ToEntity?.EntityName . @_categoryRelation?.ToField?.FieldName
+Dummy Entity ID: @_dummyEntityId
+                </pre>
+            </FluentAccordionItem>
+        </FluentAccordion>
+
+    </FluentStack>
+</FluentCard>
+
+@code {
+    private int? _selectedCategoryId;
+    private MetaRelation? _categoryRelation;
+    private bool _isLoading = true;
+    private List<MetaEntity> _availableEntities = new();
+    private int? _dummyEntityId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMetadata();
+    }
+
+    private async Task LoadMetadata()
+    {
+        try 
+        {
+            // DEMO MODE: Try to find a real SQL table to query.
+            // Priority 1: MetaEntity (System table)
+            // Priority 2: AuditLog (System table)
+            
+            var allEntities = await MetadataService.GetAllEntitiesAsync();
+            _availableEntities = allEntities;
+            
+            // Find DummyItem for Grid Verification
+            var dummyEntity = _availableEntities.FirstOrDefault(e => e.EntityName == "DummyItem");
+            if (dummyEntity != null)
+            {
+                _dummyEntityId = dummyEntity.Id;
+            }
+
+            var targetEntity = _availableEntities.FirstOrDefault(e => e.EntityName == "MetaEntity") 
+                            ?? _availableEntities.FirstOrDefault(e => e.EntityName == "AuditLog");
+                            // Removed fallback to random entities (like Alarm/Grinding) as they might be broken or missing in the DB.
+                            // ?? _availableEntities.FirstOrDefault(e => e.SchemaName != "memory" && e.EntityName != "ViewEisodSd" && e.EntityName != "Alarm" && e.EntityName != "AllarmData");
+
+            if (targetEntity != null)
+            {
+                 // Fetch fields for target to find Display Field
+                 var targetFields = await MetadataService.GetFieldsByEntityIdAsync(targetEntity.Id);
+                 var displayField = targetFields.FirstOrDefault(f => f.FieldName == "DisplayName") 
+                                    ?? targetFields.FirstOrDefault(f => f.FieldName == "EntityName")
+                                    ?? targetFields.FirstOrDefault(f => f.FieldName == "Name")
+                                    ?? targetFields.FirstOrDefault(f => f.FieldName == "Title")
+                                    ?? targetFields.FirstOrDefault(f => !f.IsPrimaryKey && f.ClrType == "System.String"); // Generic fallback
+
+                 _categoryRelation = new MetaRelation
+                 {
+                     FromEntity = new MetaEntity { EntityName = "DemoSource", DisplayName = "Demo Source" },
+                     FromField = new MetaField { FieldName = "DemoField" },
+                     ToEntityId = targetEntity.Id,
+                     ToEntity = targetEntity,
+                     RelationType = "OneToMany",
+                     DisplayFieldId = displayField?.Id,
+                     DisplayField = displayField
+                 };
+            }
+            else
+            {
+                 // Do not fallback to existing random relations as they might be broken (e.g. memory tables)
+                 _categoryRelation = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading metadata: {ex.Message}");
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void OnCategoryChanged(int? newValue)
+    {
+        _selectedCategoryId = newValue;
+        StateHasChanged();
+    }
+}

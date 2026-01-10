@@ -1,0 +1,318 @@
+@page "/admin/metadata"
+@using DataHub.Core.Services
+@using DataHub.Platform.Services
+@using DataHub.Platform.Data
+@using Eisod.Services.Data
+@using Grinding.Services.Data
+@using Microsoft.EntityFrameworkCore
+@using DataHub.Core.Models.Metadata
+@using DataHub.Host.Components.Shared
+@inject SchemaDiscoveryService DiscoveryService
+@inject IDbContextFactory<EisodDbContext> EisodFactory
+@inject IDbContextFactory<GrindingDbContext> GrindingFactory
+@inject IDbContextFactory<ApplicationDbContext> AppFactory
+
+<PageTitle>Metadata Catalog - DataHub</PageTitle>
+
+<FluentStack Orientation="Orientation.Vertical" VerticalGap="16">
+    
+    <FluentCard>
+        <FluentStack Orientation="Orientation.Vertical" VerticalGap="8">
+            <h1 style="margin: 0;">🗄️ Metadata Catalog Management</h1>
+            <p style="color: var(--neutral-foreground-hint); margin: 0;">
+                Central repository of all database tables, fields, and relationships. 
+                Use this to automatically discover existing schemas and manage the catalog.
+            </p>
+        </FluentStack>
+    </FluentCard>
+
+    <FluentCard>
+        <FluentStack Orientation="Orientation.Vertical" VerticalGap="16">
+            <div>
+                <h3 style="margin: 0 0 8px 0;">🔍 Schema Discovery</h3>
+                <p style="color: var(--neutral-foreground-hint); margin: 0;">
+                    Scan your existing database contexts and automatically populate the catalog with metadata.
+                    This process will discover tables, views, columns, data types, and relationships.
+                </p>
+            </div>
+            
+            <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="8">
+                <FluentButton Appearance="Appearance.Accent" 
+                             OnClick="DiscoverAllSchemas" 
+                             Disabled="@_isDiscovering"
+                             IconStart="@(new Icons.Regular.Size20.DatabaseSearch())">
+                    @if (_isDiscovering)
+                    {
+                        <text>Discovering Schemas...</text>
+                    }
+                    else
+                    {
+                        <text>Discover All Schemas</text>
+                    }
+                </FluentButton>
+
+                @if (_discoveredEntities.Any())
+                {
+                    <FluentButton Appearance="Appearance.Outline" 
+                                 OnClick="RefreshView"
+                                 IconStart="@(new Icons.Regular.Size20.ArrowSync())">
+                        Refresh View
+                    </FluentButton>
+                }
+            </FluentStack>
+
+            @if (_isDiscovering)
+            {
+                <FluentProgressRing />
+            }
+        </FluentStack>
+    </FluentCard>
+
+    @if (!string.IsNullOrEmpty(_discoveryMessage))
+    {
+        <FluentMessageBar Intent="@_messageIntent" Style="white-space: pre-line;">
+            @_discoveryMessage
+        </FluentMessageBar>
+    }
+
+    @if (_discoveredEntities.Any())
+    {
+        <FluentCard>
+            <FluentStack Orientation="Orientation.Vertical" VerticalGap="12">
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Start">
+                    <h3 style="margin: 0;">📋 Discovered Entities</h3>
+                    <FluentBadge Appearance="Appearance.Accent">@_discoveredEntities.Count</FluentBadge>
+                </FluentStack>
+                
+                <FluentDataGrid Items="@_discoveredEntities.AsQueryable()" 
+                               ResizableColumns="true"
+                               GridTemplateColumns="0.8fr 1fr 1fr 0.5fr 0.5fr 0.5fr">
+                    <PropertyColumn Property="@(e => e.DbContextName)" Title="Context" Sortable="true" />
+                    <PropertyColumn Property="@(e => e.EntityName)" Title="Entity" Sortable="true" />
+                    <PropertyColumn Property="@(e => e.TableName)" Title="Table Name" Sortable="true" />
+                    <PropertyColumn Property="@(e => e.SchemaName)" Title="Schema" Sortable="true" />
+                    <TemplateColumn Title="Type">
+                        <FluentBadge Appearance="@(context.IsView ? Appearance.Neutral : Appearance.Accent)">
+                            @(context.IsView ? "View" : "Table")
+                        </FluentBadge>
+                    </TemplateColumn>
+                    <TemplateColumn Title="Fields" Align="Align.Center">
+                        <FluentBadge Appearance="Appearance.Lightweight">@context.FieldCount</FluentBadge>
+                    </TemplateColumn>
+                </FluentDataGrid>
+            </FluentStack>
+        </FluentCard>
+    }
+    else if (!_isDiscovering && string.IsNullOrEmpty(_discoveryMessage))
+    {
+        <FluentCard>
+            <FluentStack Orientation="Orientation.Vertical" VerticalGap="12" HorizontalAlignment="HorizontalAlignment.Center">
+                <div style="text-align: center; padding: 40px;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
+                    <h3>No Entities Discovered Yet</h3>
+                    <p style="color: var(--neutral-foreground-hint);">
+                        Click "Discover All Schemas" to scan your database contexts and populate the catalog.
+                    </p>
+                </div>
+            </FluentStack>
+        </FluentCard>
+    }
+
+    @* Relations Section *@
+    @if (_discoveredEntities.Any())
+    {
+        <FluentCard>
+            <FluentStack Orientation="Orientation.Vertical" VerticalGap="12">
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Start">
+                    <h3 style="margin: 0;">🔗 Relations</h3>
+                    <FluentBadge Appearance="Appearance.Accent">@_relations.Count</FluentBadge>
+                </FluentStack>
+
+                <FluentButton Appearance="Appearance.Accent"
+                             OnClick="OpenCreateRelationDialog"
+                             IconStart="@(new Icons.Regular.Size20.Add())">
+                    Create New Relation
+                </FluentButton>
+
+                @if (_relations.Any())
+                {
+                    <FluentDataGrid Items="@_relations.AsQueryable()"
+                                   ResizableColumns="true"
+                                   GridTemplateColumns="1fr 1fr 1fr 1fr 0.8fr 0.5fr">
+                        <PropertyColumn Property="@(r => r.FromEntity!.EntityName)" Title="From Entity" Sortable="true" />
+                        <PropertyColumn Property="@(r => r.FromField!.FieldName)" Title="From Field" Sortable="true" />
+                        <PropertyColumn Property="@(r => r.ToEntity!.EntityName)" Title="To Entity" Sortable="true" />
+                        <PropertyColumn Property="@(r => r.DisplayField != null ? r.DisplayField.FieldName : r.ToField!.FieldName)" Title="Display Field" Sortable="true" />
+                        <PropertyColumn Property="@(r => r.RelationType)" Title="Type" Sortable="true" />
+                        <TemplateColumn Title="Actions">
+                            <FluentButton Appearance="Appearance.Lightweight"
+                                         OnClick="@(() => OpenEditRelationDialog(context))"
+                                         IconStart="@(new Icons.Regular.Size20.Edit())">
+                                Edit
+                            </FluentButton>
+                            <FluentButton Appearance="Appearance.Lightweight"
+                                         OnClick="@(() => DeleteRelation(context.Id))"
+                                         IconStart="@(new Icons.Regular.Size20.Delete())">
+                                Delete
+                            </FluentButton>
+                        </TemplateColumn>
+                    </FluentDataGrid>
+                }
+                else
+                {
+                    <div style="text-align: center; padding: 20px; color: var(--neutral-foreground-hint);">
+                        No relations defined yet. Click "Create New Relation" to add one.
+                    </div>
+                }
+            </FluentStack>
+        </FluentCard>
+    }
+
+</FluentStack>
+
+<RelationEditorDialog @bind-Hidden="_relationDialogHidden" 
+                      EditRelation="_editingRelation"
+                      OnSaved="OnRelationSaved" />
+
+@code {
+    private bool _isDiscovering = false;
+    private string _discoveryMessage = string.Empty;
+    private MessageIntent _messageIntent = MessageIntent.Info;
+    private List<EntitySummary> _discoveredEntities = new();
+    private List<MetaRelation> _relations = new();
+    private bool _relationDialogHidden = true;
+    private MetaRelation? _editingRelation = null;
+
+    [Inject] private IMetadataService MetadataService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshView();
+        await LoadRelations();
+    }
+
+    private async Task RefreshView()
+    {
+        using (var catalogContext = await AppFactory.CreateDbContextAsync())
+        {
+            _discoveredEntities = await catalogContext.MetaEntities
+                .Select(e => new EntitySummary
+                {
+                    DbContextName = e.DbContextName,
+                    EntityName = e.EntityName,
+                    TableName = e.TableName,
+                    SchemaName = e.SchemaName,
+                    IsView = e.IsView,
+                    FieldCount = catalogContext.MetaFields.Count(f => f.MetaEntityId == e.Id)
+                })
+                .ToListAsync();
+        }
+        StateHasChanged();
+    }
+
+    private async Task LoadRelations()
+    {
+        _relations = await MetadataService.GetAllRelationsAsync();
+        StateHasChanged();
+    }
+
+    private async Task DiscoverAllSchemas()
+    {
+        _isDiscovering = true;
+        _discoveryMessage = string.Empty;
+        StateHasChanged();
+
+        try
+        {
+            int totalEntities = 0;
+            var messages = new List<string>();
+
+            // Discover Eisod schema
+            using (var eisodContext = await EisodFactory.CreateDbContextAsync())
+            {
+                var count = await DiscoveryService.DiscoverAndImportAsync(eisodContext, "EisodDbContext");
+                totalEntities += count;
+                messages.Add($"✅ EisodDbContext: {count} entities");
+            }
+
+            // Discover Grinding schema
+            using (var grindingContext = await GrindingFactory.CreateDbContextAsync())
+            {
+                var count = await DiscoveryService.DiscoverAndImportAsync(grindingContext, "GrindingDbContext");
+                totalEntities += count;
+                messages.Add($"✅ GrindingDbContext: {count} entities");
+            }
+
+            // Register in-memory entities (DummyItem, DummyCategory, DummyStatus)
+            var inMemoryCount = await DiscoveryService.RegisterInMemoryEntitiesAsync();
+            totalEntities += inMemoryCount;
+            messages.Add($"✅ In-Memory Entities: {inMemoryCount} entities (DummyItem + lookups)");
+
+            await RefreshView();
+            await LoadRelations();
+
+            messages.Add($"\n🎉 Discovery complete! Total: {totalEntities} entities discovered.");
+            _discoveryMessage = string.Join("\n", messages);
+            _messageIntent = MessageIntent.Success;
+        }
+        catch (Exception ex)
+        {
+            _discoveryMessage = $"❌ Error during discovery:\n{ex.Message}\n\nStack trace:\n{ex.StackTrace}";
+            _messageIntent = MessageIntent.Error;
+        }
+        finally
+        {
+            _isDiscovering = false;
+            StateHasChanged();
+        }
+    }
+
+    private void OpenCreateRelationDialog()
+    {
+        _editingRelation = null;
+        _relationDialogHidden = false;
+        StateHasChanged();
+    }
+
+    private void OpenEditRelationDialog(MetaRelation relation)
+    {
+        _editingRelation = relation;
+        _relationDialogHidden = false;
+        StateHasChanged();
+    }
+
+    private async Task OnRelationSaved()
+    {
+        await LoadRelations();
+        _discoveryMessage = "✅ Relation saved successfully";
+        _messageIntent = MessageIntent.Success;
+        StateHasChanged();
+    }
+
+    private async Task DeleteRelation(int relationId)
+    {
+        try
+        {
+            await MetadataService.DeleteRelationAsync(relationId);
+            await LoadRelations();
+            _discoveryMessage = "✅ Relation deleted successfully";
+            _messageIntent = MessageIntent.Success;
+        }
+        catch (Exception ex)
+        {
+            _discoveryMessage = $"❌ Error deleting relation: {ex.Message}";
+            _messageIntent = MessageIntent.Error;
+        }
+        StateHasChanged();
+    }
+
+    private class EntitySummary
+    {
+        public string DbContextName { get; set; } = string.Empty;
+        public string EntityName { get; set; } = string.Empty;
+        public string TableName { get; set; } = string.Empty;
+        public string SchemaName { get; set; } = string.Empty;
+        public bool IsView { get; set; }
+        public int FieldCount { get; set; }
+    }
+}

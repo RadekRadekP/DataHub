@@ -1,6 +1,7 @@
 using DataHub.Core.Models.Interfaces;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataHub.Core.Models
 {
@@ -13,12 +14,38 @@ namespace DataHub.Core.Models
         [MaxLength(100)]
         public string Name { get; set; } = string.Empty;
 
-        [MaxLength(100)]
-        public string? Category { get; set; }
+        public string? Description { get; set; }
+        
+        [MaxLength(20)]
+        public string? CustomTag { get; set; }
+
+        /// <summary>
+        /// Foreign key to DummyCategory
+        /// </summary>
+        public int? CategoryId { get; set; }
+
+        /// <summary>
+        /// Navigation property (for metadata discovery)
+        /// </summary>
+        [ForeignKey(nameof(CategoryId))]
+        public DummyCategory? Category { get; set; }
+
+        /// <summary>
+        /// Foreign key to DummyStatus
+        /// </summary>
+        public int? StatusId { get; set; }
+
+        /// <summary>
+        /// Navigation property (for metadata discovery)
+        /// </summary>
+        [ForeignKey(nameof(StatusId))]
+        public DummyStatus? Status { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
         public bool IsActive { get; set; }
+
+        public decimal? Value { get; set; }
 
         // IAuditableEntity properties
         public DateTime ServerTimestamp { get; set; }

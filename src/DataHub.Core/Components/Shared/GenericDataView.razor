@@ -5,10 +5,14 @@
 @using DataHub.Core.Models.DataGrid
 @using DataHub.Core.Models.UI
 @using DataHub.Core.Services
+@using DataHub.Core.Models.Metadata
 @using Microsoft.FluentUI.AspNetCore.Components
 @using Microsoft.FluentUI.AspNetCore.Components.DataGrid
 @using static Microsoft.FluentUI.AspNetCore.Components.Appearance
+@using Microsoft.FluentUI.AspNetCore.Components.Icons
 @using Microsoft.Extensions.Logging
+@using System.Linq.Expressions
+@using System.Reflection
 
 @typeparam TItem where TItem : class
 
@@ -118,7 +122,26 @@
             </div>
 
             @* Pagination control *@
-            <FluentPaginator State="@_paginationState" TotalItems="@_paginationState.TotalItemCount" ItemsPerPage="@PageSize" />
+            @* Pagination control - Manual implementation to avoid FluentPaginator DivideByZero crash *@
+            <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="4" VerticalAlignment="VerticalAlignment.Center">
+                <FluentButton Appearance="Appearance.Stealth" IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.ChevronLeft())"
+                              OnClick="@(() => _paginationState.SetCurrentPageIndexAsync(_paginationState.CurrentPageIndex - 1))"
+                              Disabled="@(_paginationState.CurrentPageIndex == 0)"
+                              Title="Previous page" />
+                
+                <span class="pagination-page-info">
+                    Page @(_paginationState.CurrentPageIndex + 1)
+                    @if (_paginationState.TotalItemCount.HasValue)
+                    {
+                        @: of @((_paginationState.TotalItemCount.Value + _paginationState.ItemsPerPage - 1) / Math.Max(1, _paginationState.ItemsPerPage))
+                    }
+                </span>
+
+                <FluentButton Appearance="Appearance.Stealth" IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.ChevronRight())"
+                              OnClick="@(() => _paginationState.SetCurrentPageIndexAsync(_paginationState.CurrentPageIndex + 1))"
+                              Disabled="@(!_paginationState.TotalItemCount.HasValue || (_paginationState.CurrentPageIndex + 1) * _paginationState.ItemsPerPage >= _paginationState.TotalItemCount)"
+                              Title="Next page" />
+            </FluentStack>
 
             @* Page size selector *@
             <FluentStack Orientation="Orientation.Horizontal" HorizontalGap="8" Class="page-size-selector">
@@ -161,9 +184,10 @@
 
     [Inject] private ILogger<GenericDataView<TItem>> Logger { get; set; } = default!;
     [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+    [Inject] private IMetadataService MetadataService { get; set; } = default!;
 
     private ElementReference _container;
-    private PaginationState _paginationState = new PaginationState();
+    private PaginationState _paginationState = new PaginationState { ItemsPerPage = 10 };
     private int _refreshKey = 0;
     private bool _preventDefault = false;
     private TItem? _currentlyFocusedItem;
@@ -177,10 +201,91 @@
     [Parameter]
     public string GridTemplateColumns { get; set; } = "";
 
-    protected override void OnInitialized()
+    [Parameter]
+    public int? MetaEntityId { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
+        if (PageSize <= 0) PageSize = 10;
         _paginationState.ItemsPerPage = PageSize;
         _selectedPageSize = PageSize;
+
+        // Auto-generate columns from SysView if MetaEntityId is provided
+        if (MetaEntityId.HasValue && (ColumnDefinitions == null || !ColumnDefinitions.Any()))
+        {
+            await LoadColumnsFromMetadata();
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (PageSize <= 0) PageSize = 10;
+        if (_paginationState.ItemsPerPage != PageSize && _paginationState.ItemsPerPage != _selectedPageSize)
+        {
+            _paginationState.ItemsPerPage = PageSize;
+            _selectedPageSize = PageSize;
+        }
+    }
+
+    private async Task LoadColumnsFromMetadata()
+    {
+        try
+        {
+            var view = await MetadataService.GetDefaultViewAsync(MetaEntityId.Value);
+            if (view != null && view.Fields.Any())
+            {
+                var newCols = new List<ColumnDefinition<TItem>>();
+                foreach (var field in view.Fields.OrderBy(f => f.Order))
+                {
+                    if (field.MetaField == null) continue;
+
+                    var propName = field.MetaField.FieldName;
+                    var expr = CreatePropertyAccessor(propName);
+                    
+                    if (expr != null)
+                    {
+                        newCols.Add(new ColumnDefinition<TItem>
+                        {
+                            FieldName = propName,
+                            DisplayName = field.CustomLabel ?? field.MetaField.DisplayName,
+                            IsVisible = field.IsVisible,
+                            IsSortable = true, // Default to true for now
+                            IsFilterable = true,
+                            GetValue = expr,
+                            DataType = typeof(TItem).GetProperty(propName)?.PropertyType
+                        });
+                    }
+                }
+
+                if (newCols.Any())
+                {
+                    ColumnDefinitions = newCols;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Failed to load columns from metadata for Entity {id}", MetaEntityId);
+        }
+    }
+
+    private Expression<Func<TItem, object>>? CreatePropertyAccessor(string propertyName)
+    {
+        try
+        {
+            var param = Expression.Parameter(typeof(TItem), "x");
+            var propertyInfo = typeof(TItem).GetProperty(propertyName);
+            
+            if (propertyInfo == null) return null;
+
+            var property = Expression.Property(param, propertyInfo);
+            var conversion = Expression.Convert(property, typeof(object));
+            return Expression.Lambda<Func<TItem, object>>(conversion, param);
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     private async Task OnPageSizeChangedSimple()
@@ -210,12 +315,13 @@
     private async ValueTask<GridItemsProviderResult<TItem>> ProvideItems(GridItemsProviderRequest<TItem> request)
     {
         var visibleCols = ColumnDefinitions.Where(c => c.IsVisible).Select(c => c.FieldName).ToList();
-        var dataRequest = new ServerDataRequest
-        {
-            Page = (request.StartIndex / (request.Count ?? PageSize)) + 1,
-            PageSize = request.Count ?? PageSize,
-            Criteria = CurrentFilters
-        };
+            var reqCount = request.Count.HasValue && request.Count.Value > 0 ? request.Count.Value : PageSize;
+            var dataRequest = new ServerDataRequest
+            {
+                Page = (request.StartIndex / reqCount) + 1,
+                PageSize = reqCount,
+                Criteria = CurrentFilters
+            };
 
         var result = await DataProvider(dataRequest);
         _currentPageItems = result.Data.ToList();

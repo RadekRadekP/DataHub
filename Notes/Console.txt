@@ -1,0 +1,10 @@
+Could not find a valid SQL entity (MetaEntity or AuditLog) to use for the demo.
+Please go to Metadata Catalog and click "Discover All Schemas" to populate metadata.
+
+Found Entities (7):
+ViewEisodSd (dbo)
+Alarm (dbo)
+Grinding (dbo)
+Operational (dbo)
+DummyCategory (memory)
+DummyItem (memory)

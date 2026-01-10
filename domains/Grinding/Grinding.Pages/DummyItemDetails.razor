@@ -23,7 +23,10 @@ else if (item != null)
         <div class="row">
             <div class="col-md-6">
                 <FluentTextField @bind-Value="item.Name" Label="Name" ReadOnly="true" />
-                <FluentTextField @bind-Value="item.Category" Label="Category" ReadOnly="true" />
+                <FluentTextField Value="@(item.Description ?? string.Empty)" Label="Description" ReadOnly="true" />
+                <FluentTextField Value="@(item.Category?.Name ?? "N/A")" Label="Category" ReadOnly="true" />
+                <FluentTextField Value="@(item.Status?.Name ?? "N/A")" Label="Status" ReadOnly="true" />
+                <FluentTextField Value="@(item.Value?.ToString("C") ?? "N/A")" Label="Value" ReadOnly="true" />
                 <FluentDatePicker @bind-Value="CreatedDateNullable" Label="Created Date" ReadOnly="true" />
                 <FluentCheckbox @bind-Value="item.IsActive" Label="Is Active" Disabled="true" />
             </div>

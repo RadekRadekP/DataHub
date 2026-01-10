@@ -4021,8 +4021,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj": {
-              "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj"
+            "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj": {
+              "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Services\\Grinding.Services.csproj"
             },
             "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Shared\\Grinding.Shared.csproj": {
               "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Grinding\\Grinding.Shared\\Grinding.Shared.csproj"

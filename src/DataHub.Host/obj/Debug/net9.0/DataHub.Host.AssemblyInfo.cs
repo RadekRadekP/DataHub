@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DataHub.Host")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1cc9cf87667ba5c47fc39ec79adebd09ccd6b14")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6f58030e131e62df812e0a8028ffaa02a93e1440")]
 [assembly: System.Reflection.AssemblyProductAttribute("DataHub.Host")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DataHub.Host")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

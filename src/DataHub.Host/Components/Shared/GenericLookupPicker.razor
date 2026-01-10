@@ -1,0 +1,161 @@
+@using DataHub.Core.Models.Metadata
+@using DataHub.Core.Services
+@using DataHub.Host.Services
+@using System.Collections.Generic
+@using Microsoft.FluentUI.AspNetCore.Components
+@inject IDialogService DialogService
+@inject IMetadataService MetadataService
+@inject DynamicDataService DynamicDataService
+
+<div class="generic-lookup-picker">
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" Width="100%">
+        <FluentTextField Value="@_displayText" ReadOnly="true" Placeholder="Select..." Style="width: 100%; cursor: pointer;" @onclick="OpenLookup" />
+        
+        <FluentButton IconStart="@(new Icons.Regular.Size16.Search())" OnClick="OpenLookup" Title="Search" />
+        
+        @if (Value != null)
+        {
+            <FluentButton IconStart="@(new Icons.Regular.Size16.Dismiss())" OnClick="ClearSelection" Appearance="Appearance.Lightweight" Title="Clear" />
+        }
+    </FluentStack>
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div style="color: var(--error); font-size: 12px; margin-top: 4px;">@ErrorMessage</div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<int?> ValueChanged { get; set; }
+
+    [Parameter]
+    public MetaRelation Relation { get; set; }
+
+    [Parameter]
+    public string? ErrorMessage { get; set; }
+
+    private string _displayText = "";
+    private bool _isLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDisplayText();
+    }
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        // Reload if Value changed externally
+        if (Value != null && string.IsNullOrEmpty(_displayText))
+        {
+             await LoadDisplayText();
+        }
+        else if (Value == null)
+        {
+            _displayText = "";
+        }
+    }
+
+    private async Task LoadDisplayText()
+    {
+        if (Value == null || Relation == null || Relation.ToEntity == null) return;
+        
+        _isLoading = true;
+        try
+        {
+            // We need to fetch the single record to get its Name/Display text
+             // Ensure we have the necessary metadata loaded
+            var entity = Relation.ToEntity;
+            var fields = await MetadataService.GetFieldsByEntityIdAsync(entity.Id);
+            
+            // Determine which field is the display field
+            var displayField = Relation.DisplayField; 
+            if (displayField == null)
+            {
+                // Retrieve explicitly if not included in Relation object (e.g. if lazy loading issue)
+                if (Relation.DisplayFieldId.HasValue) 
+                     displayField = await MetadataService.GetFieldByIdAsync(Relation.DisplayFieldId.Value);
+                
+                // Fallback logic
+                 if (displayField == null) 
+                    displayField = fields.FirstOrDefault(f => f.FieldName.Contains("Name", StringComparison.OrdinalIgnoreCase)) ?? fields.FirstOrDefault();
+            }
+
+            var record = await DynamicDataService.GetRecordByIdAsync(entity, fields, Value.Value);
+            
+            if (record != null && displayField != null)
+            {
+               if (record.TryGetValue(displayField.FieldName, out var val))
+               {
+                   _displayText = val?.ToString() ?? "";
+               }
+            }
+        }
+        catch (Exception ex)
+        {
+            _displayText = $"Error loading: {ex.Message}";
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task OpenLookup()
+    {
+        if (Relation?.ToEntity == null) return;
+
+        // Ensure we know the PK field of the target
+        var targetFields = await MetadataService.GetFieldsByEntityIdAsync(Relation.ToEntityId);
+        var pkField = targetFields.FirstOrDefault(f => f.IsPrimaryKey) ?? targetFields.FirstOrDefault(f => f.FieldName == "Id");
+
+        if (pkField == null)
+        {
+            return;
+        }
+
+        var parameters = new DialogParameters()
+        {
+            Alignment = HorizontalAlignment.Center,
+            Title = $"Select {Relation.ToEntity.DisplayName}",
+            PrimaryAction = "Select",
+            SecondaryAction = "Cancel",
+            Width = "800px",
+            Height = "600px",
+            PreventDismissOnOverlayClick = false
+        };
+        
+        var settings = new LookupDialogSettings
+        {
+            TargetEntity = Relation.ToEntity,
+            TargetPkField = pkField,
+            DisplayField = Relation.DisplayField
+        };
+
+        var dialog = await DialogService.ShowDialogAsync<LookupDialog>(settings, parameters);
+        var result = await dialog.Result;
+
+        if (result != null && !result.Cancelled && result.Data != null)
+        {
+             var lookupResult = result.Data as LookupResult;
+             if (lookupResult != null && lookupResult.SelectedId != null)
+             {
+                 if (int.TryParse(lookupResult.SelectedId.ToString(), out int intId))
+                 {
+                     Value = intId;
+                     _displayText = lookupResult.DisplayText;
+                     await ValueChanged.InvokeAsync(Value);
+                 }
+             }
+        }
+    }
+
+    private async Task ClearSelection()
+    {
+        Value = null;
+        _displayText = "";
+        await ValueChanged.InvokeAsync(null);
+    }
+}

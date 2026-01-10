@@ -1,0 +1,209 @@
+@using DataHub.Core.Models.Metadata
+@using DataHub.Core.Services
+@using DataHub.Host.Services
+@using Microsoft.FluentUI.AspNetCore.Components
+@implements IDialogContentComponent<LookupDialogSettings>
+@inject IMetadataService MetadataService
+@inject DynamicDataService DynamicDataService
+
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+        <FluentIcon Value="@(new Icons.Regular.Size24.Search())" />
+        <FluentLabel Typo="Typography.PaneHeader">
+            @_dialogTitle
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+
+<FluentDialogBody>
+    <FluentStack Orientation="Orientation.Vertical" VerticalGap="12" Style="height: 100%; min-height: 400px;">
+        
+        @if (_isLoading)
+        {
+            <FluentProgressRing />
+        }
+        else if (_loadError != null)
+        {
+            <FluentMessageBar Intent="MessageIntent.Error">@_loadError</FluentMessageBar>
+        }
+        else
+        {
+            <!-- Search / Filter Area -->
+            <FluentTextField @bind-Value="_searchText" Placeholder="Search..." @oninput="OnSearchInput" 
+                            IconStart="@(new Icons.Regular.Size16.Search())" Style="width: 100%;" />
+
+            <!-- Data Grid -->
+            <div style="flex-grow: 1; overflow: auto; border: 1px solid var(--neutral-stroke-layer-rest); border-radius: 4px;">
+                <FluentDataGrid Items="@_filteredItems" ResizableColumns="true" TGridItem="Dictionary<string, object>"
+                                Virtualize="true" ItemSize="40" Style="height: 100%; width: 100%;">
+                    
+                    @* Selection Column *@
+                    <TemplateColumn Title="Select" Style="width: 60px;" Align="Align.Center">
+                         <FluentButton Appearance="Appearance.Lightweight" IconStart="@(new Icons.Regular.Size16.CheckmarkCircle())"
+                                       OnClick="@(() => SelectItem(context))" />
+                    </TemplateColumn>
+
+                    @* Dynamic Columns *@
+                    @foreach (var col in _dataColumns)
+                    {
+                        <PropertyColumn Property="@(row => GetValue(row, col.FieldName))" Title="@col.DisplayName" Sortable="true" />
+                    }
+
+                </FluentDataGrid>
+            </div>
+        }
+    </FluentStack>
+</FluentDialogBody>
+
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Neutral" OnClick="@(() => Dialog.CloseAsync(null))">Cancel</FluentButton>
+</FluentDialogFooter>
+
+@code {
+    [Parameter]
+    public LookupDialogSettings Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    private List<MetaField> _allFields = new();
+    private List<MetaField> _dataColumns = new();
+    private List<Dictionary<string, object>> _allItems = new();
+    private IQueryable<Dictionary<string, object>> _filteredItems => _allItems.AsQueryable()
+        .Where(item => string.IsNullOrWhiteSpace(_searchText) || SearchMatch(item));
+
+    private string _searchText = "";
+    private bool _isLoading = true;
+    private string? _loadError;
+    private string _dialogTitle => $"Select {Content?.TargetEntity?.DisplayName ?? "Record"}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // FluentUI sets Content for us when using ShowDialogAsync<T>(data)
+        if (Content?.TargetEntity == null)
+        {
+            _loadError = "Target Entity configuration is missing.";
+            _isLoading = false;
+            return;
+        }
+
+        try
+        {
+            // 1. Get Fields Definition from Default View (SysView)
+            var defaultView = await MetadataService.GetDefaultViewAsync(Content.TargetEntity.Id);
+            
+            if (defaultView != null && defaultView.Fields.Any())
+            {
+                 // Use SysView fields
+                 var viewFields = defaultView.Fields.OrderBy(f => f.Order).ToList();
+                 _dataColumns = viewFields
+                    .Where(vf => vf.IsVisible && vf.MetaField != null)
+                    .Select(vf => {
+                         // Map SysViewField to MetaField for compatibility (or use lightweight wrapper)
+                         // Since LookupDialog expects MetaField lists, we might need adjustments.
+                         // But wait, _allFields is List<MetaField>. _dataColumns is List<MetaField>.
+                         // SysViewField has MetaField navigation.
+                         var mf = vf.MetaField!; 
+                         mf.DisplayName = vf.CustomLabel ?? mf.DisplayName; // Apply custom label override
+                         return mf;
+                    })
+                    .ToList();
+                 
+                 // Also populate _allFields for fallback search? 
+                 // Actually _allFields was used for nothing else in original code except search?
+                 // Search uses _dataColumns.
+                 _allFields = _dataColumns; 
+            }
+            else
+            {
+                // Fallback to legacy behavior if no view defined
+                _allFields = await MetadataService.GetFieldsByEntityIdAsync(Content.TargetEntity.Id);
+                _dataColumns = _allFields.Where(f => f.IsVisibleInGrid).OrderBy(f => f.DisplayOrder).ToList();
+                
+                if (!_dataColumns.Any())
+                {
+                    _dataColumns = _allFields.Take(5).ToList();
+                }
+            }
+
+            // Ensure PK is in the fetch list even if not visible
+            var fieldsToFetch = _dataColumns.ToList();
+            if (Content.TargetPkField != null && !fieldsToFetch.Any(f => f.Id == Content.TargetPkField.Id))
+            {
+               fieldsToFetch.Add(Content.TargetPkField);
+            }
+            // Ensure Display Field is in fetch list
+            if (Content.DisplayField != null && !fieldsToFetch.Any(f => f.Id == Content.DisplayField.Id))
+            {
+                fieldsToFetch.Add(Content.DisplayField);
+            }
+
+            // 2. Fetch Data
+            _allItems = await DynamicDataService.GetDataAsync(Content.TargetEntity, fieldsToFetch, maxRows: 500);
+        }
+        catch (Exception ex)
+        {
+            _loadError = $"Failed to load data: {ex.Message}";
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void OnSearchInput(ChangeEventArgs e)
+    {
+        _searchText = e.Value?.ToString() ?? "";
+    }
+
+    private bool SearchMatch(Dictionary<string, object> row)
+    {
+        // Simple search: check if ANY visible column contains the text
+        foreach (var col in _dataColumns)
+        {
+            var val = GetValue(row, col.FieldName);
+            if (val != null && val.ToString().Contains(_searchText, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+        return false;
+    }
+
+    private object? GetValue(Dictionary<string, object> row, string fieldName)
+    {
+        if (row.TryGetValue(fieldName, out var val)) return val;
+        return null; // or empty string
+    }
+
+    private async Task SelectItem(Dictionary<string, object> row)
+    {
+        // Return result
+        if (Content.TargetPkField == null) {
+             await Dialog.CloseAsync(null);
+             return;
+        }
+
+        var pkValue = GetValue(row, Content.TargetPkField.FieldName);
+        
+        string displayText = pkValue?.ToString() ?? "Selected";
+        if (Content.DisplayField != null)
+        {
+            displayText = GetValue(row, Content.DisplayField.FieldName)?.ToString() ?? displayText;
+        }
+        else 
+        {
+            var nameField = _dataColumns.FirstOrDefault(f => f.FieldName.Contains("Name", StringComparison.OrdinalIgnoreCase));
+            if (nameField != null)
+                displayText = GetValue(row, nameField.FieldName)?.ToString() ?? displayText;
+        }
+
+        var result = new LookupResult 
+        { 
+            SelectedId = pkValue, 
+            DisplayText = displayText,
+            FullRecord = row
+        };
+
+        // Pass the result back by closing the dialog
+        await Dialog.CloseAsync(result);
+    }
+}

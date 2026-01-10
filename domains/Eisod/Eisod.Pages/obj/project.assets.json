@@ -3995,11 +3995,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj",
+      "projectUniqueName": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj",
       "projectName": "Eisod.Pages",
-      "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj",
+      "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\Eisod.Pages.csproj",
       "packagesPath": "C:\\Users\\PalenikR\\.nuget\\packages\\",
-      "outputPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\obj\\",
+      "outputPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Pages\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4024,8 +4024,8 @@
             "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Services\\Eisod.Services.csproj": {
               "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Services\\Eisod.Services.csproj"
             },
-            "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
-              "projectPath": "c:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
+            "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj": {
+              "projectPath": "C:\\NON_Install_Programs\\DataHub\\domains\\Eisod\\Eisod.Shared\\Eisod.Shared.csproj"
             },
             "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Core\\DataHub.Core.csproj": {
               "projectPath": "C:\\NON_Install_Programs\\DataHub\\src\\DataHub.Core\\DataHub.Core.csproj"

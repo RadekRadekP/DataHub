@@ -17,7 +17,10 @@
                          ListPagePath="/dummyitems">
     <EditorTemplate>
         <FluentTextField @bind-Value="context.Name" Label="Name" />
-        <FluentTextField @bind-Value="context.Category" Label="Category" />
+        <FluentTextField @bind-Value="context.Description" Label="Description" />
+        <FluentNumberField @bind-Value="context.CategoryId" Label="Category ID (1-5)" />
+        <FluentNumberField @bind-Value="context.StatusId" Label="Status ID (1-6)" />
+        <FluentNumberField @bind-Value="context.Value" Label="Value" />
         <FluentDatePicker @bind-Value="CreatedDateNullable" Label="Created Date" />
         <FluentCheckbox @bind-Value="context.IsActive" Label="Is Active" />
     </EditorTemplate>
