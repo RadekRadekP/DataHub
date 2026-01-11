@@ -81,6 +81,9 @@ builder.Services.AddScoped<ICsvExportService, CsvExportService>();
 builder.Services.AddScoped<Grinding.Services.IDummyItemService, Grinding.Services.DummyItemService>();
 builder.Services.AddScoped<IDataService<DummyItem>, Grinding.Services.DummyItemService>();
 
+// Register DummyMetaService (clean metadata-driven implementation)
+builder.Services.AddScoped<Grinding.Services.IDummyMetaService, Grinding.Services.DummyMetaService>();
+
 builder.Services.AddScoped<IExcelExportService, ExcelExportService>(sp =>
     new ExcelExportService(sp.GetRequiredService<ILogger<ExcelExportService>>()));
 

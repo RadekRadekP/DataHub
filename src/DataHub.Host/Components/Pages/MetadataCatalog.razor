@@ -86,7 +86,7 @@
                 
                 <FluentDataGrid Items="@_discoveredEntities.AsQueryable()" 
                                ResizableColumns="true"
-                               GridTemplateColumns="0.8fr 1fr 1fr 0.5fr 0.5fr 0.5fr">
+                               GridTemplateColumns="0.8fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr">
                     <PropertyColumn Property="@(e => e.DbContextName)" Title="Context" Sortable="true" />
                     <PropertyColumn Property="@(e => e.EntityName)" Title="Entity" Sortable="true" />
                     <PropertyColumn Property="@(e => e.TableName)" Title="Table Name" Sortable="true" />
@@ -99,9 +99,68 @@
                     <TemplateColumn Title="Fields" Align="Align.Center">
                         <FluentBadge Appearance="Appearance.Lightweight">@context.FieldCount</FluentBadge>
                     </TemplateColumn>
+                    <TemplateColumn Title="Actions" Align="Align.End">
+                        <FluentButton Appearance="Appearance.Lightweight"
+                                     OnClick="@(() => ShowEntityFields(context.EntityId))"
+                                     IconStart="@(new Icons.Regular.Size20.Eye())">
+                            View Fields
+                        </FluentButton>
+                    </TemplateColumn>
                 </FluentDataGrid>
             </FluentStack>
         </FluentCard>
+        
+        @* Field Details Panel *@
+        @if (_selectedEntityFields != null)
+        {
+            <FluentCard>
+                <FluentStack Orientation="Orientation.Vertical" VerticalGap="12">
+                    <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Start">
+                        <h3 style="margin: 0;">🔍 Fields for: @_selectedEntityName</h3>
+                        <FluentBadge Appearance="Appearance.Accent">@_selectedEntityFields.Count fields</FluentBadge>
+                        <FluentButton Appearance="Appearance.Lightweight"
+                                     OnClick="ClearFieldSelection"
+                                     IconStart="@(new Icons.Regular.Size20.Dismiss())">
+                            Close
+                        </FluentButton>
+                    </FluentStack>
+                    
+                    <FluentDataGrid Items="@_selectedEntityFields.AsQueryable()"
+                                   ResizableColumns="true"
+                                   GridTemplateColumns="1fr 1fr 0.8fr 0.8fr 0.4fr 0.4fr 0.4fr 0.4fr 0.5fr">
+                        <PropertyColumn Property="@(f => f.FieldName)" Title="Field Name" Sortable="true" />
+                        <PropertyColumn Property="@(f => f.DisplayName)" Title="Display Name" Sortable="true" />
+                        <PropertyColumn Property="@(f => f.ClrType)" Title="CLR Type" Sortable="true" />
+                        <PropertyColumn Property="@(f => f.SqlType)" Title="SQL Type" Sortable="true" />
+                        <TemplateColumn Title="PK">
+                            @if (context.IsPrimaryKey)
+                            {
+                                <FluentBadge Appearance="Appearance.Accent">🔑</FluentBadge>
+                            }
+                        </TemplateColumn>
+                        <TemplateColumn Title="FK">
+                            @if (context.IsForeignKey)
+                            {
+                                <FluentBadge Appearance="Appearance.Neutral">🔗</FluentBadge>
+                            }
+                        </TemplateColumn>
+                        <TemplateColumn Title="Null">
+                            @if (context.IsNullable)
+                            {
+                                <FluentBadge Appearance="Appearance.Neutral">✓</FluentBadge>
+                            }
+                        </TemplateColumn>
+                        <TemplateColumn Title="Visible">
+                            @if (context.IsVisibleInGrid)
+                            {
+                                <FluentBadge Appearance="Appearance.Accent">�️</FluentBadge>
+                            }
+                        </TemplateColumn>
+                        <PropertyColumn Property="@(f => f.DisplayOrder)" Title="Order" Sortable="true" />
+                    </FluentDataGrid>
+                </FluentStack>
+            </FluentCard>
+        }
     }
     else if (!_isDiscovering && string.IsNullOrEmpty(_discoveryMessage))
     {
@@ -182,6 +241,8 @@
     private List<MetaRelation> _relations = new();
     private bool _relationDialogHidden = true;
     private MetaRelation? _editingRelation = null;
+    private List<FieldSummary>? _selectedEntityFields = null;
+    private string _selectedEntityName = string.Empty;
 
     [Inject] private IMetadataService MetadataService { get; set; } = default!;
 
@@ -198,6 +259,7 @@
             _discoveredEntities = await catalogContext.MetaEntities
                 .Select(e => new EntitySummary
                 {
+                    EntityId = e.Id,
                     DbContextName = e.DbContextName,
                     EntityName = e.EntityName,
                     TableName = e.TableName,
@@ -207,6 +269,43 @@
                 })
                 .ToListAsync();
         }
+        StateHasChanged();
+    }
+
+    private async Task ShowEntityFields(int entityId)
+    {
+        using (var catalogContext = await AppFactory.CreateDbContextAsync())
+        {
+            var entity = await catalogContext.MetaEntities.FindAsync(entityId);
+            if (entity != null)
+            {
+                _selectedEntityName = entity.EntityName;
+                _selectedEntityFields = await catalogContext.MetaFields
+                    .Where(f => f.MetaEntityId == entityId)
+                    .Select(f => new FieldSummary
+                    {
+                        FieldName = f.FieldName,
+                        DisplayName = f.DisplayName,
+                        ClrType = f.ClrType,
+                        SqlType = f.SqlType,
+                        IsNullable = f.IsNullable,
+                        IsPrimaryKey = f.IsPrimaryKey,
+                        IsForeignKey = f.IsForeignKey,
+                        MaxLength = f.MaxLength,
+                        IsVisibleInGrid = f.IsVisibleInGrid,
+                        DisplayOrder = f.DisplayOrder
+                    })
+                    .OrderBy(f => f.DisplayOrder)
+                    .ToListAsync();
+            }
+        }
+        StateHasChanged();
+    }
+
+    private void ClearFieldSelection()
+    {
+        _selectedEntityFields = null;
+        _selectedEntityName = string.Empty;
         StateHasChanged();
     }
 
@@ -308,11 +407,26 @@
 
     private class EntitySummary
     {
+        public int EntityId { get; set; }
         public string DbContextName { get; set; } = string.Empty;
         public string EntityName { get; set; } = string.Empty;
         public string TableName { get; set; } = string.Empty;
         public string SchemaName { get; set; } = string.Empty;
         public bool IsView { get; set; }
         public int FieldCount { get; set; }
+    }
+
+    private class FieldSummary
+    {
+        public string FieldName { get; set; } = string.Empty;
+        public string DisplayName { get; set; } = string.Empty;
+        public string ClrType { get; set; } = string.Empty;
+        public string SqlType { get; set; } = string.Empty;
+        public bool IsNullable { get; set; }
+        public bool IsPrimaryKey { get; set; }
+        public bool IsForeignKey { get; set; }
+        public int? MaxLength { get; set; }
+        public bool IsVisibleInGrid { get; set; }
+        public int DisplayOrder { get; set; }
     }
 }

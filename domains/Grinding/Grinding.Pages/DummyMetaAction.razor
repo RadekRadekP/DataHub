@@ -1,0 +1,58 @@
+@page "/dummymeta/action/{Id:int}"
+@page "/dummymeta/action"
+
+@using DataHub.Core.Components.Shared
+@using Microsoft.FluentUI.AspNetCore.Components
+@using Grinding.Services
+@using DummyMetaEntity = DataHub.Core.Models.DummyMeta
+
+@inject IDummyMetaService DummyMetaService
+
+<GenericEntityActionPage TItem="DummyMetaEntity"
+                         Id="@Id"
+                         DataService="@DummyMetaServiceWrapper"
+                         EntityName="Dummy Meta"
+                         ListPagePath="/dummymeta">
+    <EditorTemplate>
+        <FluentTextField @bind-Value="context.Name" Label="Name" Required />
+        <FluentTextField @bind-Value="context.Description" Label="Description" />
+        <FluentTextField @bind-Value="context.CustomTag" Label="Custom Tag" />
+        <FluentNumberField @bind-Value="context.CategoryId" Label="Category ID (1-5)" />
+        <FluentNumberField @bind-Value="context.StatusId" Label="Status ID (1-3)" />
+        <FluentNumberField @bind-Value="context.Value" Label="Value" />
+        <FluentDatePicker @bind-Value="CreatedDateNullable" Label="Created Date" />
+        <FluentCheckbox @bind-Value="context.IsActive" Label="Is Active" />
+    </EditorTemplate>
+</GenericEntityActionPage>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private DateTime? CreatedDateNullable { get; set; }
+
+    // Wrapper to adapt IDummyMetaService to IDataService<DummyMeta>
+    private DataHub.Core.Interfaces.IDataService<DummyMetaEntity> DummyMetaServiceWrapper => new DummyMetaServiceAdapter(DummyMetaService);
+
+    // Adapter class to bridge the interface gap
+    private class DummyMetaServiceAdapter : DataHub.Core.Interfaces.IDataService<DummyMetaEntity>
+    {
+        private readonly IDummyMetaService _service;
+
+        public DummyMetaServiceAdapter(IDummyMetaService service)
+        {
+            _service = service;
+        }
+
+        public async Task<DummyMetaEntity?> GetByIdAsync(int id) => await _service.GetByIdAsync(id);
+        public async Task<DummyMetaEntity> AddAsync(DummyMetaEntity item) => await _service.AddAsync(item);
+        public async Task<DummyMetaEntity> UpdateAsync(DummyMetaEntity item) => await _service.UpdateAsync(item);
+        public async Task DeleteAsync(int id) => await _service.DeleteAsync(id);
+
+        // IDataService requires this method but we don't use it in the action page
+        public Task<DataHub.Core.Models.DataGrid.DataResult<DummyMetaEntity>> GetPagedAsync(DataHub.Core.Models.DataGrid.DataRequestBase request)
+        {
+            throw new NotImplementedException("GetPagedAsync not needed for action page");
+        }
+    }
+}

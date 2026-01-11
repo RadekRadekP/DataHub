@@ -309,6 +309,9 @@ namespace DataHub.Platform.Services
             // Register DummyItem (references Status and Category)
             entitiesRegistered += await RegisterEntityTypeAsync<DataHub.Core.Models.DummyItem>("InMemory");
 
+            // Register DummyMeta (clean metadata-driven implementation)
+            entitiesRegistered += await RegisterEntityTypeAsync<DataHub.Core.Models.DummyMeta>("InMemory");
+
             _logger.LogInformation("In-memory registration complete. Registered {Count} entities", entitiesRegistered);
             return entitiesRegistered;
         }

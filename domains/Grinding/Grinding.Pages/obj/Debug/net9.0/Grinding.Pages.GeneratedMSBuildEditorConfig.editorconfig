@@ -48,6 +48,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = RHVtbXlJdGVtcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/NON_Install_Programs/DataHub/domains/Grinding/Grinding.Pages/DummyMeta.razor]
+build_metadata.AdditionalFiles.TargetPath = RHVtbXlNZXRhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/NON_Install_Programs/DataHub/domains/Grinding/Grinding.Pages/DummyMetaAction.razor]
+build_metadata.AdditionalFiles.TargetPath = RHVtbXlNZXRhQWN0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/NON_Install_Programs/DataHub/domains/Grinding/Grinding.Pages/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

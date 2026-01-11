@@ -143,7 +143,7 @@ namespace Grinding.Pages
             };
             var serverDataResult = await DummyItemService.GetPagedAsync(serverDataRequest);
 
-            var mappedData = Mapper.Map<List<DummyItem>>(serverDataResult.Data);
+            var mappedData = serverDataResult.Data.ToList();
 
             Logger.LogInformation("DummyItems: LoadData returning {Count} items with TotalCount {TotalCount}.", mappedData.Count(), serverDataResult.TotalCount);
             return new DataResult<DummyItem>

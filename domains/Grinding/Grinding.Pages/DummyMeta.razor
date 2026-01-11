@@ -1,0 +1,38 @@
+@page "/dummymeta"
+@using DataHub.Core.Components.Shared
+@using DataHub.Core.Models.DataGrid
+@using DummyMetaEntity = DataHub.Core.Models.DummyMeta
+
+<PageTitle>Dummy Meta (Metadata Driven)</PageTitle>
+
+<h1>Dummy Meta (Metadata Driven) 🎯</h1>
+
+<p>This is a <strong>clean implementation</strong> using the <code>DummyMeta</code> entity. The grid is automatically generated from metadata - no hardcoded columns!</p>
+
+<p style="color: orange;">⚠️ Currently testing without metadata (MetaEntityId removed temporarily for debugging)</p>
+
+<GenericDataView @ref="_dataView" TItem="DummyMetaEntity"
+                 DataProvider="LoadData"
+                 ColumnDefinitions="_columns"
+                 ExportFunction="ExportDataToExcel"
+                 ExportFileName="DummyMeta_Export"
+                 ShowCheckboxes="true"
+                 SelectedItems="_selectedItems"
+                 SelectedItemsChanged="@((HashSet<DummyMetaEntity> items) => _selectedItems = items)">
+    <BulkActionsTemplate>
+        <FluentButton Appearance="Appearance.Neutral" OnClick="ViewSelectedItems" IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Eye())">
+            👁️ View Selected
+        </FluentButton>
+        <FluentButton Appearance="Appearance.Accent" OnClick="EditSelectedItems" IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Edit())">
+            ✏️ Edit Selected
+        </FluentButton>
+        <FluentButton Appearance="Appearance.Accent" OnClick="DeleteSelectedItems" IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Delete())">
+            🗑️ Delete Selected
+        </FluentButton>
+    </BulkActionsTemplate>
+    <ActionColumnTemplate>
+        <FluentButton IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Search())" Title="View Details" OnClick="@(() => ViewItem(context.Id))" />
+        <FluentButton IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Edit())" Title="Edit" OnClick="@(() => EditItem(context.Id))" />
+        <FluentButton IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.Delete())" Title="Delete" OnClick="@(() => DeleteItem(context.Id))" />
+    </ActionColumnTemplate>
+</GenericDataView>

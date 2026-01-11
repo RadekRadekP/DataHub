@@ -17,7 +17,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <FileLength>15992</FileLength>
-      <LastWriteTime>Sat, 10 Jan 2026 08:46:27 GMT</LastWriteTime>
+      <LastWriteTime>Sun, 11 Jan 2026 12:53:11 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\DataHub.Core.kdyf6dnfqf.bundle.scp.css'))</OriginalItemSpec>
     </StaticWebAsset>
   </ItemGroup>
